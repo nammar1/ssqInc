@@ -1,0 +1,93 @@
+name: Deploy Application
+
+on: 
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Source
+        uses: actions/checkout@v4
+      
+      - name: Login to docker hub
+        run: sudo docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
+      
+      - name: Build Backend Docker Image
+        run: sudo docker build -t sajinq/ssq-backend:latest ./backend
+      
+      - name: Create nginx.conf for frontend
+        run: |
+          cat > frontend/nginx.conf <<EOL
+          server {
+              listen 80;
+              server_name ssqinc.com www.ssqinc.com;
+              
+              # Redirect HTTP to HTTPS
+              location / {
+                  return 301 https://\$host\$request_uri;
+              }
+          }
+
+          server {
+              listen 443 ssl;
+              server_name ssqinc.com www.ssqinc.com;
+              
+              ssl_certificate /etc/letsencrypt/live/ssqinc.com/fullchain.pem;
+              ssl_certificate_key /etc/letsencrypt/live/ssqinc.com/privkey.pem;
+              
+              location / {
+                  root /usr/share/nginx/html;
+                  index index.html index.htm;
+                  try_files \$uri \$uri/ /index.html;
+              }
+              
+              location /api {
+                  proxy_pass http://ssq-backend:5000/api;
+                  proxy_set_header Host \$host;
+                  proxy_set_header X-Real-IP \$remote_addr;
+              }
+          }
+          EOL
+          
+      - name: Build Frontend Docker Image
+        run: sudo docker build -t sajinq/ssq-frontend:latest ./frontend
+      
+      - name: Push Images to docker hub
+        run: |
+          sudo docker push sajinq/ssq-backend:latest
+          sudo docker push sajinq/ssq-frontend:latest
+ 
+  deploy:
+    needs: build
+    runs-on: self-hosted 
+    steps:
+      - name: Pull images from docker hub
+        run: |
+          sudo docker pull sajinq/ssq-backend:latest
+          sudo docker pull sajinq/ssq-frontend:latest
+          
+      - name: Delete old containers
+        run: |
+          sudo docker rm -f ssq-backend || true
+          sudo docker rm -f ssq-frontend || true
+          
+      - name: Create Docker network
+        run: sudo docker network create ssq-network || true
+          
+      - name: Run Docker Containers
+        run: |
+          sudo docker run -d --name ssq-backend \
+            --network ssq-network \
+            -p 5000:5000 \
+            -e NODE_ENV=production \
+            sajinq/ssq-backend
+            
+          sudo docker run -d --name ssq-frontend \
+            --network ssq-network \
+            -p 80:80 \
+            -p 443:443 \
+            -v /etc/letsencrypt:/etc/letsencrypt:ro \
+            sajinq/ssq-frontend
