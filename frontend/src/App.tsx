@@ -1,12 +1,41 @@
-import { Box, Heading, Button } from '@chakra-ui/react';
-import './App.css'
+import { Routes, Route } from 'react-router-dom'
+import { Layout } from '@components/layout/Layout'
+import Home from '@pages/Home'
+import About from '@pages/About'
+import Services from '@pages/Services'
+import Contact from '@pages/Contact'
+import NotFound from '@pages/NotFound'
+import SoftwareDevelopment from '@pages/SoftwareDevelopment'
+import DataEngineering from '@pages/DataEngineering'
+import AISolutions from '@pages/AISolutions'
+import CloudCyber from '@pages/CloudCyber'
+import Digital from '@pages/Digital'
+import Blog from '@pages/Blog'
+import Investor from '@pages/Investor'
+import Careers from '@pages/Careers'
+import Privacy from '@pages/Privacy'
 
 function App() {
   return (
-    <Box p={4}>
-      <Heading mb={4}>Welcome to Chakra UI</Heading>
-      <Button colorScheme="teal">Click Me</Button>
-    </Box>
-  );
+    <Layout>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/about" element={<About />} />
+        <Route path="/services" element={<Services />} />
+        <Route path="/services/software" element={<SoftwareDevelopment />} />
+        <Route path="/services/data" element={<DataEngineering />} />
+        <Route path="/services/ai-ml" element={<AISolutions />} />
+        <Route path="/services/cloud-cybersecurity" element={<CloudCyber />} />
+        <Route path="/services/digital-transformation" element={<Digital />} />
+        <Route path="/contact" element={<Contact />} />
+        <Route path="/blog" element={<Blog />} />
+        <Route path="/investor" element={<Investor />} />
+        <Route path="/careers" element={<Careers />} />
+        <Route path="/privacy" element={<Privacy />} />
+        <Route path="*" element={<NotFound />} />
+      </Routes>
+    </Layout>
+  )
 }
+
 export default App

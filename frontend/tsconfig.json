@@ -29,8 +29,14 @@
       "@pages/*": ["src/pages/*"],
       "@store/*": ["src/store/*"],
       "@api/*": ["src/api/*"]
-    }
+    },
+    
+    /* Additional Options */
+    "allowJs": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "forceConsistentCasingInFileNames": true
   },
-  "include": ["src"],
+  "include": ["src/**/*.ts", "src/**/*.tsx", "src/**/*.d.ts"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }
