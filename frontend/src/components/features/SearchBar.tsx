@@ -11,7 +11,6 @@ import {
   HStack,
   Icon,
   Kbd,
-  Divider,
 } from '@chakra-ui/react'
 import { SearchIcon, CloseIcon } from '@chakra-ui/icons'
 import { motion, AnimatePresence } from 'framer-motion'

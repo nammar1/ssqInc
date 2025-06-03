@@ -10,8 +10,6 @@ import {
   VStack,
   HStack,
   SimpleGrid,
-  Flex,
-  Image,
   List,
   ListItem,
   ListIcon,

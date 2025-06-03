@@ -2,8 +2,7 @@
 
 declare global {
   namespace JSX {
-    interface IntrinsicElements {
-      group: any
-    }
+    type R3FThreeElements = import('@react-three/fiber').ThreeElements;
+    interface IntrinsicElements extends R3FThreeElements {}
   }
 } 
