@@ -29,10 +29,10 @@ import {
   FaGlobe,
 } from 'react-icons/fa'
 
-const MotionBox = motion(Box)
-const MotionVStack = motion(VStack)
-const MotionDivider = motion(Divider)
-const MotionFlex = motion(Flex)
+const MotionBox = motion(Box as React.ComponentType<any>)
+const MotionVStack = motion(VStack as React.ComponentType<any>)
+const MotionDivider = motion(Divider as React.ComponentType<any>)
+const MotionFlex = motion(Flex as React.ComponentType<any>)
 
 interface MainMenuProps {
   isOpen: boolean

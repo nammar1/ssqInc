@@ -18,8 +18,7 @@ import { useState, useRef, useEffect, useMemo } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { FaHome, FaInfoCircle, FaCog, FaEnvelope, FaBlog, FaUsers, FaShieldAlt, FaCode, FaDatabase, FaRobot, FaCloud, FaDigitalTachograph } from 'react-icons/fa'
 
-const MotionBox = motion(Box)
-const MotionVStack = motion(VStack)
+
 
 interface SearchResult {
   title: string
@@ -137,21 +136,23 @@ export function SearchBar({ isOpen, onClose }: SearchBarProps) {
   return (
     <AnimatePresence>
       {isOpen && (
-        <MotionBox
-          position="absolute"
-          top="calc(100% + 8px)"
-          left="50%"
-          transform="translateX(-50%)"
-          zIndex={4000}
+        <motion.div
+          style={{
+            position: 'absolute',
+            top: 'calc(100% + 8px)',
+            left: '50%',
+            transform: 'translateX(-50%)',
+            zIndex: 4000,
+          }}
           initial={{ opacity: 0, scale: 0.95, y: -10 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.95, y: -10 }}
           transition={{ duration: 0.2, ease: "easeOut" }}
-          minW="400px"
-          maxW="500px"
-          w={{ base: "90vw", md: "450px" }}
         >
           <Box
+            minW="400px"
+            maxW="500px"
+            w={{ base: "90vw", md: "450px" }}
             bg={bg}
             border="1px solid"
             borderColor={borderColor}
@@ -159,7 +160,6 @@ export function SearchBar({ isOpen, onClose }: SearchBarProps) {
             boxShadow={`0 12px 40px ${shadowColor}`}
             backdropFilter="blur(12px)"
             overflow="hidden"
-            w="100%"
           >
             {/* Search Input */}
             <Box p={4} borderBottom="1px solid" borderColor={borderColor}>
@@ -210,114 +210,117 @@ export function SearchBar({ isOpen, onClose }: SearchBarProps) {
 
             {/* Search Results */}
             {filteredResults.length > 0 && (
-              <MotionVStack
-                spacing={0}
-                align="stretch"
-                maxH="300px"
-                overflowY="auto"
+              <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.1 }}
-                css={{
-                  '&::-webkit-scrollbar': {
-                    width: '4px',
-                  },
-                  '&::-webkit-scrollbar-track': {
-                    width: '6px',
-                  },
-                  '&::-webkit-scrollbar-thumb': {
-                    background: useColorModeValue('gray.200', 'gray.600'),
-                    borderRadius: '24px',
-                  },
-                }}
               >
-                {filteredResults.map((result, index) => (
-                  <motion.div
-                    key={result.path}
-                    initial={{ opacity: 0, x: -10 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: index * 0.05, duration: 0.2 }}
-                  >
-                    <Button
-                      variant="ghost"
-                      size="md"
-                      borderRadius="none"
-                      fontWeight="normal"
-                      onClick={() => handleResultClick(result)}
-                      bg={selectedIndex === index ? selectedBg : 'transparent'}
-                      _hover={{ bg: selectedIndex === index ? selectedBg : hoverBg }}
-                      transition="all 0.2s"
-                      justifyContent="flex-start"
-                      p={4}
-                      h="auto"
-                      minH="60px"
-                      onMouseEnter={() => setSelectedIndex(index)}
-                      borderLeft={selectedIndex === index ? "3px solid" : "3px solid transparent"}
-                      borderLeftColor={selectedIndex === index ? "blue.400" : "transparent"}
-                      w="100%"
+                <VStack
+                  spacing={0}
+                  align="stretch"
+                  maxH="300px"
+                  overflowY="auto"
+                  css={{
+                    '&::-webkit-scrollbar': {
+                      width: '4px',
+                    },
+                    '&::-webkit-scrollbar-track': {
+                      width: '6px',
+                    },
+                    '&::-webkit-scrollbar-thumb': {
+                      background: useColorModeValue('gray.200', 'gray.600'),
+                      borderRadius: '24px',
+                    },
+                  }}
+                >
+                  {filteredResults.map((result, index) => (
+                    <motion.div
+                      key={result.path}
+                      initial={{ opacity: 0, x: -10 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: index * 0.05, duration: 0.2 }}
                     >
-                      <HStack spacing={3} width="100%" align="flex-start">
-                        <motion.div
-                          whileHover={{ scale: 1.1 }}
-                          transition={{ duration: 0.2 }}
-                          style={{ flexShrink: 0 }}
-                        >
-                          <Box
-                            p={2}
-                            borderRadius="lg"
-                            bg={useColorModeValue('gray.100', 'gray.700')}
-                            color={useColorModeValue('gray.600', 'gray.300')}
-                            display="flex"
-                            alignItems="center"
-                            justifyContent="center"
+                      <Button
+                        variant="ghost"
+                        size="md"
+                        borderRadius="none"
+                        fontWeight="normal"
+                        onClick={() => handleResultClick(result)}
+                        bg={selectedIndex === index ? selectedBg : 'transparent'}
+                        _hover={{ bg: selectedIndex === index ? selectedBg : hoverBg }}
+                        transition="all 0.2s"
+                        justifyContent="flex-start"
+                        p={4}
+                        h="auto"
+                        minH="60px"
+                        onMouseEnter={() => setSelectedIndex(index)}
+                        borderLeft={selectedIndex === index ? "3px solid" : "3px solid transparent"}
+                        borderLeftColor={selectedIndex === index ? "blue.400" : "transparent"}
+                        w="100%"
+                      >
+                        <HStack spacing={3} width="100%" align="flex-start">
+                          <motion.div
+                            whileHover={{ scale: 1.1 }}
+                            transition={{ duration: 0.2 }}
+                            style={{ flexShrink: 0 }}
                           >
-                            <Icon as={result.icon} boxSize={4} />
-                          </Box>
-                        </motion.div>
-                        <VStack align="flex-start" spacing={1} flex={1} minW={0}>
-                          <HStack justify="space-between" w="100%" align="center" spacing={2}>
-                            <Text
-                              fontWeight="semibold"
-                              color={textColor}
-                              fontSize="sm"
-                              flex={1}
-                              noOfLines={1}
-                              overflow="hidden"
-                              textOverflow="ellipsis"
+                            <Box
+                              p={2}
+                              borderRadius="lg"
+                              bg={useColorModeValue('gray.100', 'gray.700')}
+                              color={useColorModeValue('gray.600', 'gray.300')}
+                              display="flex"
+                              alignItems="center"
+                              justifyContent="center"
                             >
-                              {highlightText(result.title, searchValue)}
-                            </Text>
+                              <Icon as={result.icon} boxSize={4} />
+                            </Box>
+                          </motion.div>
+                          <VStack align="flex-start" spacing={1} flex={1} minW={0}>
+                            <HStack justify="space-between" w="100%" align="center" spacing={2}>
+                              <Text
+                                fontWeight="semibold"
+                                color={textColor}
+                                fontSize="sm"
+                                flex={1}
+                                noOfLines={1}
+                                overflow="hidden"
+                                textOverflow="ellipsis"
+                              >
+                                {highlightText(result.title, searchValue)}
+                              </Text>
+                              <Text
+                                fontSize="xs"
+                                color={categoryColor}
+                                fontWeight="medium"
+                                bg={useColorModeValue('gray.100', 'gray.700')}
+                                px={2}
+                                py={1}
+                                borderRadius="full"
+                                flexShrink={0}
+                                whiteSpace="nowrap"
+                              >
+                                {result.category}
+                              </Text>
+                            </HStack>
                             <Text
                               fontSize="xs"
                               color={categoryColor}
-                              fontWeight="medium"
-                              bg={useColorModeValue('gray.100', 'gray.700')}
-                              px={2}
-                              py={1}
-                              borderRadius="full"
-                              flexShrink={0}
-                              whiteSpace="nowrap"
+                              textAlign="left"
+                              noOfLines={2}
+                              w="100%"
+                              overflow="hidden"
+                              textOverflow="ellipsis"
                             >
-                              {result.category}
+                              {highlightText(result.description, searchValue)}
                             </Text>
-                          </HStack>
-                          <Text
-                            fontSize="xs"
-                            color={categoryColor}
-                            textAlign="left"
-                            noOfLines={2}
-                            w="100%"
-                            overflow="hidden"
-                            textOverflow="ellipsis"
-                          >
-                            {highlightText(result.description, searchValue)}
-                          </Text>
-                        </VStack>
-                      </HStack>
-                    </Button>
-                  </motion.div>
-                ))}
-              </MotionVStack>
+                          </VStack>
+                        </HStack>
+                      </Button>
+                    </motion.div>
+                  ))}
+                </VStack>
+              </motion.div>
             )}
 
             {/* No Results */}
@@ -355,7 +358,7 @@ export function SearchBar({ isOpen, onClose }: SearchBarProps) {
               </HStack>
             </Box>
           </Box>
-        </MotionBox>
+        </motion.div>
       )}
     </AnimatePresence>
   )

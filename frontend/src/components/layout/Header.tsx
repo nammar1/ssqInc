@@ -18,7 +18,7 @@ import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 import { SearchBar, AccountPopup, LanguageSelector } from '../features'
 
-const MotionIconButton = motion(IconButton)
+const MotionIconButton = motion(IconButton as React.ComponentType<any>)
 
 export function Header() {
   const textColor = useColorModeValue('gray.900', 'white')
