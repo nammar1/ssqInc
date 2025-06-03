@@ -40,12 +40,29 @@ const AnimatedCamera = () => {
 }
 
 interface WebHeroProps {
-  children: React.ReactNode
+  children?: React.ReactNode
+  title?: string
+  tagline?: string
+  showText?: boolean
+  minHeight?: string
+  backgroundColor?: string
+  webColor?: string
 }
 
-export const WebHero = ({ children }: WebHeroProps) => {
-  const bgColor = useColorModeValue('gray.50', 'gray.900')
-  const webColor = useColorModeValue('#2D3748', '#E2E8F0')
+export const WebHero = ({ 
+  children, 
+  title = '',
+  tagline = '',
+  showText = false,
+  minHeight = '50vh',
+  backgroundColor,
+  webColor
+}: WebHeroProps) => {
+  const defaultBgColor = useColorModeValue('gray.50', 'gray.900')
+  const defaultWebColor = useColorModeValue('#2D3748', '#E2E8F0')
+  
+  const bgColor = backgroundColor || defaultBgColor
+  const finalWebColor = webColor || defaultWebColor
 
   return (
     <motion.div
@@ -57,7 +74,7 @@ export const WebHero = ({ children }: WebHeroProps) => {
         position="relative"
         bg={bgColor}
         color={useColorModeValue('gray.700', 'gray.200')}
-        minH="50vh"
+        minH={minHeight}
         overflow="hidden"
       >
         {/* Three.js Canvas */}
@@ -73,12 +90,13 @@ export const WebHero = ({ children }: WebHeroProps) => {
             style={{ background: 'transparent' }}
           >
             <AnimatedCamera />
-            <ambientLight intensity={0.3} />
-            <pointLight position={[10, 10, 10]} intensity={0.8} />
             <SpiderWeb3D
               segments={32}
               layers={12}
-              color={webColor}
+              color={finalWebColor}
+              title={title}
+              tagline={tagline}
+              showText={showText}
             />
             <OrbitControls
               enableZoom={false}

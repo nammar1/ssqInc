@@ -10,7 +10,6 @@ import {
   Icon,
   HStack,
   Text,
-  SimpleGrid,
 } from '@chakra-ui/react'
 import { Link as RouterLink } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
@@ -26,8 +25,8 @@ import {
   FaDatabase,
   FaRobot,
   FaCloud,
-  FaDigitalTachograph,
   FaCog,
+  FaGlobe,
 } from 'react-icons/fa'
 
 const MotionBox = motion(Box)
@@ -119,11 +118,11 @@ export const MainMenu: React.FC<MainMenuProps> = ({ isOpen, onClose }) => {
 
   const serviceLinks = [
     { to: '/services', label: 'Our Services', icon: FaCog, isMain: true },
+    { to: '/services/digital-transformation', label: 'Digital Transformation', icon: FaGlobe },
     { to: '/services/software', label: 'Software ', icon: FaCode },
     { to: '/services/data', label: 'Data ', icon: FaDatabase },
     { to: '/services/ai-ml', label: 'AI & ML ', icon: FaRobot },
     { to: '/services/cloud-cybersecurity', label: 'Cloud & CyberSecurity', icon: FaCloud },
-    { to: '/services/digital-transformation', label: 'Digital Transformation', icon: FaDigitalTachograph },
   ]
 
   return (
@@ -170,7 +169,7 @@ export const MainMenu: React.FC<MainMenuProps> = ({ isOpen, onClose }) => {
               variants={columnVariants}
               whileHover={{ 
                 scale: 1.02,
-                boxShadow: '0 8px 32px rgba(0,0,0,0.12)',
+                boxShadow: 'brand.lg',
                 transition: { duration: 0.2 }
               }}
               css={{
@@ -219,10 +218,13 @@ export const MainMenu: React.FC<MainMenuProps> = ({ isOpen, onClose }) => {
                       p={4}
                       borderRadius="lg"
                       bg="transparent"
+                      border="2px solid"
+                      borderColor="transparent"
                       _hover={{
                         bg: hoverBg,
                         transform: 'translateY(-2px)',
-                        boxShadow: 'md',
+                        boxShadow: 'brand.md',
+                        borderColor: iconColor,
                         transition: 'all 0.2s',
                         '& .nav-icon': {
                           transform: 'rotate(360deg)',
@@ -274,7 +276,7 @@ export const MainMenu: React.FC<MainMenuProps> = ({ isOpen, onClose }) => {
               variants={columnVariants}
               whileHover={{ 
                 scale: 1.02,
-                boxShadow: '0 8px 32px rgba(0,0,0,0.12)',
+                boxShadow: 'brand.lg',
                 transition: { duration: 0.2 }
               }}
             >
@@ -316,7 +318,7 @@ export const MainMenu: React.FC<MainMenuProps> = ({ isOpen, onClose }) => {
                       bg: hoverBg,
                       borderColor: iconColor,
                       transform: 'translateY(-4px)',
-                      boxShadow: 'xl',
+                      boxShadow: 'brand.lg',
                       transition: 'all 0.3s',
                       '& .platform-icon': {
                         transform: 'rotate(360deg) scale(1.2)',
@@ -372,7 +374,7 @@ export const MainMenu: React.FC<MainMenuProps> = ({ isOpen, onClose }) => {
               variants={columnVariants}
               whileHover={{ 
                 scale: 1.02,
-                boxShadow: '0 8px 32px rgba(0,0,0,0.12)',
+                boxShadow: 'brand.lg',
                 transition: { duration: 0.2 }
               }}
               css={{
@@ -421,10 +423,13 @@ export const MainMenu: React.FC<MainMenuProps> = ({ isOpen, onClose }) => {
                       p={4}
                       borderRadius="lg"
                       bg="transparent"
+                      border="2px solid"
+                      borderColor="transparent"
                       _hover={{
                         bg: hoverBg,
                         transform: 'translateX(8px)',
-                        boxShadow: 'md',
+                        boxShadow: 'brand.md',
+                        borderColor: iconColor,
                         transition: 'all 0.2s',
                         '& .service-icon': {
                           transform: 'rotate(-360deg)',

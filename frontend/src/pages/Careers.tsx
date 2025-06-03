@@ -1,113 +1,155 @@
 import {
+  Box,
   Container,
   Heading,
   Text,
-  Box,
-  VStack,
-  SimpleGrid,
-  Card,
-  CardBody,
-  Button,
+  Stack,
   useColorModeValue,
+  SimpleGrid,
+  Button,
+  VStack,
+  HStack,
+  Badge,
 } from '@chakra-ui/react'
 import { Link as RouterLink } from 'react-router-dom'
+import { WebHero } from '@/components/ui/WebHero'
+import { getPageConfig } from '@/utils/pageConfigs'
 
-const Careers = () => {
-  const textColor = useColorModeValue('gray.600', 'gray.400')
-  
-  const openPositions = [
-    {
-      title: 'Senior Software Engineer',
-      department: 'Engineering',
-      location: 'Remote',
-      type: 'Full-time'
-    },
-    {
-      title: 'Product Manager',
-      department: 'Product',
-      location: 'New York, NY',
-      type: 'Full-time'
-    },
-    {
-      title: 'UX Designer',
-      department: 'Design',
-      location: 'San Francisco, CA',
-      type: 'Full-time'
-    }
-  ]
+const JOB_OPENINGS = [
+  {
+    title: 'Senior Full Stack Developer',
+    department: 'Engineering',
+    location: 'Remote',
+    type: 'Full-time',
+    description: 'Join our engineering team to build cutting-edge web applications...',
+  },
+  {
+    title: 'Data Scientist',
+    department: 'Data & Analytics',
+    location: 'New York',
+    type: 'Full-time',
+    description: 'Help us unlock insights from complex datasets...',
+  },
+  {
+    title: 'DevOps Engineer',
+    department: 'Infrastructure',
+    location: 'Remote',
+    type: 'Full-time',
+    description: 'Build and maintain scalable cloud infrastructure...',
+  },
+]
+
+export default function Careers() {
+  const config = getPageConfig('careers')
 
   return (
-    <Container maxW="container.xl" py={8}>
-      <VStack spacing={6} mb={12}>
-        <Heading as="h1" size="2xl">
-          Careers at SSQ Inc
-        </Heading>
-        <Text fontSize="xl" color={textColor} textAlign="center">
-          Join our team and help shape the future of technology
-        </Text>
-      </VStack>
+    <Box>
+      {/* Enhanced WebHero with 3D Text */}
+      <WebHero
+        title={config.title}
+        tagline={config.tagline}
+        showText={config.showText}
+        minHeight={config.minHeight}
+      />
 
-      <VStack spacing={12} align="stretch">
-        <Box>
-          <Heading size="xl" mb={4}>
-            Why Work With Us?
-          </Heading>
-          <SimpleGrid columns={{ base: 1, md: 3 }} spacing={8}>
-            <Box>
-              <Heading size="md" mb={2}>
-                Innovation
-              </Heading>
-              <Text color={textColor}>
-                Work on cutting-edge projects that push the boundaries of technology
-              </Text>
-            </Box>
-            <Box>
-              <Heading size="md" mb={2}>
-                Growth
-              </Heading>
-              <Text color={textColor}>
-                Continuous learning opportunities and career advancement
-              </Text>
-            </Box>
-            <Box>
-              <Heading size="md" mb={2}>
-                Culture
-              </Heading>
-              <Text color={textColor}>
-                Collaborative environment with talented and passionate people
-              </Text>
-            </Box>
-          </SimpleGrid>
-        </Box>
-
-        <Box>
-          <Heading size="xl" mb={6}>
-            Open Positions
-          </Heading>
-          <SimpleGrid columns={{ base: 1, md: 2 }} spacing={6}>
-            {openPositions.map((position, index) => (
-              <Card key={index} variant="outline">
-                <CardBody>
-                  <VStack align="start" spacing={3}>
-                    <Heading size="md">{position.title}</Heading>
-                    <Text color={textColor}>
-                      {position.department} • {position.location}
+      {/* Job Openings Section */}
+      <Container maxW="1200px" py={20}>
+        <Stack spacing={12}>
+          <Box textAlign="center">
+            <Heading mb={4}>Current Openings</Heading>
+            <Text fontSize="lg" color={useColorModeValue('gray.600', 'gray.400')}>
+              Join our team and help shape the future of technology
+            </Text>
+          </Box>
+          
+          <SimpleGrid columns={{ base: 1, lg: 2 }} spacing={8}>
+            {JOB_OPENINGS.map((job) => (
+              <Box
+                key={job.title}
+                bg={useColorModeValue('white', 'gray.800')}
+                rounded="xl"
+                shadow="lg"
+                p={8}
+                _hover={{ shadow: 'xl', transform: 'translateY(-2px)' }}
+                transition="all 0.3s"
+              >
+                <VStack spacing={4} align="stretch">
+                  <Box>
+                    <Heading size="md" mb={2}>
+                      {job.title}
+                    </Heading>
+                    <HStack spacing={2} mb={4}>
+                      <Badge colorScheme="brand">{job.department}</Badge>
+                      <Badge variant="outline">{job.location}</Badge>
+                      <Badge variant="outline">{job.type}</Badge>
+                    </HStack>
+                    <Text color={useColorModeValue('gray.600', 'gray.400')}>
+                      {job.description}
                     </Text>
-                    <Text color={textColor}>
-                      {position.type}
-                    </Text>
-                    <Button colorScheme="brand" size="sm">
-                      Apply Now
-                    </Button>
-                  </VStack>
-                </CardBody>
-              </Card>
+                  </Box>
+                  <Button colorScheme="brand" size="sm" alignSelf="flex-start">
+                    Apply Now
+                  </Button>
+                </VStack>
+              </Box>
             ))}
           </SimpleGrid>
-        </Box>
-      </VStack>
-    </Container>
+        </Stack>
+      </Container>
+
+      {/* Benefits Section */}
+      <Box bg={useColorModeValue('gray.50', 'gray.900')}>
+        <Container maxW="1200px" py={20}>
+          <Stack spacing={12}>
+            <Heading textAlign="center">Why Work With Us?</Heading>
+            <SimpleGrid columns={{ base: 1, md: 3 }} spacing={8}>
+              <VStack spacing={4} textAlign="center">
+                <Heading size="md" color="brand.500">
+                  Flexible Work
+                </Heading>
+                <Text color={useColorModeValue('gray.600', 'gray.400')}>
+                  Remote-first culture with flexible hours and work-life balance
+                </Text>
+              </VStack>
+              <VStack spacing={4} textAlign="center">
+                <Heading size="md" color="brand.500">
+                  Growth Opportunities
+                </Heading>
+                <Text color={useColorModeValue('gray.600', 'gray.400')}>
+                  Continuous learning, training, and career advancement paths
+                </Text>
+              </VStack>
+              <VStack spacing={4} textAlign="center">
+                <Heading size="md" color="brand.500">
+                  Great Benefits
+                </Heading>
+                <Text color={useColorModeValue('gray.600', 'gray.400')}>
+                  Competitive salary, health insurance, and comprehensive benefits
+                </Text>
+              </VStack>
+            </SimpleGrid>
+          </Stack>
+        </Container>
+      </Box>
+
+      {/* CTA Section */}
+      <Container maxW="1200px" py={20}>
+        <Stack spacing={8} align="center" textAlign="center">
+          <Heading>Don't See Your Role?</Heading>
+          <Text fontSize="lg" maxW="2xl">
+            We're always looking for talented individuals. Send us your resume!
+          </Text>
+          <Button
+            as={RouterLink}
+            to="/contact"
+            colorScheme="brand"
+            size="lg"
+            px={8}
+          >
+            Contact Us
+          </Button>
+        </Stack>
+      </Container>
+    </Box>
   )
 }
-
-export default Careers

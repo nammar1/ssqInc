@@ -8,6 +8,8 @@ import {
   SimpleGrid,
   Image,
 } from '@chakra-ui/react'
+import { WebHero } from '@/components/ui/WebHero'
+import { getPageConfig } from '@/utils/pageConfigs'
 
 const TEAM_MEMBERS = [
   {
@@ -28,22 +30,17 @@ const TEAM_MEMBERS = [
 ]
 
 export default function About() {
+  const config = getPageConfig('about')
+  
   return (
     <Box>
-      {/* Mission Section */}
-      <Box
-        bg={useColorModeValue('gray.50', 'gray.900')}
-        color={useColorModeValue('gray.700', 'gray.200')}
-      >
-        <Container maxW="1200px" py={20}>
-          <Stack spacing={8}>
-            <Heading textAlign="center">About SSQ Inc</Heading>
-            <Text fontSize="xl" color={useColorModeValue('gray.600', 'gray.400')} textAlign="center">
-              Learn more about our mission, values, and the team behind SSQ Inc
-            </Text>
-          </Stack>
-        </Container>
-      </Box>
+      {/* Enhanced WebHero with 3D Text */}
+      <WebHero
+        title={config.title}
+        tagline={config.tagline}
+        showText={config.showText}
+        minHeight={config.minHeight}
+      />
 
       {/* Values Section */}
       <Container maxW="1200px" py={20}>

@@ -3,56 +3,57 @@ import {
   Container,
   Heading,
   Text,
-  Button,
   Stack,
+  Button,
   useColorModeValue,
   SimpleGrid,
   Icon,
+  VStack,
 } from '@chakra-ui/react'
 import { Link as RouterLink } from 'react-router-dom'
-import { FaRocket, FaChartLine, FaUsers } from 'react-icons/fa'
-import { WebHero } from '../components/ui/WebHero'
+import { FaRocket, FaLightbulb, FaUsers } from 'react-icons/fa'
+import { WebHero } from '@/components/ui/WebHero'
+import { getPageConfig } from '@/utils/pageConfigs'
 
 const FEATURES = [
   {
-    title: 'Innovative Solutions',
-    description: 'Cutting-edge technology solutions tailored to your business needs',
     icon: FaRocket,
+    title: 'Innovation First',
+    description: 'Cutting-edge solutions that drive your business forward'
   },
   {
-    title: 'Business Growth',
-    description: 'Strategies and tools to help your business scale effectively',
-    icon: FaChartLine,
+    icon: FaLightbulb,
+    title: 'Strategic Thinking',
+    description: 'Data-driven insights to make informed decisions'
   },
   {
-    title: 'Expert Team',
-    description: 'Dedicated professionals committed to your success',
     icon: FaUsers,
-  },
+    title: 'Expert Team',
+    description: 'Experienced professionals dedicated to your success'
+  }
 ]
 
 export default function Home() {
+  const config = getPageConfig('home')
+  
   return (
     <Box>
-      {/* Hero Section */}
-      <WebHero>
+      {/* Enhanced WebHero with 3D Text */}
+      <WebHero
+        title={config.title}
+        tagline={config.tagline}
+        showText={config.showText}
+        minHeight={config.minHeight}
+      >
         <Container maxW="1200px" py={20}>
           <Stack spacing={8} align="center" textAlign="center">
-            <Heading
-              fontSize={{ base: '3xl', md: '4xl', lg: '5xl' }}
-              fontWeight="bold"
-            >
-              Welcome to SSQ Inc
-            </Heading>
-            <Text fontSize={{ base: 'md', lg: 'lg' }} color={useColorModeValue('gray.600', 'gray.400')} maxW="2xl">
-              We provide exceptional services to help your business grow and succeed in the digital age
-            </Text>
             <Button
               as={RouterLink}
               to="/contact"
               colorScheme="brand"
               size="lg"
               px={8}
+              mt={8}
             >
               Get Started
             </Button>
@@ -63,11 +64,18 @@ export default function Home() {
       {/* Features Section */}
       <Container maxW="1200px" py={20}>
         <Stack spacing={12}>
-          <Heading textAlign="center">Our Services</Heading>
+          <Box textAlign="center">
+            <Heading mb={4}>Why Choose SSQ Inc?</Heading>
+            <Text fontSize="lg" color={useColorModeValue('gray.600', 'gray.400')}>
+              We combine expertise, innovation, and dedication to deliver exceptional results
+            </Text>
+          </Box>
+          
           <SimpleGrid columns={{ base: 1, md: 3 }} spacing={10}>
             {FEATURES.map((feature) => (
-              <Box
+              <VStack
                 key={feature.title}
+                spacing={4}
                 p={6}
                 bg={useColorModeValue('white', 'gray.800')}
                 rounded="xl"
@@ -76,20 +84,40 @@ export default function Home() {
               >
                 <Icon
                   as={feature.icon}
-                  w={10}
-                  h={10}
+                  w={12}
+                  h={12}
                   color="brand.500"
-                  mb={4}
                 />
-                <Heading size="md" mb={2}>
-                  {feature.title}
-                </Heading>
-                <Text color={useColorModeValue('gray.600', 'gray.400')}>{feature.description}</Text>
-              </Box>
+                <Heading size="md">{feature.title}</Heading>
+                <Text color={useColorModeValue('gray.600', 'gray.400')}>
+                  {feature.description}
+                </Text>
+              </VStack>
             ))}
           </SimpleGrid>
         </Stack>
       </Container>
+
+      {/* CTA Section */}
+      <Box bg={useColorModeValue('brand.50', 'brand.900')}>
+        <Container maxW="1200px" py={20}>
+          <Stack spacing={8} align="center" textAlign="center">
+            <Heading>Ready to Transform Your Business?</Heading>
+            <Text fontSize="lg" maxW="2xl">
+              Let's discuss how we can help you achieve your digital transformation goals
+            </Text>
+            <Button
+              as={RouterLink}
+              to="/services"
+              colorScheme="brand"
+              size="lg"
+              px={8}
+            >
+              Explore Our Services
+            </Button>
+          </Stack>
+        </Container>
+      </Box>
     </Box>
   )
 }

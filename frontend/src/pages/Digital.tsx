@@ -10,83 +10,69 @@ import {
   VStack,
   HStack,
   SimpleGrid,
-  Flex,
-  Image,
   List,
   ListItem,
   ListIcon,
 } from '@chakra-ui/react'
-import { FaArrowRight, FaCheck, FaChartLine, FaUsers, FaRobot, FaCloud, FaMobile } from 'react-icons/fa'
+import { FaArrowRight, FaCheck, FaRocket, FaChartLine, FaCogs, FaUsers, FaGlobe } from 'react-icons/fa'
 import { Link as RouterLink } from 'react-router-dom'
+import { WebHero } from '@/components/ui/WebHero'
+import { getPageConfig } from '@/utils/pageConfigs'
 
 export default function Digital() {
   const textColor = useColorModeValue('gray.700', 'gray.200')
   const bgColor = useColorModeValue('white', 'gray.800')
   const cardBg = useColorModeValue('gray.50', 'gray.700')
+  const config = getPageConfig('digital')
 
   const features = [
     {
       title: 'Digital Strategy',
-      description: 'Comprehensive digital transformation roadmaps and strategies',
+      description: 'Comprehensive digital transformation roadmaps tailored to your business goals',
+      icon: FaRocket,
+    },
+    {
+      title: 'Process Optimization',
+      description: 'Streamline operations and improve efficiency through digital solutions',
+      icon: FaCogs,
+    },
+    {
+      title: 'Data Analytics',
+      description: 'Turn your data into actionable insights for better decision making',
       icon: FaChartLine,
     },
     {
-      title: 'Process Automation',
-      description: 'Streamline operations with intelligent automation solutions',
-      icon: FaRobot,
-    },
-    {
-      title: 'Cloud Transformation',
-      description: 'Modernize infrastructure with cloud-native solutions',
-      icon: FaCloud,
-    },
-    {
-      title: 'Digital Experience',
-      description: 'Enhance customer and employee digital experiences',
+      title: 'Customer Experience',
+      description: 'Enhance customer engagement through digital touchpoints and experiences',
       icon: FaUsers,
     },
     {
-      title: 'Mobile Solutions',
-      description: 'Enterprise mobility and mobile-first strategies',
-      icon: FaMobile,
+      title: 'Digital Platforms',
+      description: 'Build scalable digital platforms that adapt to changing business needs',
+      icon: FaGlobe,
     },
   ]
 
   const technologies = [
-    'Digital Strategy',
-    'Process Automation',
-    'Cloud Solutions',
-    'Data Analytics',
-    'AI & ML',
-    'Mobile Apps',
-    'IoT',
-    'Blockchain',
+    'Cloud Platforms',
+    'API Integration',
+    'Microservices',
+    'DevOps & CI/CD',
+    'Analytics Platforms',
+    'CRM & ERP Systems',
+    'Mobile Solutions',
+    'IoT Connectivity',
   ]
 
   return (
     <Box>
-      {/* Hero Section */}
-      <Box
-        bg={useColorModeValue('gray.50', 'gray.900')}
-        color={textColor}
-        position="relative"
-        overflow="hidden"
-      >
-        <Container maxW="1200px" py={12}>
-          <Stack spacing={6} align="center" textAlign="center">
-            <Heading
-              fontSize={{ base: '4xl', md: '5xl' }}
-              bgGradient="linear(to-r, brand.500, brand.700)"
-              bgClip="text"
-            >
-              Digital Transformation
-            </Heading>
-            <Text fontSize="xl" maxW="2xl">
-              Transform your business with modern digital solutions and stay ahead in the digital age
-            </Text>
-          </Stack>
-        </Container>
-      </Box>
+      {/* Enhanced WebHero with 3D Text */}
+      <WebHero
+        title={config.title}
+        tagline={config.tagline}
+        showText={config.showText}
+        minHeight={config.minHeight}
+      />
 
       {/* Features Section */}
       <Container maxW="1200px" py={12}>
@@ -94,8 +80,7 @@ export default function Digital() {
           <Box textAlign="center" mb={8}>
             <Heading size="lg" mb={4}>Our Digital Transformation Services</Heading>
             <Text fontSize="lg" color={textColor} maxW="3xl" mx="auto">
-              We help businesses navigate their digital journey with comprehensive transformation strategies
-              and modern technology solutions.
+              Transform your business for the digital age with strategic planning and innovative technology solutions.
             </Text>
           </Box>
 
@@ -124,9 +109,9 @@ export default function Digital() {
         <Container maxW="1200px">
           <VStack spacing={8} align="stretch">
             <Box textAlign="center">
-              <Heading size="lg" mb={4}>Our Digital Solutions</Heading>
+              <Heading size="lg" mb={4}>Digital Technologies & Solutions</Heading>
               <Text fontSize="lg" color={textColor} maxW="3xl" mx="auto">
-                We leverage cutting-edge technologies to drive digital transformation
+                We leverage modern technologies to drive your digital transformation journey
               </Text>
             </Box>
 
@@ -154,19 +139,19 @@ export default function Digital() {
       <Container maxW="1200px" py={12}>
         <VStack spacing={8} align="stretch">
           <Box textAlign="center">
-            <Heading size="lg" mb={4}>Our Transformation Process</Heading>
+            <Heading size="lg" mb={4}>Our Digital Transformation Process</Heading>
             <Text fontSize="lg" color={textColor} maxW="3xl" mx="auto">
-              A systematic approach to digital transformation
+              A structured approach to successful digital transformation
             </Text>
           </Box>
 
           <List spacing={4}>
             {[
-              'Digital Assessment & Strategy',
-              'Technology Selection & Planning',
-              'Implementation & Integration',
-              'Change Management',
-              'Continuous Improvement',
+              'Digital Readiness Assessment',
+              'Strategy Development & Roadmap',
+              'Technology Implementation & Integration',
+              'Change Management & Training',
+              'Performance Monitoring & Optimization',
             ].map((step, index) => (
               <ListItem key={index}>
                 <HStack spacing={4}>
@@ -183,9 +168,9 @@ export default function Digital() {
       <Box bg={useColorModeValue('brand.50', 'brand.900')}>
         <Container maxW="1200px" py={20}>
           <Stack spacing={8} align="center" textAlign="center">
-            <Heading>Ready to Start Your Digital Journey?</Heading>
+            <Heading>Ready to Transform Your Business Digitally?</Heading>
             <Text fontSize="lg" maxW="2xl">
-              Let's discuss how we can help transform your business with our expert digital transformation services
+              Let's create a digital transformation strategy that positions your business for future success
             </Text>
             <Button
               as={RouterLink}

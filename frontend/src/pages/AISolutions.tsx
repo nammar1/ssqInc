@@ -10,92 +10,77 @@ import {
   VStack,
   HStack,
   SimpleGrid,
-  Flex,
-  Image,
   List,
   ListItem,
   ListIcon,
 } from '@chakra-ui/react'
-import { FaArrowRight, FaCheck, FaRobot, FaBrain, FaChartLine, FaCloud, FaShieldAlt } from 'react-icons/fa'
+import { FaArrowRight, FaCheck, FaBrain, FaRobot, FaEye, FaChartLine, FaDatabase } from 'react-icons/fa'
 import { Link as RouterLink } from 'react-router-dom'
+import { WebHero } from '@/components/ui/WebHero'
+import { getPageConfig } from '@/utils/pageConfigs'
 
 export default function AISolutions() {
   const textColor = useColorModeValue('gray.700', 'gray.200')
   const bgColor = useColorModeValue('white', 'gray.800')
   const cardBg = useColorModeValue('gray.50', 'gray.700')
+  const config = getPageConfig('aisolutions')
 
   const features = [
     {
-      title: 'Machine Learning Solutions',
-      description: 'Custom ML models and algorithms for predictive analytics and automation',
-      icon: FaRobot,
-    },
-    {
-      title: 'Natural Language Processing',
-      description: 'Advanced NLP solutions for text analysis and language understanding',
+      title: 'Machine Learning Models',
+      description: 'Custom ML models for predictive analytics and business intelligence',
       icon: FaBrain,
     },
     {
+      title: 'Process Automation',
+      description: 'Intelligent automation solutions to streamline business processes',
+      icon: FaRobot,
+    },
+    {
+      title: 'Computer Vision',
+      description: 'Image and video analysis for quality control and pattern recognition',
+      icon: FaEye,
+    },
+    {
       title: 'Predictive Analytics',
-      description: 'Data-driven forecasting and trend analysis for business insights',
+      description: 'Data-driven insights for forecasting and decision making',
       icon: FaChartLine,
     },
     {
-      title: 'AI Cloud Integration',
-      description: 'Seamless integration of AI solutions with cloud infrastructure',
-      icon: FaCloud,
-    },
-    {
-      title: 'AI Security & Ethics',
-      description: 'Secure and ethical AI implementation with governance frameworks',
-      icon: FaShieldAlt,
+      title: 'Natural Language Processing',
+      description: 'Text analysis, sentiment analysis, and intelligent document processing',
+      icon: FaDatabase,
     },
   ]
 
   const technologies = [
-    'TensorFlow',
-    'PyTorch',
+    'TensorFlow & PyTorch',
+    'Python & R',
     'Scikit-learn',
+    'OpenCV',
     'Hugging Face',
+    'Apache Spark',
+    'MLflow & Kubeflow',
     'AWS SageMaker',
-    'Azure ML',
-    'OpenAI',
-    'LangChain',
   ]
 
   return (
     <Box>
-      {/* Hero Section */}
-      <Box
-        bg={useColorModeValue('gray.50', 'gray.900')}
-        color={textColor}
-        position="relative"
-        overflow="hidden"
-      >
-        <Container maxW="1200px" py={12}>
-          <Stack spacing={6} align="center" textAlign="center">
-            <Heading
-              fontSize={{ base: '4xl', md: '5xl' }}
-              bgGradient="linear(to-r, brand.500, brand.700)"
-              bgClip="text"
-            >
-              AI & ML Solutions
-            </Heading>
-            <Text fontSize="xl" maxW="2xl">
-              Intelligent solutions powered by cutting-edge AI and machine learning technologies
-            </Text>
-          </Stack>
-        </Container>
-      </Box>
+      {/* Enhanced WebHero with 3D Text */}
+      <WebHero
+        title={config.title}
+        tagline={config.tagline}
+        showText={config.showText}
+        minHeight={config.minHeight}
+      />
 
       {/* Features Section */}
       <Container maxW="1200px" py={12}>
         <VStack spacing={12} align="stretch">
           <Box textAlign="center" mb={8}>
-            <Heading size="lg" mb={4}>Our AI & ML Capabilities</Heading>
+            <Heading size="lg" mb={4}>Our AI & ML Solutions</Heading>
             <Text fontSize="lg" color={textColor} maxW="3xl" mx="auto">
-              We develop and implement advanced AI solutions that drive innovation and create competitive advantages
-              for your business.
+              Harness the power of artificial intelligence to automate processes, gain insights, and drive innovation.
             </Text>
           </Box>
 
@@ -124,9 +109,9 @@ export default function AISolutions() {
         <Container maxW="1200px">
           <VStack spacing={8} align="stretch">
             <Box textAlign="center">
-              <Heading size="lg" mb={4}>Technologies We Use</Heading>
+              <Heading size="lg" mb={4}>AI Technologies & Frameworks</Heading>
               <Text fontSize="lg" color={textColor} maxW="3xl" mx="auto">
-                We leverage state-of-the-art AI and ML frameworks to build powerful solutions
+                We use cutting-edge AI and ML technologies to build intelligent solutions
               </Text>
             </Box>
 
@@ -154,19 +139,19 @@ export default function AISolutions() {
       <Container maxW="1200px" py={12}>
         <VStack spacing={8} align="stretch">
           <Box textAlign="center">
-            <Heading size="lg" mb={4}>Our AI Development Process</Heading>
+            <Heading size="lg" mb={4}>Our AI Implementation Process</Heading>
             <Text fontSize="lg" color={textColor} maxW="3xl" mx="auto">
-              A systematic approach to implementing AI solutions
+              A comprehensive approach to implementing AI solutions in your business
             </Text>
           </Box>
 
           <List spacing={4}>
             {[
-              'Problem Analysis & Data Assessment',
-              'Model Selection & Architecture Design',
-              'Development & Training',
-              'Testing & Validation',
-              'Deployment & Monitoring',
+              'Data Assessment & Strategy Planning',
+              'Model Development & Training',
+              'Validation & Performance Testing',
+              'Integration & Production Deployment',
+              'Monitoring & Continuous Improvement',
             ].map((step, index) => (
               <ListItem key={index}>
                 <HStack spacing={4}>
@@ -183,9 +168,9 @@ export default function AISolutions() {
       <Box bg={useColorModeValue('brand.50', 'brand.900')}>
         <Container maxW="1200px" py={20}>
           <Stack spacing={8} align="center" textAlign="center">
-            <Heading>Ready to Harness the Power of AI?</Heading>
+            <Heading>Ready to Embrace AI for Your Business?</Heading>
             <Text fontSize="lg" maxW="2xl">
-              Let's discuss how we can help transform your business with our expert AI and ML solutions
+              Let's explore how AI and machine learning can transform your operations and unlock new opportunities
             </Text>
             <Button
               as={RouterLink}

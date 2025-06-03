@@ -18,11 +18,14 @@ import {
 } from '@chakra-ui/react'
 import { FaArrowRight, FaCheck, FaDatabase, FaChartLine, FaRobot, FaCloud, FaShieldAlt } from 'react-icons/fa'
 import { Link as RouterLink } from 'react-router-dom'
+import { WebHero } from '@/components/ui/WebHero'
+import { getPageConfig } from '@/utils/pageConfigs'
 
 export default function DataEngineering() {
   const textColor = useColorModeValue('gray.700', 'gray.200')
   const bgColor = useColorModeValue('white', 'gray.800')
   const cardBg = useColorModeValue('gray.50', 'gray.700')
+  const config = getPageConfig('dataengineering')
 
   const features = [
     {
@@ -65,28 +68,13 @@ export default function DataEngineering() {
 
   return (
     <Box>
-      {/* Hero Section */}
-      <Box
-        bg={useColorModeValue('gray.50', 'gray.900')}
-        color={textColor}
-        position="relative"
-        overflow="hidden"
-      >
-        <Container maxW="1200px" py={12}>
-          <Stack spacing={6} align="center" textAlign="center">
-            <Heading
-              fontSize={{ base: '4xl', md: '5xl' }}
-              bgGradient="linear(to-r, brand.500, brand.700)"
-              bgClip="text"
-            >
-              Data Engineering
-            </Heading>
-            <Text fontSize="xl" maxW="2xl">
-              Build robust data pipelines and analytics infrastructure to power your data-driven decisions
-            </Text>
-          </Stack>
-        </Container>
-      </Box>
+      {/* Enhanced WebHero with 3D Text */}
+      <WebHero
+        title={config.title}
+        tagline={config.tagline}
+        showText={config.showText}
+        minHeight={config.minHeight}
+      />
 
       {/* Features Section */}
       <Container maxW="1200px" py={12}>

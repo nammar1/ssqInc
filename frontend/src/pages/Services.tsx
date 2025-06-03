@@ -8,7 +8,6 @@ import {
   Icon,
   Button,
   VStack,
-  HStack,
   Flex,
   useColorMode,
 } from '@chakra-ui/react'
@@ -17,86 +16,74 @@ import {
   FaDatabase, 
   FaRobot, 
   FaCloud, 
-  FaDigitalTachograph,
+  FaGlobe,
   FaArrowRight
 } from 'react-icons/fa'
 import { motion } from 'framer-motion'
 import { Link as RouterLink } from 'react-router-dom'
+import { WebHero } from '@/components/ui/WebHero'
+import { getPageConfig } from '@/utils/pageConfigs'
 
 const MotionBox = motion(Box)
 
 const SERVICES = [
   {
-    title: 'Software Development',
-    description: 'Custom software solutions tailored to your business needs',
+    title: 'Digital Transformation',
+    description: 'Digital Strategy for your Innovation',
+    icon: FaGlobe,
+    link: '/services/digital-transformation',
+    color: 'brand.800',
+  },
+  {
+    title: 'Software',
+    description: 'Software Created for your Needs',
     icon: FaCode,
-    link: '/services/software-development',
-    color: 'brand.500',
-  },
-  {
-    title: 'Data Engineering',
-    description: 'Build robust data pipelines and analytics infrastructure',
-    icon: FaDatabase,
-    link: '/services/data-engineering',
-    color: 'brand.600',
-  },
-  {
-    title: 'AI & ML Solutions',
-    description: 'Intelligent solutions powered by cutting-edge AI and machine learning',
-    icon: FaRobot,
-    link: '/services/ai-ml',
+    link: '/services/software',
     color: 'brand.700',
   },
   {
+    title: 'Data',
+    description: 'Data Clarity for your Decisions',
+    icon: FaDatabase,
+    link: '/services/data',
+    color: 'brand.600',
+  },
+  {
+    title: 'AI & ML',
+    description: 'Future Ready Intelligence for your Today',
+    icon: FaRobot,
+    link: '/services/ai-ml',
+    color: 'brand.500',
+  },
+  {
     title: 'Cloud & Cybersecurity',
-    description: 'Secure cloud infrastructure and comprehensive security solutions',
+    description: 'Cloud Confidence for your Security',
     icon: FaCloud,
     link: '/services/cloud-security',
     color: 'brand.400',
   },
-  {
-    title: 'Digital Transformation',
-    description: 'Transform your business with modern digital solutions',
-    icon: FaDigitalTachograph,
-    link: '/services/digital-transformation',
-    color: 'brand.300',
-  },
 ]
 
 export default function Services() {
-  const { colorMode } = useColorMode()
+  const {  } = useColorMode()
   const bgColor = useColorModeValue('white', 'gray.800')
   const textColor = useColorModeValue('gray.700', 'gray.200')
+  const config = getPageConfig('services')
 
   return (
     <Box>
-      {/* Hero Section */}
-      <Box
-        bg={useColorModeValue('gray.50', 'gray.900')}
-        color={textColor}
-        position="relative"
-        overflow="hidden"
-      >
-        <Container maxW="1200px" py={12}>
-          <Stack spacing={6} align="center" textAlign="center">
-            <Heading
-              fontSize={{ base: '4xl', md: '5xl' }}
-              bgGradient="linear(to-r, brand.500, brand.700)"
-              bgClip="text"
-            >
-              Our Services
-            </Heading>
-            <Text fontSize="xl" maxW="2xl">
-              Empowering businesses with cutting-edge technology solutions
-            </Text>
-          </Stack>
-        </Container>
-      </Box>
+      {/* Enhanced WebHero with 3D Text */}
+      <WebHero
+        title={config.title}
+        tagline={config.tagline}
+        showText={config.showText}
+        minHeight={config.minHeight}
+      />
 
       {/* Services Section */}
       <Container maxW="1200px" py={12}>
         <VStack spacing={8} align="stretch">
-          {SERVICES.map((service, index) => (
+          {SERVICES.map((service) => (
             <MotionBox
               key={service.title}
               whileHover={{ scale: 1.05 }}
@@ -110,9 +97,16 @@ export default function Services() {
                   p={8}
                   position="relative"
                   overflow="hidden"
+                  border="2px solid"
+                  borderColor="transparent"
                   _hover={{
                     shadow: 'xl',
                     transform: 'translateY(-2px)',
+                    borderColor: service.color,
+                    '& .service-icon': {
+                      transform: 'rotate(360deg)',
+                      transition: 'transform 0.6s ease-in-out',
+                    }
                   }}
                   transition="all 0.3s"
                 >
@@ -127,7 +121,13 @@ export default function Services() {
                       bg={`${service.color}10`}
                       color={service.color}
                     >
-                      <Icon as={service.icon} w={10} h={10} />
+                      <Icon 
+                        as={service.icon} 
+                        w={10} 
+                        h={10} 
+                        className="service-icon"
+                        transition="transform 0.6s ease-in-out"
+                      />
                     </Box>
                     <Box flex="1">
                       <Heading size="lg" mb={2}>

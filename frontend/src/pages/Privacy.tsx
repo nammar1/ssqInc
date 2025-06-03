@@ -1,86 +1,91 @@
-import { Container, Heading, Text, Box, VStack, List, ListItem, useColorModeValue } from '@chakra-ui/react'
+import {
+  Box,
+  Container,
+  Heading,
+  Text,
+  Stack,
+  useColorModeValue,
+  VStack,
+} from '@chakra-ui/react'
+import { WebHero } from '@/components/ui/WebHero'
+import { getPageConfig } from '@/utils/pageConfigs'
 
-const Privacy = () => {
-  const bgColor = useColorModeValue('white', 'gray.800')
-  const textColor = useColorModeValue('gray.600', 'gray.400')
-  
+export default function Privacy() {
+  const config = getPageConfig('privacy')
+
   return (
-    <Container maxW="container.xl" py={8}>
-      <VStack spacing={6} mb={12}>
-        <Heading as="h1" size="2xl">
-          Privacy Policy
-        </Heading>
-        <Text fontSize="xl" color={textColor} textAlign="center">
-          Last updated: March 15, 2024
-        </Text>
-      </VStack>
+    <Box>
+      {/* Enhanced WebHero with 3D Text */}
+      <WebHero
+        title={config.title}
+        tagline={config.tagline}
+        showText={config.showText}
+        minHeight={config.minHeight}
+      />
 
-      <Box bg={bgColor} p={8} borderRadius="lg" shadow="sm">
+      {/* Privacy Policy Content */}
+      <Container maxW="1200px" py={20}>
         <VStack spacing={8} align="stretch">
           <Box>
-            <Heading as="h2" size="xl" mb={4}>
-              Introduction
-            </Heading>
-            <Text fontSize="lg" color={textColor}>
-              At SSQ Inc., we take your privacy seriously. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you visit our website and use our services.
-            </Text>
-          </Box>
-
-          <Box>
-            <Heading as="h2" size="xl" mb={4}>
+            <Heading size="lg" mb={4}>
               Information We Collect
             </Heading>
-            <Text fontSize="lg" color={textColor} mb={4}>
-              We collect information that you provide directly to us, including:
+            <Text color={useColorModeValue('gray.600', 'gray.400')}>
+              We collect information you provide directly to us, such as when you create an account, 
+              subscribe to our newsletter, or contact us for support. This may include your name, 
+              email address, phone number, and any other information you choose to provide.
             </Text>
-            <List spacing={2} styleType="disc" pl={6}>
-              <ListItem>Name and contact information</ListItem>
-              <ListItem>Account credentials</ListItem>
-              <ListItem>Payment information</ListItem>
-              <ListItem>Communication preferences</ListItem>
-            </List>
           </Box>
 
           <Box>
-            <Heading as="h2" size="xl" mb={4}>
+            <Heading size="lg" mb={4}>
               How We Use Your Information
             </Heading>
-            <Text fontSize="lg" color={textColor} mb={4}>
-              We use the information we collect to:
+            <Text color={useColorModeValue('gray.600', 'gray.400')}>
+              We use the information we collect to provide, maintain, and improve our services, 
+              process transactions, send you technical notices and support messages, and communicate 
+              with you about products, services, offers, and events.
             </Text>
-            <List spacing={2} styleType="disc" pl={6}>
-              <ListItem>Provide and maintain our services</ListItem>
-              <ListItem>Process your transactions</ListItem>
-              <ListItem>Send you technical notices and support messages</ListItem>
-              <ListItem>Communicate with you about products, services, and events</ListItem>
-            </List>
           </Box>
 
           <Box>
-            <Heading as="h2" size="xl" mb={4}>
+            <Heading size="lg" mb={4}>
+              Information Sharing
+            </Heading>
+            <Text color={useColorModeValue('gray.600', 'gray.400')}>
+              We do not sell, trade, or otherwise transfer your personal information to third parties 
+              without your consent, except as described in this policy. We may share your information 
+              with trusted service providers who assist us in operating our website and conducting our business.
+            </Text>
+          </Box>
+
+          <Box>
+            <Heading size="lg" mb={4}>
               Data Security
             </Heading>
-            <Text fontSize="lg" color={textColor}>
-              We implement appropriate technical and organizational measures to protect your personal information against unauthorized access, alteration, disclosure, or destruction.
+            <Text color={useColorModeValue('gray.600', 'gray.400')}>
+              We implement appropriate technical and organizational security measures to protect your 
+              personal information against unauthorized access, alteration, disclosure, or destruction.
             </Text>
           </Box>
 
           <Box>
-            <Heading as="h2" size="xl" mb={4}>
+            <Heading size="lg" mb={4}>
               Contact Us
             </Heading>
-            <Text fontSize="lg" color={textColor} mb={4}>
-              If you have any questions about this Privacy Policy, please contact us at:
+            <Text color={useColorModeValue('gray.600', 'gray.400')}>
+              If you have any questions about this Privacy Policy, please contact us at privacy@ssqinc.com 
+              or through our contact page.
             </Text>
-            <VStack align="start" spacing={2}>
-              <Text>Email: privacy@ssqinc.com</Text>
-              <Text>Phone: +1 (555) 123-4567</Text>
-            </VStack>
+          </Box>
+
+          <Box pt={8} borderTop="1px solid" borderColor={useColorModeValue('gray.200', 'gray.700')}>
+            <Text fontSize="sm" color={useColorModeValue('gray.500', 'gray.500')}>
+              Last updated: January 1, 2024
+            </Text>
           </Box>
         </VStack>
-      </Box>
-    </Container>
+      </Container>
+    </Box>
   )
 }
-
-export default Privacy

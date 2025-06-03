@@ -10,44 +10,45 @@ import {
   VStack,
   HStack,
   SimpleGrid,
-  Flex,
-  Image,
   List,
   ListItem,
   ListIcon,
 } from '@chakra-ui/react'
-import { FaArrowRight, FaCheck, FaCode, FaMobile, FaServer, FaCloud, FaShieldAlt } from 'react-icons/fa'
+import { FaArrowRight, FaCheck, FaCode, FaMobile, FaCloud, FaDatabase, FaShieldAlt } from 'react-icons/fa'
 import { Link as RouterLink } from 'react-router-dom'
+import { WebHero } from '@/components/ui/WebHero'
+import { getPageConfig } from '@/utils/pageConfigs'
 
 export default function SoftwareDevelopment() {
   const textColor = useColorModeValue('gray.700', 'gray.200')
   const bgColor = useColorModeValue('white', 'gray.800')
   const cardBg = useColorModeValue('gray.50', 'gray.700')
+  const config = getPageConfig('software')
 
   const features = [
     {
-      title: 'Custom Software Development',
-      description: 'Tailored solutions designed to meet your specific business requirements',
+      title: 'Web Applications',
+      description: 'Modern, responsive web applications built with cutting-edge technologies',
       icon: FaCode,
     },
     {
-      title: 'Mobile App Development',
+      title: 'Mobile Development',
       description: 'Native and cross-platform mobile applications for iOS and Android',
       icon: FaMobile,
     },
     {
-      title: 'Enterprise Solutions',
-      description: 'Scalable software systems for large organizations',
-      icon: FaServer,
-    },
-    {
-      title: 'Cloud-Native Applications',
-      description: 'Modern applications built for cloud infrastructure',
+      title: 'Cloud-Native Solutions',
+      description: 'Scalable applications designed for cloud deployment and microservices',
       icon: FaCloud,
     },
     {
-      title: 'Security-First Development',
-      description: 'Built-in security measures and best practices',
+      title: 'Database Design',
+      description: 'Optimized database architecture and data management solutions',
+      icon: FaDatabase,
+    },
+    {
+      title: 'Security Integration',
+      description: 'Built-in security measures and compliance frameworks',
       icon: FaShieldAlt,
     },
   ]
@@ -56,46 +57,30 @@ export default function SoftwareDevelopment() {
     'React & Next.js',
     'Node.js & Express',
     'Python & Django',
-    'Java & Spring Boot',
-    '.NET Core',
-    'Docker & Kubernetes',
+    'TypeScript',
     'AWS & Azure',
-    'MongoDB & PostgreSQL',
+    'Docker & Kubernetes',
+    'PostgreSQL & MongoDB',
+    'GraphQL & REST APIs',
   ]
 
   return (
     <Box>
-      {/* Hero Section */}
-      <Box
-        bg={useColorModeValue('gray.50', 'gray.900')}
-        color={textColor}
-        position="relative"
-        overflow="hidden"
-      >
-        <Container maxW="1200px" py={12}>
-          <Stack spacing={6} align="center" textAlign="center">
-            <Heading
-              fontSize={{ base: '4xl', md: '5xl' }}
-              bgGradient="linear(to-r, brand.500, brand.700)"
-              bgClip="text"
-            >
-              Software Development
-            </Heading>
-            <Text fontSize="xl" maxW="2xl">
-              Transform your ideas into powerful, scalable software solutions that drive business growth
-            </Text>
-          </Stack>
-        </Container>
-      </Box>
+      {/* Enhanced WebHero with 3D Text */}
+      <WebHero
+        title={config.title}
+        tagline={config.tagline}
+        showText={config.showText}
+        minHeight={config.minHeight}
+      />
 
       {/* Features Section */}
       <Container maxW="1200px" py={12}>
         <VStack spacing={12} align="stretch">
           <Box textAlign="center" mb={8}>
-            <Heading size="lg" mb={4}>Our Development Approach</Heading>
+            <Heading size="lg" mb={4}>Our Software Development Services</Heading>
             <Text fontSize="lg" color={textColor} maxW="3xl" mx="auto">
-              We combine technical expertise with industry best practices to deliver high-quality software solutions
-              that meet your business objectives.
+              We build custom software solutions that are scalable, secure, and tailored to your business needs.
             </Text>
           </Box>
 
@@ -126,7 +111,7 @@ export default function SoftwareDevelopment() {
             <Box textAlign="center">
               <Heading size="lg" mb={4}>Technologies We Use</Heading>
               <Text fontSize="lg" color={textColor} maxW="3xl" mx="auto">
-                We leverage cutting-edge technologies to build robust and scalable solutions
+                We leverage modern development tools and frameworks to build efficient solutions
               </Text>
             </Box>
 
@@ -156,7 +141,7 @@ export default function SoftwareDevelopment() {
           <Box textAlign="center">
             <Heading size="lg" mb={4}>Our Development Process</Heading>
             <Text fontSize="lg" color={textColor} maxW="3xl" mx="auto">
-              A systematic approach to delivering high-quality software solutions
+              A proven methodology for delivering high-quality software solutions
             </Text>
           </Box>
 
@@ -164,9 +149,9 @@ export default function SoftwareDevelopment() {
             {[
               'Requirements Analysis & Planning',
               'Architecture Design & Prototyping',
-              'Agile Development & Regular Updates',
-              'Quality Assurance & Testing',
-              'Deployment & Maintenance',
+              'Agile Development & Testing',
+              'Quality Assurance & Code Review',
+              'Deployment & Ongoing Support',
             ].map((step, index) => (
               <ListItem key={index}>
                 <HStack spacing={4}>
@@ -183,9 +168,9 @@ export default function SoftwareDevelopment() {
       <Box bg={useColorModeValue('brand.50', 'brand.900')}>
         <Container maxW="1200px" py={20}>
           <Stack spacing={8} align="center" textAlign="center">
-            <Heading>Ready to Build Your Software Solution?</Heading>
+            <Heading>Ready to Build Your Custom Software?</Heading>
             <Text fontSize="lg" maxW="2xl">
-              Let's discuss how we can help bring your ideas to life with our expert software development services
+              Let's discuss how we can bring your software vision to life with our expert development team
             </Text>
             <Button
               as={RouterLink}

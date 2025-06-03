@@ -3,17 +3,16 @@ import {
   Flex,
   Button,
   IconButton,
-  Text,
   useColorModeValue,
   Image,
   Link as ChakraLink,
 } from '@chakra-ui/react'
 import { HamburgerIcon, CloseIcon } from '@chakra-ui/icons'
 import { Link as RouterLink, useLocation } from 'react-router-dom'
-import { LetsTalk } from '../ui/LetsTalk'
+import { LetsTalk } from './LetsTalk'
 import { useDisclosure } from '@chakra-ui/react'
 import { MainMenu } from '../ui/MainMenu'
-import { FaUserCircle, FaGlobe, FaSearch, FaSun, FaMoon } from 'react-icons/fa'
+import { FaUserCircle, FaLanguage, FaSearch, FaSun, FaMoon } from 'react-icons/fa'
 import { useColorMode } from '@chakra-ui/react'
 import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
@@ -22,7 +21,6 @@ import { SearchBar, AccountPopup, LanguageSelector } from '../features'
 const MotionIconButton = motion(IconButton)
 
 export function Header() {
-  const pillBg = useColorModeValue('white', 'gray.900')
   const textColor = useColorModeValue('gray.900', 'white')
   const pillShadow = useColorModeValue('0 4px 24px rgba(0,0,0,0.10)', '0 4px 24px rgba(0,0,0,0.40)')
   const iconHoverBg = useColorModeValue('gray.100', 'gray.700')
@@ -142,7 +140,7 @@ export function Header() {
                   _hover={{ bg: iconHoverBg }}
                   onClick={handleSearchToggle}
                   className="search-button"
-                  whileHover={{ scale: 1.1 }}
+                  whileHover={{ scale: 1.1, rotate: 360 }}
                   whileTap={{ scale: 0.95 }}
                   transition={{ duration: 0.2 }}
                   isActive={isSearchOpen}
@@ -162,7 +160,7 @@ export function Header() {
                   _hover={{ bg: iconHoverBg }}
                   onClick={handleAccountToggle}
                   className="account-button"
-                  whileHover={{ scale: 1.1 }}
+                  whileHover={{ scale: 1.1, rotate: 360 }}
                   whileTap={{ scale: 0.95 }}
                   transition={{ duration: 0.2 }}
                   isActive={isAccountOpen}
@@ -176,7 +174,7 @@ export function Header() {
               <Box position="relative">
                 <MotionIconButton
                   aria-label="Toggle language menu"
-                  icon={<FaGlobe size={20} />}
+                  icon={<FaLanguage size={20} />}
                   variant="ghost"
                   size="lg"
                   borderRadius="full"
@@ -184,7 +182,7 @@ export function Header() {
                   _hover={{ bg: iconHoverBg }}
                   onClick={handleLanguageToggle}
                   className="language-button"
-                  whileHover={{ scale: 1.1 }}
+                  whileHover={{ scale: 1.1, rotate: 360 }}
                   whileTap={{ scale: 0.95 }}
                   transition={{ duration: 0.2 }}
                   isActive={isLanguageOpen}

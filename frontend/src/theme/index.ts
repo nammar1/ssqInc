@@ -61,6 +61,14 @@ const theme = extendTheme({
       900: '#111827',
     },
   },
+  shadows: {
+    brand: {
+      sm: '0 2px 8px var(--chakra-colors-brand-500)',
+      md: '0 4px 20px var(--chakra-colors-brand-500)',
+      lg: '0 8px 32px var(--chakra-colors-brand-500)',
+      xl: '0 12px 48px var(--chakra-colors-brand-500)',
+    },
+  },
   components: {
     Button: {
       baseStyle: {

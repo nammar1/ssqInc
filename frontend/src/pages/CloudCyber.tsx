@@ -10,24 +10,25 @@ import {
   VStack,
   HStack,
   SimpleGrid,
-  Flex,
-  Image,
   List,
   ListItem,
   ListIcon,
 } from '@chakra-ui/react'
-import { FaArrowRight, FaCheck, FaCloud, FaShieldAlt, FaLock, FaServer, FaUserShield } from 'react-icons/fa'
+import { FaArrowRight, FaCheck, FaCloud, FaShieldAlt, FaServer, FaLock, FaNetworkWired } from 'react-icons/fa'
 import { Link as RouterLink } from 'react-router-dom'
+import { WebHero } from '@/components/ui/WebHero'
+import { getPageConfig } from '@/utils/pageConfigs'
 
 export default function CloudCyber() {
   const textColor = useColorModeValue('gray.700', 'gray.200')
   const bgColor = useColorModeValue('white', 'gray.800')
   const cardBg = useColorModeValue('gray.50', 'gray.700')
+  const config = getPageConfig('cloudcyber')
 
   const features = [
     {
       title: 'Cloud Migration',
-      description: 'Seamless migration to cloud platforms with minimal disruption',
+      description: 'Seamless migration of your infrastructure to leading cloud platforms',
       icon: FaCloud,
     },
     {
@@ -36,66 +37,50 @@ export default function CloudCyber() {
       icon: FaShieldAlt,
     },
     {
-      title: 'Data Protection',
-      description: 'Advanced encryption and data security solutions',
-      icon: FaLock,
-    },
-    {
-      title: 'Cloud Architecture',
-      description: 'Scalable and secure cloud infrastructure design',
+      title: 'Infrastructure Management',
+      description: 'Scalable cloud infrastructure design and management solutions',
       icon: FaServer,
     },
     {
-      title: 'Identity Management',
-      description: 'Robust identity and access management solutions',
-      icon: FaUserShield,
+      title: 'Data Protection',
+      description: 'Advanced encryption and data protection strategies',
+      icon: FaLock,
+    },
+    {
+      title: 'Network Security',
+      description: 'Robust network security architecture and monitoring systems',
+      icon: FaNetworkWired,
     },
   ]
 
   const technologies = [
-    'AWS',
-    'Azure',
-    'GCP',
+    'AWS & Azure',
     'Kubernetes',
     'Terraform',
-    'SIEM',
-    'WAF',
-    'Zero Trust',
+    'Docker',
+    'Cloudflare',
+    'Vault by HashiCorp',
+    'Splunk & ELK Stack',
+    'Zero Trust Architecture',
   ]
 
   return (
     <Box>
-      {/* Hero Section */}
-      <Box
-        bg={useColorModeValue('gray.50', 'gray.900')}
-        color={textColor}
-        position="relative"
-        overflow="hidden"
-      >
-        <Container maxW="1200px" py={12}>
-          <Stack spacing={6} align="center" textAlign="center">
-            <Heading
-              fontSize={{ base: '4xl', md: '5xl' }}
-              bgGradient="linear(to-r, brand.500, brand.700)"
-              bgClip="text"
-            >
-              Cloud & Cybersecurity
-            </Heading>
-            <Text fontSize="xl" maxW="2xl">
-              Secure cloud infrastructure and comprehensive security solutions for your business
-            </Text>
-          </Stack>
-        </Container>
-      </Box>
+      {/* Enhanced WebHero with 3D Text */}
+      <WebHero
+        title={config.title}
+        tagline={config.tagline}
+        showText={config.showText}
+        minHeight={config.minHeight}
+      />
 
       {/* Features Section */}
       <Container maxW="1200px" py={12}>
         <VStack spacing={12} align="stretch">
           <Box textAlign="center" mb={8}>
-            <Heading size="lg" mb={4}>Our Cloud & Security Solutions</Heading>
+            <Heading size="lg" mb={4}>Our Cloud & Cybersecurity Services</Heading>
             <Text fontSize="lg" color={textColor} maxW="3xl" mx="auto">
-              We provide end-to-end cloud solutions and robust security measures to protect your digital assets
-              and ensure business continuity.
+              Secure your digital assets and optimize your cloud infrastructure with our comprehensive solutions.
             </Text>
           </Box>
 
@@ -124,9 +109,9 @@ export default function CloudCyber() {
         <Container maxW="1200px">
           <VStack spacing={8} align="stretch">
             <Box textAlign="center">
-              <Heading size="lg" mb={4}>Technologies We Use</Heading>
+              <Heading size="lg" mb={4}>Technologies & Platforms</Heading>
               <Text fontSize="lg" color={textColor} maxW="3xl" mx="auto">
-                We leverage industry-leading cloud and security technologies to protect your business
+                We leverage industry-leading cloud and security technologies
               </Text>
             </Box>
 
@@ -154,19 +139,19 @@ export default function CloudCyber() {
       <Container maxW="1200px" py={12}>
         <VStack spacing={8} align="stretch">
           <Box textAlign="center">
-            <Heading size="lg" mb={4}>Our Security Process</Heading>
+            <Heading size="lg" mb={4}>Our Security & Cloud Implementation Process</Heading>
             <Text fontSize="lg" color={textColor} maxW="3xl" mx="auto">
-              A comprehensive approach to securing your digital assets
+              A comprehensive approach to securing and optimizing your cloud infrastructure
             </Text>
           </Box>
 
           <List spacing={4}>
             {[
-              'Security Assessment & Planning',
-              'Infrastructure Design & Implementation',
-              'Security Controls & Monitoring',
-              'Compliance & Governance',
-              'Continuous Security Improvement',
+              'Security Assessment & Risk Analysis',
+              'Cloud Strategy & Architecture Design',
+              'Implementation & Migration Planning',
+              'Security Controls & Monitoring Setup',
+              'Ongoing Support & Threat Management',
             ].map((step, index) => (
               <ListItem key={index}>
                 <HStack spacing={4}>
@@ -183,9 +168,9 @@ export default function CloudCyber() {
       <Box bg={useColorModeValue('brand.50', 'brand.900')}>
         <Container maxW="1200px" py={20}>
           <Stack spacing={8} align="center" textAlign="center">
-            <Heading>Ready to Secure Your Digital Assets?</Heading>
+            <Heading>Ready to Secure Your Cloud Infrastructure?</Heading>
             <Text fontSize="lg" maxW="2xl">
-              Let's discuss how we can help protect your business with our expert cloud and security solutions
+              Let's discuss how we can help protect your business and optimize your cloud operations
             </Text>
             <Button
               as={RouterLink}

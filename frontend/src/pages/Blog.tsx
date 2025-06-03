@@ -1,72 +1,105 @@
 import {
+  Box,
   Container,
   Heading,
   Text,
-  Box,
-  VStack,
-  SimpleGrid,
-  Card,
-  CardBody,
+  Stack,
   useColorModeValue,
+  SimpleGrid,
+  Button,
 } from '@chakra-ui/react'
+import { Link as RouterLink } from 'react-router-dom'
+import { WebHero } from '@/components/ui/WebHero'
+import { getPageConfig } from '@/utils/pageConfigs'
 
-const Blog = () => {
-  const textColor = useColorModeValue('gray.600', 'gray.400')
-  const metaColor = useColorModeValue('gray.500', 'gray.500')
+const BLOG_POSTS = [
+  {
+    title: 'The Future of AI in Business',
+    excerpt: 'Exploring how artificial intelligence is transforming modern business operations...',
+    date: '2024-01-15',
+    readTime: '5 min read',
+  },
+  {
+    title: 'Cloud Security Best Practices',
+    excerpt: 'Essential security measures every business should implement when moving to the cloud...',
+    date: '2024-01-10',
+    readTime: '7 min read',
+  },
+  {
+    title: 'Digital Transformation Strategies',
+    excerpt: 'A comprehensive guide to successful digital transformation for enterprises...',
+    date: '2024-01-05',
+    readTime: '6 min read',
+  },
+]
+
+export default function Blog() {
+  const config = getPageConfig('blog')
   
-  const blogPosts = [
-    {
-      title: 'The Future of AI in Business',
-      excerpt: 'Exploring how artificial intelligence is transforming modern business operations...',
-      date: 'March 15, 2024',
-      author: 'John Smith'
-    },
-    {
-      title: 'Cloud Security Best Practices',
-      excerpt: 'Essential security measures for protecting your cloud infrastructure...',
-      date: 'March 10, 2024',
-      author: 'Sarah Johnson'
-    },
-    {
-      title: 'Digital Transformation Strategies',
-      excerpt: 'Key strategies for successful digital transformation in enterprise...',
-      date: 'March 5, 2024',
-      author: 'Mike Davis'
-    }
-  ]
-
   return (
-    <Container maxW="container.xl" py={8}>
-      <VStack spacing={6} mb={12}>
-        <Heading as="h1" size="2xl">
-          Our Blog
-        </Heading>
-        <Text fontSize="xl" color={textColor} textAlign="center">
-          Insights, trends, and thought leadership from our team
-        </Text>
-      </VStack>
+    <Box>
+      {/* Enhanced WebHero with 3D Text */}
+      <WebHero
+        title={config.title}
+        tagline={config.tagline}
+        showText={config.showText}
+        minHeight={config.minHeight}
+      />
 
-      <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} spacing={8}>
-        {blogPosts.map((post, index) => (
-          <Card key={index} variant="outline">
-            <CardBody>
-              <VStack align="start" spacing={4}>
-                <Heading size="md">
-                  {post.title}
-                </Heading>
-                <Text color={textColor}>
-                  {post.excerpt}
-                </Text>
-                <Text fontSize="sm" color={metaColor}>
-                  {post.date} • {post.author}
-                </Text>
-              </VStack>
-            </CardBody>
-          </Card>
-        ))}
-      </SimpleGrid>
-    </Container>
+      {/* Blog Posts Section */}
+      <Container maxW="1200px" py={20}>
+        <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} spacing={8}>
+          {BLOG_POSTS.map((post) => (
+            <Box
+              key={post.title}
+              bg={useColorModeValue('white', 'gray.800')}
+              rounded="xl"
+              shadow="lg"
+              overflow="hidden"
+              _hover={{ shadow: 'xl', transform: 'translateY(-2px)' }}
+              transition="all 0.3s"
+            >
+              <Box p={6}>
+                <Stack spacing={4}>
+                  <Heading size="md">{post.title}</Heading>
+                  <Text color={useColorModeValue('gray.600', 'gray.400')}>
+                    {post.excerpt}
+                  </Text>
+                  <Box>
+                    <Text fontSize="sm" color={useColorModeValue('gray.500', 'gray.500')}>
+                      {post.date} • {post.readTime}
+                    </Text>
+                  </Box>
+                  <Button variant="outline" colorScheme="brand" size="sm">
+                    Read More
+                  </Button>
+                </Stack>
+              </Box>
+            </Box>
+          ))}
+        </SimpleGrid>
+      </Container>
+
+      {/* CTA Section */}
+      <Box bg={useColorModeValue('brand.50', 'brand.900')}>
+        <Container maxW="1200px" py={20}>
+          <Stack spacing={8} align="center" textAlign="center">
+            <Heading>Stay Updated</Heading>
+            <Text fontSize="lg" maxW="2xl">
+              Subscribe to our newsletter for the latest insights and updates
+            </Text>
+            <Button
+              as={RouterLink}
+              to="/contact"
+              colorScheme="brand"
+              size="lg"
+              px={8}
+            >
+              Subscribe
+            </Button>
+          </Stack>
+        </Container>
+      </Box>
+    </Box>
   )
 }
-
-export default Blog

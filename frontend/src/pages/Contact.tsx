@@ -17,6 +17,8 @@ import {
 } from '@chakra-ui/react'
 import { FaPhone, FaEnvelope, FaMapMarkerAlt } from 'react-icons/fa'
 import { useToastContext } from '@/components/ui/toaster'
+import { WebHero } from '@/components/ui/WebHero'
+import { getPageConfig } from '@/utils/pageConfigs'
 
 const CONTACT_INFO = [
   {
@@ -38,6 +40,7 @@ const CONTACT_INFO = [
 
 export default function Contact() {
   const { toast } = useToastContext()
+  const config = getPageConfig('contact')
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
@@ -51,20 +54,13 @@ export default function Contact() {
 
   return (
     <Box>
-      {/* Header Section */}
-      <Box
-        bg={useColorModeValue('gray.50', 'gray.900')}
-        color={useColorModeValue('gray.700', 'gray.200')}
-      >
-        <Container maxW="1200px" py={20}>
-          <Stack spacing={8} align="center" textAlign="center">
-            <Heading>Contact Us</Heading>
-            <Text fontSize="lg" maxW="2xl">
-              Get in touch with us to discuss how we can help your business grow
-            </Text>
-          </Stack>
-        </Container>
-      </Box>
+      {/* Enhanced WebHero with 3D Text */}
+      <WebHero
+        title={config.title}
+        tagline={config.tagline}
+        showText={config.showText}
+        minHeight={config.minHeight}
+      />
 
       {/* Contact Form and Info Section */}
       <Container maxW="1200px" py={20}>
