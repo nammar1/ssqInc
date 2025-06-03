@@ -26,5 +26,8 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["src"]
+  "include": ["src"],
+  "files": [
+    "src/types/three-jsx.d.ts"
+  ]
 }

@@ -1,18 +1,7 @@
 import { useRef, useMemo } from 'react'
-import { useFrame, useThree, extend } from '@react-three/fiber'
+import { useFrame, useThree } from '@react-three/fiber'
 import { Line, Text3D, Center } from '@react-three/drei'
 import * as THREE from 'three'
-
-type R3FThreeElements = import('@react-three/fiber').ThreeElements;
-
-declare global {
-  namespace JSX {
-    interface IntrinsicElements extends R3FThreeElements {}
-  }
-}
-
-// Extend Three.js objects for React Three Fiber
-extend({ Group: THREE.Group })
 
 interface SpiderWeb3DProps {
   segments?: number
