@@ -3,11 +3,11 @@ WORKDIR /app
 COPY package*.json ./
 RUN npm install
 COPY . .
-# Build the application and create fallback if build fails
-RUN npm run build || (mkdir -p dist && echo '<html><body><h1>Build Error</h1><p>Build failed due to TypeScript errors</p></body></html>' > dist/index.html)
+# Build the application - fail if there are any errors
+RUN npm run build
 
 FROM nginx:alpine
-# Copy the build output (either successful build or fallback)
+# Copy the build output
 COPY --from=build /app/dist /usr/share/nginx/html
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 EXPOSE 80
