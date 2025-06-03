@@ -47,16 +47,6 @@ export default function Home() {
       >
         <Container maxW="1200px" py={20}>
           <Stack spacing={8} align="center" textAlign="center">
-            <Button
-              as={RouterLink}
-              to="/contact"
-              colorScheme="brand"
-              size="lg"
-              px={8}
-              mt={8}
-            >
-              Get Started
-            </Button>
           </Stack>
         </Container>
       </WebHero>

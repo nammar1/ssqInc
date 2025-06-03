@@ -6,6 +6,8 @@ import {
   useColorModeValue,
   Image,
   Link as ChakraLink,
+  useBreakpointValue,
+  Tooltip,
 } from '@chakra-ui/react'
 import { HamburgerIcon, CloseIcon } from '@chakra-ui/icons'
 import { Link as RouterLink, useLocation } from 'react-router-dom'
@@ -24,6 +26,13 @@ export function Header() {
   const textColor = useColorModeValue('gray.900', 'white')
   const pillShadow = useColorModeValue('0 4px 24px rgba(0,0,0,0.10)', '0 4px 24px rgba(0,0,0,0.40)')
   const iconHoverBg = useColorModeValue('gray.100', 'gray.700')
+  
+  // Responsive values
+  const isMobile = useBreakpointValue({ base: true, lg: false })
+  const headerPadding = useBreakpointValue({ base: 2, md: 6 })
+  const logoHeight = useBreakpointValue({ base: '40px', md: '48px' })
+  const buttonSize = useBreakpointValue({ base: 'md', lg: 'lg' })
+  const buttonPadding = useBreakpointValue({ base: 4, lg: 5 })
   
   const {
     isOpen: isLetsTalkOpen,
@@ -96,6 +105,35 @@ export function Header() {
     return () => document.removeEventListener('mousedown', handleClickOutside)
   }, [])
 
+  const MobileFeatureButton = ({ icon, label, onClick, isActive, className }: {
+    icon: React.ReactElement
+    label: string
+    onClick: () => void
+    isActive?: boolean
+    className?: string
+  }) => (
+    <Tooltip label={label} placement="bottom">
+      <MotionIconButton
+        aria-label={label}
+        icon={icon}
+        variant="ghost"
+        size={buttonSize}
+        borderRadius="full"
+        color={textColor}
+        _hover={{ bg: iconHoverBg }}
+        onClick={onClick}
+        className={className}
+        whileHover={{ scale: 1.05 }}
+        whileTap={{ scale: 0.95 }}
+        transition={{ duration: 0.2 }}
+        isActive={isActive}
+        _active={{ bg: useColorModeValue('blue.100', 'blue.800') }}
+        minW="44px" // Better touch target
+        minH="44px"
+      />
+    </Tooltip>
+  )
+
   return (
     <>
       <Box
@@ -112,7 +150,7 @@ export function Header() {
         <Flex
           maxW={{ base: '98vw', md: '1650px' }}
           mx="auto"
-          px={{ base: 2, md: 6 }}
+          px={headerPadding}
           py={2}
           alignItems="center"
           justifyContent="space-between"
@@ -122,49 +160,43 @@ export function Header() {
           backdropFilter="blur(8px)"
         >
           {/* Left: Logo */}
-          <ChakraLink as={RouterLink} to="/" display="flex" alignItems="center" _hover={{ textDecoration: 'none' }}>
-            <Image src="/SSQlogo-02.png" alt="Smart Solution Quorum Logo" height="48px" objectFit="contain" />
+          <ChakraLink 
+            as={RouterLink} 
+            to="/" 
+            display="flex" 
+            alignItems="center" 
+            _hover={{ textDecoration: 'none' }}
+            minW={logoHeight} // Prevent shrinking
+          >
+            <Image 
+              src="/SSQlogo-02.png" 
+              alt="Smart Solution Quorum Logo" 
+              height={logoHeight} 
+              objectFit="contain" 
+            />
           </ChakraLink>
           
-          {/* Center: 4 icons when menu is open */}
-          {isMenuOpen && (
-            <Flex alignItems="center" gap={6} flex={1} justify="center">
+          {/* Center: Feature icons (only on desktop when menu is open) */}
+          {isMenuOpen && !isMobile && (
+            <Flex alignItems="center" gap={4} flex={1} justify="center">
               <Box position="relative" className="search-container">
-                <MotionIconButton
-                  aria-label="Toggle search bar"
-                  icon={<FaSearch size={20} />}
-                  variant="ghost"
-                  size="lg"
-                  borderRadius="full"
-                  color={textColor}
-                  _hover={{ bg: iconHoverBg }}
+                <MobileFeatureButton
+                  icon={<FaSearch size={18} />}
+                  label="Search"
                   onClick={handleSearchToggle}
-                  className="search-button"
-                  whileHover={{ scale: 1.1, rotate: 360 }}
-                  whileTap={{ scale: 0.95 }}
-                  transition={{ duration: 0.2 }}
                   isActive={isSearchOpen}
-                  _active={{ bg: useColorModeValue('blue.100', 'blue.800') }}
+                  className="search-button"
                 />
                 <SearchBar isOpen={isSearchOpen} onClose={() => setIsSearchOpen(false)} />
               </Box>
               
               <Box position="relative">
-                <MotionIconButton
-                  aria-label="Account controls"
-                  icon={<FaUserCircle size={22} />}
-                  variant="ghost"
-                  size="lg"
-                  borderRadius="full"
-                  color={textColor}
-                  _hover={{ bg: iconHoverBg }}
+                <MobileFeatureButton
+                  icon={<FaUserCircle size={20} />}
+                  label="Account"
                   onClick={handleAccountToggle}
-                  className="account-button"
-                  whileHover={{ scale: 1.1, rotate: 360 }}
-                  whileTap={{ scale: 0.95 }}
-                  transition={{ duration: 0.2 }}
                   isActive={isAccountOpen}
-                  _active={{ bg: useColorModeValue('green.100', 'green.800') }}
+                  className="account-button"
                 />
                 <Box className="account-popup">
                   <AccountPopup isOpen={isAccountOpen} onClose={() => setIsAccountOpen(false)} />
@@ -172,39 +204,22 @@ export function Header() {
               </Box>
               
               <Box position="relative">
-                <MotionIconButton
-                  aria-label="Toggle language menu"
-                  icon={<FaLanguage size={20} />}
-                  variant="ghost"
-                  size="lg"
-                  borderRadius="full"
-                  color={textColor}
-                  _hover={{ bg: iconHoverBg }}
+                <MobileFeatureButton
+                  icon={<FaLanguage size={18} />}
+                  label="Language"
                   onClick={handleLanguageToggle}
-                  className="language-button"
-                  whileHover={{ scale: 1.1, rotate: 360 }}
-                  whileTap={{ scale: 0.95 }}
-                  transition={{ duration: 0.2 }}
                   isActive={isLanguageOpen}
-                  _active={{ bg: useColorModeValue('purple.100', 'purple.800') }}
+                  className="language-button"
                 />
                 <Box className="language-popup">
                   <LanguageSelector isOpen={isLanguageOpen} onClose={() => setIsLanguageOpen(false)} />
                 </Box>
               </Box>
               
-              <MotionIconButton
-                aria-label="Toggle color mode"
-                icon={colorMode === 'light' ? <FaSun size={20} /> : <FaMoon size={20} />}
-                variant="ghost"
-                size="lg"
-                borderRadius="full"
-                color={textColor}
-                _hover={{ bg: iconHoverBg }}
+              <MobileFeatureButton
+                icon={colorMode === 'light' ? <FaSun size={18} /> : <FaMoon size={18} />}
+                label="Toggle color mode"
                 onClick={toggleColorMode}
-                whileHover={{ scale: 1.1, rotate: 180 }}
-                whileTap={{ scale: 0.95 }}
-                transition={{ duration: 0.3 }}
               />
             </Flex>
           )}
@@ -216,8 +231,9 @@ export function Header() {
               bg={useColorModeValue('gray.100', 'gray.700')}
               color={textColor}
               borderRadius="full"
-              px={5}
+              px={buttonPadding}
               fontWeight="semibold"
+              size={buttonSize}
               _hover={{ 
                 bg: useColorModeValue('gray.200', 'gray.600'),
                 transform: 'translateY(-1px)'
@@ -225,21 +241,24 @@ export function Header() {
               boxShadow="sm"
               onClick={onLetsTalkOpen}
               transition="all 0.2s"
+              minH="44px" // Better touch target on mobile
             >
               Let's Talk
             </Button>
             <MotionIconButton
               aria-label={isMenuOpen ? 'Close menu' : 'Open menu'}
-              icon={isMenuOpen ? <CloseIcon boxSize={6} /> : <HamburgerIcon boxSize={7} />}
+              icon={isMenuOpen ? <CloseIcon boxSize={isMobile ? 5 : 6} /> : <HamburgerIcon boxSize={isMobile ? 6 : 7} />}
               variant="ghost"
-              size="lg"
+              size={buttonSize}
               borderRadius="full"
               color={textColor}
               _hover={{ bg: iconHoverBg }}
               onClick={isMenuOpen ? onMenuClose : onMenuOpen}
-              whileHover={{ scale: 1.1 }}
+              whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               transition={{ duration: 0.2 }}
+              minW="44px" // Better touch target
+              minH="44px"
             />
           </Flex>
         </Flex>
@@ -247,7 +266,17 @@ export function Header() {
       
       {/* Feature Components */}
       <LetsTalk isOpen={isLetsTalkOpen} onClose={onLetsTalkClose} />
-      <MainMenu isOpen={isMenuOpen} onClose={onMenuClose} />
+      <MainMenu 
+        isOpen={isMenuOpen} 
+        onClose={onMenuClose}
+        // Pass feature controls to MainMenu for mobile integration
+        featureControls={{
+          search: { isOpen: isSearchOpen, toggle: handleSearchToggle },
+          account: { isOpen: isAccountOpen, toggle: handleAccountToggle },
+          language: { isOpen: isLanguageOpen, toggle: handleLanguageToggle },
+          colorMode: { current: colorMode, toggle: toggleColorMode }
+        }}
+      />
     </>
   )
 }
