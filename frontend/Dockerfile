@@ -1,10 +1,13 @@
 FROM node:alpine3.18 AS build
 WORKDIR /app
+
+ENV ROLLUP_NO_NATIVE=1
+
 COPY package.json package-lock.json ./
 RUN npm install -g npm@10.7.0
 RUN npm install
 COPY . .
-ENV ROLLUP_NO_NATIVE=1
+
 RUN npm run build
 
 FROM nginx:alpine
