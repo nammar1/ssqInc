@@ -53,7 +53,7 @@ jobs:
           EOL
           
       - name: Build Frontend Docker Image
-        run: sudo docker build -t sajinq/ssq-frontend:latest ./frontend
+        run: sudo docker build --no-cache -t sajinq/ssq-frontend:latest ./frontend
       
       - name: Push Images to docker hub
         run: |
