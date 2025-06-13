@@ -1,11 +1,15 @@
 FROM node:alpine3.18 AS build
 WORKDIR /app
 
-ENV ROLLUP_NO_NATIVE=1
-
 COPY package.json package-lock.json ./
 RUN npm install -g npm@10.7.0
-RUN npm install
+
+# Remove package-lock.json and node_modules to fix optional dependencies issue
+RUN rm -f package-lock.json && rm -rf node_modules
+
+# Install dependencies with explicit optional dependencies
+RUN npm install --include=optional
+
 COPY . .
 
 RUN npm run build
