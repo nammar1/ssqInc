@@ -3,11 +3,11 @@ import {
   Container,
   Heading,
   Text,
-  useColorModeValue,
   VStack,
 } from '@chakra-ui/react'
 import { WebHero } from '@/components/ui/WebHero'
 import { getPageConfig } from '@/utils/pageConfigs'
+import { useColorModeValue } from '@/components/ui/color-mode'
 
 export default function Privacy() {
   const config = getPageConfig('privacy')
@@ -24,7 +24,7 @@ export default function Privacy() {
 
       {/* Privacy Policy Content */}
       <Container maxW="1200px" py={20}>
-        <VStack spacing={8} align="stretch">
+        <VStack gap={8} align="stretch">
           <Box>
             <Heading size="lg" mb={4}>
               Information We Collect

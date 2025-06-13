@@ -5,7 +5,6 @@ import {
   Text,
   Stack,
   Button,
-  useColorModeValue,
   SimpleGrid,
   Icon,
   VStack,
@@ -14,6 +13,7 @@ import { Link as RouterLink } from 'react-router-dom'
 import { FaRocket, FaLightbulb, FaUsers } from 'react-icons/fa'
 import { WebHero } from '@/components/ui/WebHero'
 import { getPageConfig } from '@/utils/pageConfigs'
+import { useColorModeValue } from '@/components/ui/color-mode'
 
 const FEATURES = [
   {
@@ -46,14 +46,14 @@ export default function Home() {
         minHeight={config.minHeight}
       >
         <Container maxW="1200px" py={20}>
-          <Stack spacing={8} align="center" textAlign="center">
+          <Stack gap={8} align="center" textAlign="center">
           </Stack>
         </Container>
       </WebHero>
 
       {/* Features Section */}
       <Container maxW="1200px" py={20}>
-        <Stack spacing={12}>
+        <Stack gap={12}>
           <Box textAlign="center">
             <Heading mb={4}>Why Choose SSQ Inc?</Heading>
             <Text fontSize="lg" color={useColorModeValue('gray.600', 'gray.400')}>
@@ -61,11 +61,11 @@ export default function Home() {
             </Text>
           </Box>
           
-          <SimpleGrid columns={{ base: 1, md: 3 }} spacing={10}>
+          <SimpleGrid columns={{ base: 1, md: 3 }} gap={10}>
             {FEATURES.map((feature) => (
               <VStack
                 key={feature.title}
-                spacing={4}
+                gap={4}
                 p={6}
                 bg={useColorModeValue('white', 'gray.800')}
                 rounded="xl"
@@ -91,20 +91,20 @@ export default function Home() {
       {/* CTA Section */}
       <Box bg={useColorModeValue('brand.50', 'brand.900')}>
         <Container maxW="1200px" py={20}>
-          <Stack spacing={8} align="center" textAlign="center">
+          <Stack gap={8} align="center" textAlign="center">
             <Heading>Ready to Transform Your Business?</Heading>
             <Text fontSize="lg" maxW="2xl">
               Let's discuss how we can help you achieve your digital transformation goals
             </Text>
-            <Button
-              as={RouterLink}
-              to="/services"
-              colorScheme="brand"
-              size="lg"
-              px={8}
-            >
-              Explore Our Services
-            </Button>
+            <RouterLink to="/services">
+              <Button
+                colorPalette="brand"
+                size="lg"
+                px={8}
+              >
+                Explore Our Services
+              </Button>
+            </RouterLink>
           </Stack>
         </Container>
       </Box>

@@ -4,20 +4,17 @@ import {
   Heading,
   Text,
   Stack,
-  useColorModeValue,
   Icon,
   Button,
   VStack,
   HStack,
   SimpleGrid,
-  List,
-  ListItem,
-  ListIcon,
 } from '@chakra-ui/react'
 import { FaArrowRight, FaCheck, FaRocket, FaChartLine, FaCogs, FaUsers, FaGlobe } from 'react-icons/fa'
 import { Link as RouterLink } from 'react-router-dom'
 import { WebHero } from '@/components/ui/WebHero'
 import { getPageConfig } from '@/utils/pageConfigs'
+import { useColorModeValue } from '@/components/ui/color-mode'
 
 export default function Digital() {
   const textColor = useColorModeValue('gray.700', 'gray.200')
@@ -76,7 +73,7 @@ export default function Digital() {
 
       {/* Features Section */}
       <Container maxW="1200px" py={12}>
-        <VStack spacing={12} align="stretch">
+        <VStack gap={12} align="stretch">
           <Box textAlign="center" mb={8}>
             <Heading size="lg" mb={4}>Our Digital Transformation Services</Heading>
             <Text fontSize="lg" color={textColor} maxW="3xl" mx="auto">
@@ -84,7 +81,7 @@ export default function Digital() {
             </Text>
           </Box>
 
-          <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} spacing={8}>
+          <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} gap={8}>
             {features.map((feature, index) => (
               <Box
                 key={index}
@@ -107,7 +104,7 @@ export default function Digital() {
       {/* Technologies Section */}
       <Box bg={useColorModeValue('gray.50', 'gray.900')} py={12}>
         <Container maxW="1200px">
-          <VStack spacing={8} align="stretch">
+          <VStack gap={8} align="stretch">
             <Box textAlign="center">
               <Heading size="lg" mb={4}>Digital Technologies & Solutions</Heading>
               <Text fontSize="lg" color={textColor} maxW="3xl" mx="auto">
@@ -115,7 +112,7 @@ export default function Digital() {
               </Text>
             </Box>
 
-            <SimpleGrid columns={{ base: 2, md: 4 }} spacing={6}>
+            <SimpleGrid columns={{ base: 2, md: 4 }} gap={6}>
               {technologies.map((tech, index) => (
                 <Box
                   key={index}
@@ -137,7 +134,7 @@ export default function Digital() {
 
       {/* Process Section */}
       <Container maxW="1200px" py={12}>
-        <VStack spacing={8} align="stretch">
+        <VStack gap={8} align="stretch">
           <Box textAlign="center">
             <Heading size="lg" mb={4}>Our Digital Transformation Process</Heading>
             <Text fontSize="lg" color={textColor} maxW="3xl" mx="auto">
@@ -145,7 +142,7 @@ export default function Digital() {
             </Text>
           </Box>
 
-          <List spacing={4}>
+          <VStack gap={4} align="stretch">
             {[
               'Digital Readiness Assessment',
               'Strategy Development & Roadmap',
@@ -153,35 +150,32 @@ export default function Digital() {
               'Change Management & Training',
               'Performance Monitoring & Optimization',
             ].map((step, index) => (
-              <ListItem key={index}>
-                <HStack spacing={4}>
-                  <ListIcon as={FaCheck} color="brand.500" />
-                  <Text fontSize="lg">{step}</Text>
-                </HStack>
-              </ListItem>
+              <HStack key={index} gap={4}>
+                <Icon as={FaCheck} color="brand.500" />
+                <Text fontSize="lg">{step}</Text>
+              </HStack>
             ))}
-          </List>
+          </VStack>
         </VStack>
       </Container>
 
       {/* CTA Section */}
       <Box bg={useColorModeValue('brand.50', 'brand.900')}>
         <Container maxW="1200px" py={20}>
-          <Stack spacing={8} align="center" textAlign="center">
+          <Stack gap={8} align="center" textAlign="center">
             <Heading>Ready to Transform Your Business Digitally?</Heading>
             <Text fontSize="lg" maxW="2xl">
               Let's create a digital transformation strategy that positions your business for future success
             </Text>
-            <Button
-              as={RouterLink}
-              to="/contact"
-              colorScheme="brand"
-              size="lg"
-              px={8}
-              rightIcon={<FaArrowRight />}
-            >
-              Get Started
-            </Button>
+            <RouterLink to="/contact">
+              <Button
+                colorPalette="brand"
+                size="lg"
+                px={8}
+              >
+                Get Started <FaArrowRight />
+              </Button>
+            </RouterLink>
           </Stack>
         </Container>
       </Box>

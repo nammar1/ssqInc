@@ -3,11 +3,11 @@ import {
   Button,
   VStack,
   Text,
-  useColorModeValue,
-  Divider,
+  Separator,
 } from '@chakra-ui/react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { FaSignInAlt, FaUserPlus } from 'react-icons/fa'
+import { useColorModeValue } from '@/components/ui/color-mode'
 
 const MotionBox = motion(Box)
 
@@ -57,7 +57,7 @@ export function AccountPopup({ isOpen, onClose }: AccountPopupProps) {
             minW="200px"
             backdropFilter="blur(8px)"
           >
-            <VStack spacing={3} align="stretch">
+            <VStack gap={3} align="stretch">
               <Text
                 fontSize="sm"
                 fontWeight="semibold"
@@ -68,11 +68,10 @@ export function AccountPopup({ isOpen, onClose }: AccountPopupProps) {
                 Account
               </Text>
               
-              <Divider />
+              <Separator />
               
               <Button
-                leftIcon={<FaSignInAlt />}
-                colorScheme="blue"
+                colorPalette="blue"
                 variant="solid"
                 size="md"
                 borderRadius="lg"
@@ -81,12 +80,12 @@ export function AccountPopup({ isOpen, onClose }: AccountPopupProps) {
                 _hover={{ transform: 'translateY(-1px)' }}
                 transition="all 0.2s"
               >
+                <FaSignInAlt />
                 Login
               </Button>
               
               <Button
-                leftIcon={<FaUserPlus />}
-                colorScheme="green"
+                colorPalette="green"
                 variant="outline"
                 size="md"
                 borderRadius="lg"
@@ -98,6 +97,7 @@ export function AccountPopup({ isOpen, onClose }: AccountPopupProps) {
                 }}
                 transition="all 0.2s"
               >
+                <FaUserPlus />
                 Sign Up
               </Button>
             </VStack>

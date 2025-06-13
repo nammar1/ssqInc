@@ -4,18 +4,17 @@ import {
   Flex,
   VStack,
   Heading,
-  Link as ChakraLink,
-  useColorModeValue,
-  Divider,
   Icon,
   HStack,
   Text,
   useBreakpointValue,
   IconButton,
-  Tooltip,
+  Separator,
 } from '@chakra-ui/react'
 import { Link as RouterLink } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
+import { Tooltip } from '@/components/ui/tooltip'
+import { useColorModeValue } from '@/components/ui/color-mode'
 import {
   FaInfoCircle,
   FaBlog,
@@ -36,10 +35,11 @@ import {
   FaSun,
   FaMoon,
 } from 'react-icons/fa'
+import { useColorMode } from '@/components/ui/color-mode'
 
 const MotionBox = motion(Box as React.ComponentType<any>)
 const MotionVStack = motion(VStack as React.ComponentType<any>)
-const MotionDivider = motion(Divider as React.ComponentType<any>)
+const MotionSeparator = motion(Separator as React.ComponentType<any>)
 const MotionFlex = motion(Flex as React.ComponentType<any>)
 const MotionIconButton = motion(IconButton as React.ComponentType<any>)
 
@@ -113,13 +113,14 @@ const dividerVariants = {
 }
 
 export const MainMenu: React.FC<MainMenuProps> = ({ isOpen, onClose, featureControls }) => {
-  const bg = useColorModeValue('white', 'gray.900')
-  const textColor = useColorModeValue('gray.900', 'gray.100')
-  const dividerColor = useColorModeValue('gray.200', 'gray.700')
-  const cardBg = useColorModeValue('gray.50', 'gray.800')
-  const hoverBg = useColorModeValue('gray.100', 'gray.700')
-  const iconColor = useColorModeValue('brand.500', 'brand.400')
-  const iconHoverBg = useColorModeValue('gray.100', 'gray.700')
+  const { colorMode } = useColorMode()
+  const bg = colorMode === 'light' ? 'white' : 'gray.900'
+  const textColor = colorMode === 'light' ? 'gray.900' : 'gray.100'
+  const dividerColor = colorMode === 'light' ? 'gray.200' : 'gray.700'
+  const cardBg = colorMode === 'light' ? 'gray.50' : 'gray.800'
+  const hoverBg = colorMode === 'light' ? 'gray.100' : 'gray.700'
+  const iconColor = colorMode === 'light' ? 'brand.500' : 'brand.400'
+  const iconHoverBg = colorMode === 'light' ? 'gray.100' : 'gray.700'
   
   // Responsive values
   const isMobile = useBreakpointValue({ base: true, lg: false })
@@ -157,7 +158,7 @@ export const MainMenu: React.FC<MainMenuProps> = ({ isOpen, onClose, featureCont
     onClick: () => void
     isActive?: boolean
   }) => (
-    <Tooltip label={label} placement="top">
+    <Tooltip content={label}>
       <MotionIconButton
         aria-label={label}
         icon={icon}
@@ -170,7 +171,7 @@ export const MainMenu: React.FC<MainMenuProps> = ({ isOpen, onClose, featureCont
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
         transition={{ duration: 0.2 }}
-        isActive={isActive}
+        data-active={isActive ? "" : undefined}
         _active={{ bg: useColorModeValue('blue.100', 'blue.800') }}
         minW="56px"
         minH="56px"
@@ -187,7 +188,7 @@ export const MainMenu: React.FC<MainMenuProps> = ({ isOpen, onClose, featureCont
       <MotionVStack
         w="100%"
         align="stretch"
-        spacing={4}
+        gap={4}
         bg={cardBg}
         borderRadius="xl"
         p={cardPadding}
@@ -197,7 +198,7 @@ export const MainMenu: React.FC<MainMenuProps> = ({ isOpen, onClose, featureCont
         <motion.div variants={itemVariants}>
           <Heading 
             as="h3" 
-            size={headingSize} 
+            size={headingSize as any} 
             mb={4} 
             fontWeight="bold" 
             letterSpacing="wide"
@@ -209,7 +210,7 @@ export const MainMenu: React.FC<MainMenuProps> = ({ isOpen, onClose, featureCont
         </motion.div>
         
         <motion.div variants={itemVariants}>
-          <HStack spacing={3} justify="center">
+          <HStack gap={3} justify="center">
             <MobileFeatureButton
               icon={<FaSearch size={20} />}
               label="Search"
@@ -247,7 +248,7 @@ export const MainMenu: React.FC<MainMenuProps> = ({ isOpen, onClose, featureCont
     <MotionVStack
       w="100%"
       align="stretch"
-      spacing={3}
+      gap={3}
       bg={cardBg}
       borderRadius="xl"
       p={cardPadding}
@@ -257,7 +258,7 @@ export const MainMenu: React.FC<MainMenuProps> = ({ isOpen, onClose, featureCont
       <motion.div variants={itemVariants}>
         <Heading 
           as="h3" 
-          size={headingSize} 
+          size={headingSize as any} 
           mb={4} 
           fontWeight="bold" 
           letterSpacing="wide"
@@ -268,44 +269,46 @@ export const MainMenu: React.FC<MainMenuProps> = ({ isOpen, onClose, featureCont
         </Heading>
       </motion.div>
       
-      <VStack spacing={3} align="stretch">
+      <VStack gap={3} align="stretch">
         {links.map((link) => (
           <motion.div 
             key={link.to} 
             variants={itemVariants}
             whileTap={{ scale: 0.98 }}
           >
-            <ChakraLink
-              as={RouterLink}
+            <RouterLink
               to={link.to}
               onClick={onClose}
-              display="block"
-              w="100%"
-              p={itemPadding}
-              borderRadius="lg"
-              bg="transparent"
-              border="2px solid"
-              borderColor="transparent"
-              _hover={{
-                bg: hoverBg,
-                borderColor: iconColor,
+              style={{
+                display: 'block',
+                width: '100%',
+                padding: itemPadding ? `${itemPadding * 4}px` : '16px',
+                borderRadius: '8px',
+                backgroundColor: 'transparent',
+                border: '2px solid transparent',
+                minHeight: '48px',
+                textDecoration: 'none',
                 transition: 'all 0.2s',
               }}
-              _active={{
-                transform: 'scale(0.98)',
+              onMouseEnter={(e) => {
+                e.currentTarget.style.backgroundColor = hoverBg;
+                e.currentTarget.style.borderColor = iconColor;
               }}
-              minH="48px" // Better touch target
+              onMouseLeave={(e) => {
+                e.currentTarget.style.backgroundColor = 'transparent';
+                e.currentTarget.style.borderColor = 'transparent';
+              }}
             >
               {isMainService && link.description ? (
                 // Platform style for mobile
-                <VStack spacing={2}>
+                <VStack gap={2}>
                   <Icon 
                     as={link.icon} 
                     w={6} 
                     h={6} 
                     color={iconColor}
                   />
-                  <VStack spacing={1}>
+                  <VStack gap={1}>
                     <Text fontSize={fontSize} fontWeight="bold" textAlign="center">
                       {link.label}
                     </Text>
@@ -316,7 +319,7 @@ export const MainMenu: React.FC<MainMenuProps> = ({ isOpen, onClose, featureCont
                 </VStack>
               ) : (
                 // Regular navigation style
-                <HStack spacing={4} align="center" w="100%">
+                <HStack gap={4} align="center" w="100%">
                   <Icon 
                     as={link.icon} 
                     w={5} 
@@ -328,7 +331,7 @@ export const MainMenu: React.FC<MainMenuProps> = ({ isOpen, onClose, featureCont
                   </Text>
                 </HStack>
               )}
-            </ChakraLink>
+            </RouterLink>
           </motion.div>
         ))}
       </VStack>
@@ -376,7 +379,7 @@ export const MainMenu: React.FC<MainMenuProps> = ({ isOpen, onClose, featureCont
               }}
             >
               <MotionVStack
-                spacing={6}
+                gap={6}
                 align="stretch"
                 maxW="500px"
                 mx="auto"
@@ -387,7 +390,7 @@ export const MainMenu: React.FC<MainMenuProps> = ({ isOpen, onClose, featureCont
                 {/* Features Section - Only on Mobile */}
                 <MobileFeaturesSection />
                 
-                <MotionDivider 
+                <MotionSeparator 
                   borderColor={dividerColor}
                   borderWidth="1px"
                   variants={dividerVariants}
@@ -395,7 +398,7 @@ export const MainMenu: React.FC<MainMenuProps> = ({ isOpen, onClose, featureCont
                 
                 <MobileMenuSection title="Platforms" links={platformLinks} isMainService={true} />
                 
-                <MotionDivider 
+                <MotionSeparator 
                   borderColor={dividerColor}
                   borderWidth="1px"
                   variants={dividerVariants}
@@ -403,7 +406,7 @@ export const MainMenu: React.FC<MainMenuProps> = ({ isOpen, onClose, featureCont
                 
                 <MobileMenuSection title="Services" links={serviceLinks} />
                 
-                <MotionDivider 
+                <MotionSeparator 
                   borderColor={dividerColor}
                   borderWidth="1px"
                   variants={dividerVariants}
@@ -432,7 +435,7 @@ export const MainMenu: React.FC<MainMenuProps> = ({ isOpen, onClose, featureCont
               <MotionVStack
                 flex={2}
                 align="stretch"
-                spacing={4}
+                gap={4}
                 bg={cardBg}
                 borderRadius="xl"
                 p={6}
@@ -442,7 +445,7 @@ export const MainMenu: React.FC<MainMenuProps> = ({ isOpen, onClose, featureCont
                 variants={columnVariants}
                 whileHover={{ 
                   scale: 1.02,
-                  boxShadow: 'brand.lg',
+                  boxShadow: '0 8px 32px #8B5CF6',
                   transition: { duration: 0.2 }
                 }}
                 css={{
@@ -471,7 +474,7 @@ export const MainMenu: React.FC<MainMenuProps> = ({ isOpen, onClose, featureCont
                   </Heading>
                 </motion.div>
                 
-                <VStack spacing={3} align="stretch">
+                <VStack gap={3} align="stretch">
                   {navigationLinks.map((link) => (
                     <motion.div 
                       key={link.to} 
@@ -482,33 +485,33 @@ export const MainMenu: React.FC<MainMenuProps> = ({ isOpen, onClose, featureCont
                       }}
                       whileTap={{ scale: 0.98 }}
                     >
-                      <ChakraLink
-                        as={RouterLink}
+                      <RouterLink
                         to={link.to}
                         onClick={onClose}
-                        display="block"
-                        w="100%"
-                        p={4}
-                        borderRadius="lg"
-                        bg="transparent"
-                        border="2px solid"
-                        borderColor="transparent"
-                        _hover={{
-                          bg: hoverBg,
-                          transform: 'translateY(-2px)',
-                          boxShadow: 'brand.md',
-                          borderColor: iconColor,
+                        style={{
+                          display: 'block',
+                          width: '100%',
+                          padding: '16px',
+                          borderRadius: '8px',
+                          backgroundColor: 'transparent',
+                          border: '2px solid transparent',
+                          textDecoration: 'none',
                           transition: 'all 0.2s',
-                          '& .nav-icon': {
-                            transform: 'rotate(360deg)',
-                            transition: 'transform 0.6s ease-in-out',
-                          }
                         }}
-                        _active={{
-                          transform: 'translateY(0px)',
+                        onMouseEnter={(e) => {
+                          e.currentTarget.style.backgroundColor = hoverBg;
+                          e.currentTarget.style.borderColor = iconColor;
+                          e.currentTarget.style.transform = 'translateY(-2px)';
+                          e.currentTarget.style.boxShadow = 'var(--chakra-shadows-brand-md)';
+                        }}
+                        onMouseLeave={(e) => {
+                          e.currentTarget.style.backgroundColor = 'transparent';
+                          e.currentTarget.style.borderColor = 'transparent';
+                          e.currentTarget.style.transform = 'translateY(0)';
+                          e.currentTarget.style.boxShadow = 'none';
                         }}
                       >
-                        <HStack spacing={4} align="center" w="100%">
+                        <HStack gap={4} align="center" w="100%">
                           <Icon 
                             as={link.icon} 
                             w={6} 
@@ -521,14 +524,14 @@ export const MainMenu: React.FC<MainMenuProps> = ({ isOpen, onClose, featureCont
                             {link.label}
                           </Text>
                         </HStack>
-                      </ChakraLink>
+                      </RouterLink>
                     </motion.div>
                   ))}
                 </VStack>
               </MotionVStack>
 
               {/* Vertical Divider */}
-              <MotionDivider 
+              <MotionSeparator 
                 orientation="vertical" 
                 h="auto" 
                 borderColor={dividerColor}
@@ -540,7 +543,7 @@ export const MainMenu: React.FC<MainMenuProps> = ({ isOpen, onClose, featureCont
               <MotionVStack
                 flex={1}
                 align="stretch"
-                spacing={4}
+                gap={4}
                 bg={cardBg}
                 borderRadius="xl"
                 p={6}
@@ -548,7 +551,7 @@ export const MainMenu: React.FC<MainMenuProps> = ({ isOpen, onClose, featureCont
                 variants={columnVariants}
                 whileHover={{ 
                   scale: 1.02,
-                  boxShadow: 'brand.lg',
+                  boxShadow: '0 8px 32px #8B5CF6',
                   transition: { duration: 0.2 }
                 }}
               >
@@ -570,60 +573,66 @@ export const MainMenu: React.FC<MainMenuProps> = ({ isOpen, onClose, featureCont
                     key={link.to} 
                     variants={itemVariants}
                     whileHover={{ 
-                      scale: 1.08,
-                      rotate: -1,
+                      scale: 1.02,
+                      boxShadow: '0 4px 20px #8B5CF6',
                       transition: { duration: 0.2 }
                     }}
-                    whileTap={{ scale: 0.95 }}
+                    whileTap={{ scale: 0.98 }}
                   >
-                    <ChakraLink
-                      as={RouterLink}
+                    <RouterLink
                       to={link.to}
                       onClick={onClose}
-                      display="block"
-                      p={6}
-                      borderRadius="xl"
-                      bg="transparent"
-                      border="2px solid"
-                      borderColor="transparent"
-                      _hover={{
-                        bg: hoverBg,
-                        borderColor: iconColor,
-                        transform: 'translateY(-4px)',
-                        boxShadow: 'brand.lg',
-                        transition: 'all 0.3s',
-                        '& .platform-icon': {
-                          transform: 'rotate(360deg) scale(1.2)',
-                          transition: 'transform 0.6s ease-in-out',
-                        }
+                      style={{
+                        display: 'block',
+                        width: '100%',
+                        padding: '20px',
+                        borderRadius: '12px',
+                        backgroundColor: colorMode === 'light' ? 'var(--chakra-colors-gray-50)' : 'var(--chakra-colors-gray-700)',
+                        border: '2px solid transparent',
+                        textDecoration: 'none',
+                        transition: 'all 0.2s',
                       }}
-                      textAlign="center"
+                      onMouseEnter={(e) => {
+                        e.currentTarget.style.backgroundColor = hoverBg;
+                        e.currentTarget.style.borderColor = iconColor;
+                        e.currentTarget.style.transform = 'translateY(-4px)';
+                        e.currentTarget.style.boxShadow = 'var(--chakra-shadows-brand-lg)';
+                      }}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.style.backgroundColor = colorMode === 'light' ? 'var(--chakra-colors-gray-50)' : 'var(--chakra-colors-gray-700)';
+                        e.currentTarget.style.borderColor = 'transparent';
+                        e.currentTarget.style.transform = 'translateY(0)';
+                        e.currentTarget.style.boxShadow = 'none';
+                      }}
                     >
-                      <VStack spacing={3}>
-                        <Icon 
-                          as={link.icon} 
-                          w={8} 
-                          h={8} 
-                          color={iconColor}
-                          className="platform-icon"
-                          transition="transform 0.6s ease-in-out"
-                        />
-                        <VStack spacing={1}>
-                          <Text fontSize="2xl" fontWeight="bold">
+                      <VStack gap={2}>
+                        <motion.div
+                          whileHover={{ rotate: 360 }}
+                          transition={{ duration: 0.6, ease: "easeInOut" }}
+                        >
+                          <Icon 
+                            as={link.icon} 
+                            w={10} 
+                            h={10} 
+                            color={iconColor}
+                          />
+                        </motion.div>
+                        <VStack gap={1}>
+                          <Text fontSize="xl" fontWeight="bold" textAlign="center">
                             {link.label}
                           </Text>
-                          <Text fontSize="sm" color={textColor} opacity={0.7}>
+                          <Text fontSize="sm" color={textColor} opacity={0.7} textAlign="center">
                             {link.description}
                           </Text>
                         </VStack>
                       </VStack>
-                    </ChakraLink>
+                    </RouterLink>
                   </motion.div>
                 ))}
               </MotionVStack>
 
               {/* Vertical Divider */}
-              <MotionDivider 
+              <MotionSeparator 
                 orientation="vertical" 
                 h="auto" 
                 borderColor={dividerColor}
@@ -635,7 +644,7 @@ export const MainMenu: React.FC<MainMenuProps> = ({ isOpen, onClose, featureCont
               <MotionVStack
                 flex={1}
                 align="stretch"
-                spacing={4}
+                gap={4}
                 bg={cardBg}
                 borderRadius="xl"
                 p={6}
@@ -645,7 +654,7 @@ export const MainMenu: React.FC<MainMenuProps> = ({ isOpen, onClose, featureCont
                 variants={columnVariants}
                 whileHover={{ 
                   scale: 1.02,
-                  boxShadow: 'brand.lg',
+                  boxShadow: '0 8px 32px #8B5CF6',
                   transition: { duration: 0.2 }
                 }}
                 css={{
@@ -674,57 +683,71 @@ export const MainMenu: React.FC<MainMenuProps> = ({ isOpen, onClose, featureCont
                   </Heading>
                 </motion.div>
                 
-                <VStack spacing={3} align="stretch">
+                <VStack gap={3} align="stretch">
                   {serviceLinks.map((link) => (
                     <motion.div 
                       key={link.to} 
                       variants={itemVariants}
                       whileHover={{ 
-                        scale: 1.05,
-                        x: 4,
+                        scale: 1.02,
                         transition: { duration: 0.2 }
                       }}
                       whileTap={{ scale: 0.98 }}
                     >
-                      <ChakraLink
-                        as={RouterLink}
+                      <RouterLink
                         to={link.to}
                         onClick={onClose}
-                        display="block"
-                        p={4}
-                        borderRadius="lg"
-                        bg="transparent"
-                        border="2px solid"
-                        borderColor="transparent"
-                        _hover={{
-                          bg: hoverBg,
-                          transform: 'translateX(8px)',
-                          boxShadow: 'brand.md',
-                          borderColor: iconColor,
+                        style={{
+                          display: 'block',
+                          width: '100%',
+                          padding: '16px',
+                          borderRadius: '8px',
+                          backgroundColor: 'transparent',
+                          border: '2px solid transparent',
+                          textDecoration: 'none',
                           transition: 'all 0.2s',
-                          '& .service-icon': {
-                            transform: 'rotate(-360deg)',
-                            transition: 'transform 0.6s ease-in-out',
+                          ...(link.isMain && {
+                            backgroundColor: colorMode === 'light' ? 'var(--chakra-colors-blue-50)' : 'var(--chakra-colors-blue-900)',
+                            borderColor: colorMode === 'light' ? 'var(--chakra-colors-blue-200)' : 'var(--chakra-colors-blue-700)',
+                          })
+                        }}
+                        onMouseEnter={(e) => {
+                          e.currentTarget.style.backgroundColor = hoverBg;
+                          e.currentTarget.style.borderColor = iconColor;
+                          e.currentTarget.style.transform = 'translateY(-2px)';
+                          e.currentTarget.style.boxShadow = 'var(--chakra-shadows-brand-md)';
+                        }}
+                        onMouseLeave={(e) => {
+                          if (link.isMain) {
+                            e.currentTarget.style.backgroundColor = colorMode === 'light' ? 'var(--chakra-colors-blue-50)' : 'var(--chakra-colors-blue-900)';
+                            e.currentTarget.style.borderColor = colorMode === 'light' ? 'var(--chakra-colors-blue-200)' : 'var(--chakra-colors-blue-700)';
+                          } else {
+                            e.currentTarget.style.backgroundColor = 'transparent';
+                            e.currentTarget.style.borderColor = 'transparent';
                           }
+                          e.currentTarget.style.transform = 'translateY(0)';
+                          e.currentTarget.style.boxShadow = 'none';
                         }}
                       >
-                        <HStack spacing={3} align="center">
+                        <HStack gap={4} align="center" w="100%">
                           <Icon 
                             as={link.icon} 
-                            w={link.isMain ? 6 : 5} 
-                            h={link.isMain ? 6 : 5} 
-                            color={iconColor}
+                            w={6} 
+                            h={6} 
+                            color={link.isMain ? iconColor : iconColor}
                             className="service-icon"
-                            transition="transform 0.6s ease-in-out"
                           />
-                          <Text 
-                            fontSize={link.isMain ? "xl" : "lg"} 
-                            fontWeight={link.isMain ? "bold" : "medium"}
-                          >
-                            {link.label}
-                          </Text>
+                          <Box flex={1}>
+                            <Text 
+                              fontSize="lg" 
+                              fontWeight={link.isMain ? "bold" : "semibold"}
+                              color={link.isMain ? iconColor : textColor}
+                            >
+                              {link.label}
+                            </Text>
+                          </Box>
                         </HStack>
-                      </ChakraLink>
+                      </RouterLink>
                     </motion.div>
                   ))}
                 </VStack>

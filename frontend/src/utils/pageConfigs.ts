@@ -14,7 +14,7 @@ export const pageConfigs: Record<string, PageConfig> = {
   },
   about: {
     title: 'About SSQ',
-    tagline: 'Innovation Through Excellence',
+    tagline: 'Your Vision, Our Solution',
     showText: true,
     minHeight: '50vh'
   },

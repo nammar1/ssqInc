@@ -4,18 +4,15 @@ import {
   Heading,
   Text,
   Stack,
-  useColorModeValue,
   SimpleGrid,
   Stat,
-  StatLabel,
-  StatNumber,
-  StatHelpText,
   VStack,
   Button,
 } from '@chakra-ui/react'
 import { Link as RouterLink } from 'react-router-dom'
 import { WebHero } from '@/components/ui/WebHero'
 import { getPageConfig } from '@/utils/pageConfigs'
+import { useColorModeValue } from '@/components/ui/color-mode'
 
 const FINANCIAL_HIGHLIGHTS = [
   {
@@ -55,7 +52,7 @@ export default function Investor() {
 
       {/* Financial Highlights */}
       <Container maxW="1200px" py={20}>
-        <Stack spacing={12}>
+        <Stack gap={12}>
           <Box textAlign="center">
             <Heading mb={4}>Financial Highlights</Heading>
             <Text fontSize="lg" color={useColorModeValue('gray.600', 'gray.400')}>
@@ -63,9 +60,9 @@ export default function Investor() {
             </Text>
           </Box>
           
-          <SimpleGrid columns={{ base: 2, md: 4 }} spacing={8}>
+          <SimpleGrid columns={{ base: 2, md: 4 }} gap={8}>
             {FINANCIAL_HIGHLIGHTS.map((stat) => (
-              <Stat
+              <Stat.Root
                 key={stat.label}
                 bg={useColorModeValue('white', 'gray.800')}
                 p={6}
@@ -73,14 +70,14 @@ export default function Investor() {
                 shadow="lg"
                 textAlign="center"
               >
-                <StatNumber fontSize="3xl" color="brand.500">
+                <Stat.ValueText fontSize="3xl" color="brand.500">
                   {stat.value}
-                </StatNumber>
-                <StatLabel fontSize="lg" fontWeight="bold">
+                </Stat.ValueText>
+                <Stat.Label fontSize="lg" fontWeight="bold">
                   {stat.label}
-                </StatLabel>
-                <StatHelpText>{stat.helpText}</StatHelpText>
-              </Stat>
+                </Stat.Label>
+                <Stat.HelpText>{stat.helpText}</Stat.HelpText>
+              </Stat.Root>
             ))}
           </SimpleGrid>
         </Stack>
@@ -89,7 +86,7 @@ export default function Investor() {
       {/* Investment Opportunities */}
       <Box bg={useColorModeValue('gray.50', 'gray.900')}>
         <Container maxW="1200px" py={20}>
-          <Stack spacing={12}>
+          <Stack gap={12}>
             <Box textAlign="center">
               <Heading mb={4}>Investment Opportunities</Heading>
               <Text fontSize="lg" color={useColorModeValue('gray.600', 'gray.400')}>
@@ -97,8 +94,8 @@ export default function Investor() {
               </Text>
             </Box>
             
-            <SimpleGrid columns={{ base: 1, md: 2 }} spacing={10}>
-              <VStack spacing={6} align="stretch">
+            <SimpleGrid columns={{ base: 1, md: 2 }} gap={10}>
+              <VStack gap={6} align="stretch">
                 <Box>
                   <Heading size="md" mb={4}>
                     Market Position
@@ -120,7 +117,7 @@ export default function Investor() {
                 </Box>
               </VStack>
               
-              <VStack spacing={6} align="stretch">
+              <VStack gap={6} align="stretch">
                 <Box>
                   <Heading size="md" mb={4}>
                     Investment Focus
@@ -147,20 +144,20 @@ export default function Investor() {
 
       {/* Contact CTA */}
       <Container maxW="1200px" py={20}>
-        <Stack spacing={8} align="center" textAlign="center">
+        <Stack gap={8} align="center" textAlign="center">
           <Heading>Interested in Investment Opportunities?</Heading>
           <Text fontSize="lg" maxW="2xl">
             Contact our investor relations team to learn more about partnership and investment opportunities
           </Text>
-          <Button
-            as={RouterLink}
-            to="/contact"
-            colorScheme="brand"
-            size="lg"
-            px={8}
-          >
-            Contact Investor Relations
-          </Button>
+          <RouterLink to="/contact">
+            <Button
+              colorPalette="brand"
+              size="lg"
+              px={8}
+            >
+              Contact Investor Relations
+            </Button>
+          </RouterLink>
         </Stack>
       </Container>
     </Box>

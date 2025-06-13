@@ -3,22 +3,21 @@ import {
   Container,
   Heading,
   Text,
-  Stack,
-  useColorModeValue,
   SimpleGrid,
-  FormControl,
-  FormLabel,
   Input,
   Textarea,
   Button,
   VStack,
   Icon,
   HStack,
+  Stack,
+  Field,
 } from '@chakra-ui/react'
 import { FaPhone, FaEnvelope, FaMapMarkerAlt } from 'react-icons/fa'
-import { useToastContext } from '@/components/ui/toaster'
+import { toaster } from '@/components/ui/toaster'
 import { WebHero } from '@/components/ui/WebHero'
 import { getPageConfig } from '@/utils/pageConfigs'
+import { useColorModeValue } from '@/components/ui/color-mode'
 
 const CONTACT_INFO = [
   {
@@ -39,16 +38,14 @@ const CONTACT_INFO = [
 ]
 
 export default function Contact() {
-  const { toast } = useToastContext()
   const config = getPageConfig('contact')
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
     // Add your form submission logic here
-    toast({
+    toaster.success({
       title: 'Message Sent',
       description: 'We will get back to you soon!',
-      status: 'success',
     })
   }
 
@@ -64,7 +61,7 @@ export default function Contact() {
 
       {/* Contact Form and Info Section */}
       <Container maxW="1200px" py={20}>
-        <SimpleGrid columns={{ base: 1, md: 2 }} spacing={10}>
+        <SimpleGrid columns={{ base: 1, md: 2 }} gap={10}>
           {/* Contact Form */}
           <Box
             bg={useColorModeValue('white', 'gray.800')}
@@ -73,26 +70,26 @@ export default function Contact() {
             p={8}
           >
             <form onSubmit={handleSubmit}>
-              <VStack spacing={4}>
-                <FormControl isRequired>
-                  <FormLabel>Name</FormLabel>
+              <VStack gap={4}>
+                <Field.Root required>
+                  <Field.Label>Name</Field.Label>
                   <Input type="text" />
-                </FormControl>
-                <FormControl isRequired>
-                  <FormLabel>Email</FormLabel>
+                </Field.Root>
+                <Field.Root required>
+                  <Field.Label>Email</Field.Label>
                   <Input type="email" />
-                </FormControl>
-                <FormControl isRequired>
-                  <FormLabel>Subject</FormLabel>
+                </Field.Root>
+                <Field.Root required>
+                  <Field.Label>Subject</Field.Label>
                   <Input type="text" />
-                </FormControl>
-                <FormControl isRequired>
-                  <FormLabel>Message</FormLabel>
+                </Field.Root>
+                <Field.Root required>
+                  <Field.Label>Message</Field.Label>
                   <Textarea rows={6} />
-                </FormControl>
+                </Field.Root>
                 <Button
                   type="submit"
-                  colorScheme="brand"
+                  colorPalette="brand"
                   size="lg"
                   w="full"
                 >
@@ -103,14 +100,14 @@ export default function Contact() {
           </Box>
 
           {/* Contact Information */}
-          <Stack spacing={8}>
+          <Stack gap={8}>
             <Box>
               <Heading size="md" mb={6}>
                 Contact Information
               </Heading>
-              <VStack spacing={6} align="stretch">
+              <VStack gap={6} align="stretch">
                 {CONTACT_INFO.map((info) => (
-                  <HStack key={info.title} spacing={4}>
+                  <HStack key={info.title} gap={4}>
                     <Icon
                       as={info.icon}
                       w={6}
@@ -133,7 +130,7 @@ export default function Contact() {
               <Heading size="md" mb={6}>
                 Business Hours
               </Heading>
-              <VStack spacing={2} align="stretch">
+              <VStack gap={2} align="stretch">
                 <Text>Monday - Friday: 9:00 AM - 5:00 PM</Text>
                 <Text>Saturday: 10:00 AM - 2:00 PM</Text>
                 <Text>Sunday: Closed</Text>

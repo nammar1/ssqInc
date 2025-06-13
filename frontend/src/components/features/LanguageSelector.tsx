@@ -3,13 +3,13 @@ import {
   Button,
   VStack,
   Text,
-  useColorModeValue,
-  Divider,
   HStack,
+  Separator,
 } from '@chakra-ui/react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useState } from 'react'
 import { FaCheck } from 'react-icons/fa'
+import { useColorModeValue } from '@/components/ui/color-mode'
 
 const MotionBox = motion(Box)
 
@@ -71,7 +71,7 @@ export function LanguageSelector({ isOpen, onClose }: LanguageSelectorProps) {
             minW="220px"
             backdropFilter="blur(8px)"
           >
-            <VStack spacing={3} align="stretch">
+            <VStack gap={3} align="stretch">
               <Text
                 fontSize="sm"
                 fontWeight="semibold"
@@ -82,7 +82,7 @@ export function LanguageSelector({ isOpen, onClose }: LanguageSelectorProps) {
                 Select Language
               </Text>
               
-              <Divider />
+              <Separator />
               
               {languages.map((language) => (
                 <Button
@@ -100,7 +100,7 @@ export function LanguageSelector({ isOpen, onClose }: LanguageSelectorProps) {
                   justifyContent="flex-start"
                   position="relative"
                 >
-                  <HStack spacing={3} width="100%">
+                  <HStack gap={3} width="100%">
                     <Text fontSize="lg">{language.flag}</Text>
                     <Text flex={1} textAlign="left">
                       {language.name}
@@ -112,7 +112,7 @@ export function LanguageSelector({ isOpen, onClose }: LanguageSelectorProps) {
                 </Button>
               ))}
               
-              <Divider />
+              <Separator />
               
               <Text
                 fontSize="xs"

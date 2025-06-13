@@ -90,7 +90,7 @@ export const LightMode = React.forwardRef<HTMLDivElement, BoxProps>(
         color="gray.800"
         display="contents"
         className="chakra-theme light"
-        colorScheme="light"
+        colorPalette="light"
         ref={ref}
         {...props}
       />
@@ -105,7 +105,7 @@ export const DarkMode = React.forwardRef<HTMLDivElement, BoxProps>(
         color="gray.100"
         display="contents"
         className="chakra-theme dark"
-        colorScheme="dark"
+        colorPalette="dark"
         ref={ref}
         {...props}
       />

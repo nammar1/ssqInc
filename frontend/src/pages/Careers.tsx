@@ -4,7 +4,6 @@ import {
   Heading,
   Text,
   Stack,
-  useColorModeValue,
   SimpleGrid,
   Button,
   VStack,
@@ -14,6 +13,7 @@ import {
 import { Link as RouterLink } from 'react-router-dom'
 import { WebHero } from '@/components/ui/WebHero'
 import { getPageConfig } from '@/utils/pageConfigs'
+import { useColorModeValue } from '@/components/ui/color-mode'
 
 const JOB_OPENINGS = [
   {
@@ -54,7 +54,7 @@ export default function Careers() {
 
       {/* Job Openings Section */}
       <Container maxW="1200px" py={20}>
-        <Stack spacing={12}>
+        <Stack gap={12}>
           <Box textAlign="center">
             <Heading mb={4}>Current Openings</Heading>
             <Text fontSize="lg" color={useColorModeValue('gray.600', 'gray.400')}>
@@ -62,7 +62,7 @@ export default function Careers() {
             </Text>
           </Box>
           
-          <SimpleGrid columns={{ base: 1, lg: 2 }} spacing={8}>
+          <SimpleGrid columns={{ base: 1, lg: 2 }} gap={8}>
             {JOB_OPENINGS.map((job) => (
               <Box
                 key={job.title}
@@ -73,13 +73,13 @@ export default function Careers() {
                 _hover={{ shadow: 'xl', transform: 'translateY(-2px)' }}
                 transition="all 0.3s"
               >
-                <VStack spacing={4} align="stretch">
+                <VStack gap={4} align="stretch">
                   <Box>
                     <Heading size="md" mb={2}>
                       {job.title}
                     </Heading>
-                    <HStack spacing={2} mb={4}>
-                      <Badge colorScheme="brand">{job.department}</Badge>
+                    <HStack gap={2} mb={4}>
+                      <Badge colorPalette="brand">{job.department}</Badge>
                       <Badge variant="outline">{job.location}</Badge>
                       <Badge variant="outline">{job.type}</Badge>
                     </HStack>
@@ -87,7 +87,7 @@ export default function Careers() {
                       {job.description}
                     </Text>
                   </Box>
-                  <Button colorScheme="brand" size="sm" alignSelf="flex-start">
+                  <Button colorPalette="brand" size="sm" alignSelf="flex-start">
                     Apply Now
                   </Button>
                 </VStack>
@@ -100,10 +100,10 @@ export default function Careers() {
       {/* Benefits Section */}
       <Box bg={useColorModeValue('gray.50', 'gray.900')}>
         <Container maxW="1200px" py={20}>
-          <Stack spacing={12}>
+          <Stack gap={12}>
             <Heading textAlign="center">Why Work With Us?</Heading>
-            <SimpleGrid columns={{ base: 1, md: 3 }} spacing={8}>
-              <VStack spacing={4} textAlign="center">
+            <SimpleGrid columns={{ base: 1, md: 3 }} gap={8}>
+              <VStack gap={4} textAlign="center">
                 <Heading size="md" color="brand.500">
                   Flexible Work
                 </Heading>
@@ -111,7 +111,7 @@ export default function Careers() {
                   Remote-first culture with flexible hours and work-life balance
                 </Text>
               </VStack>
-              <VStack spacing={4} textAlign="center">
+              <VStack gap={4} textAlign="center">
                 <Heading size="md" color="brand.500">
                   Growth Opportunities
                 </Heading>
@@ -119,7 +119,7 @@ export default function Careers() {
                   Continuous learning, training, and career advancement paths
                 </Text>
               </VStack>
-              <VStack spacing={4} textAlign="center">
+              <VStack gap={4} textAlign="center">
                 <Heading size="md" color="brand.500">
                   Great Benefits
                 </Heading>
@@ -134,20 +134,20 @@ export default function Careers() {
 
       {/* CTA Section */}
       <Container maxW="1200px" py={20}>
-        <Stack spacing={8} align="center" textAlign="center">
+        <Stack gap={8} align="center" textAlign="center">
           <Heading>Don't See Your Role?</Heading>
           <Text fontSize="lg" maxW="2xl">
             We're always looking for talented individuals. Send us your resume!
           </Text>
-          <Button
-            as={RouterLink}
-            to="/contact"
-            colorScheme="brand"
-            size="lg"
-            px={8}
-          >
-            Contact Us
-          </Button>
+          <RouterLink to="/contact">
+            <Button
+              colorPalette="brand"
+              size="lg"
+              px={8}
+            >
+              Contact Us
+            </Button>
+          </RouterLink>
         </Stack>
       </Container>
     </Box>

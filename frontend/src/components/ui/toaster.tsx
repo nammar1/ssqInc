@@ -1,108 +1,135 @@
 "use client"
 
-import {
-  useToast,
-  ToastId,
-  UseToastOptions,
-  Box,
-  CloseButton,
-  Text,
-  Flex,
-  Spinner,
-  ToastPosition,
-  useColorModeValue,
-} from "@chakra-ui/react"
-import { createContext, useContext, ReactNode } from "react"
+import * as React from "react"
+import { Toaster as Sonner, toast } from "sonner"
+import { useColorMode } from './color-mode'
 
-interface ToastContextType {
-  toast: (options: UseToastOptions) => ToastId
-  close: (id: ToastId) => void
-  closeAll: () => void
+// Create toaster instance
+export const toaster = {
+  create: (options: ToastOptions) => {
+    const { type = 'info', ...rest } = options
+    return toast[type]?.(rest.description || rest.title || '', {
+      ...rest,
+      className: rest.className,
+    })
+  },
+  success: (options: ToastOptions) => {
+    return toast.success(options.description || options.title || '', {
+      ...options,
+    })
+  },
+  error: (options: ToastOptions) => {
+    return toast.error(options.description || options.title || '', {
+      ...options,
+    })
+  },
+  warning: (options: ToastOptions) => {
+    return toast.warning(options.description || options.title || '', {
+      ...options,
+    })
+  },
+  info: (options: ToastOptions) => {
+    return toast.info(options.description || options.title || '', {
+      ...options,
+    })
+  },
+  promise: <T,>(
+    promise: Promise<T>,
+    options: {
+      loading: ToastOptions
+      success: ToastOptions
+      error: ToastOptions
+    }
+  ) => {
+    return toast.promise(promise, {
+      loading: options.loading.description || options.loading.title || '',
+      success: options.success.description || options.success.title || '',
+      error: options.error.description || options.error.title || '',
+    })
+  },
+  dismiss: (id?: string | number) => {
+    if (id) {
+      toast.dismiss(id)
+    } else {
+      toast.dismiss()
+    }
+  },
+  closeAll: () => toast.dismiss(),
+  close: (id: string | number) => toast.dismiss(id),
+  isActive: (_id: string | number) => {
+    // Sonner doesn't have isActive, so we'll always return false
+    return false
+  },
+  update: (id: string | number, options: ToastOptions) => {
+    // Sonner doesn't have update, so we'll dismiss and create new
+    toast.dismiss(id)
+    return toaster.create({ ...options, id })
+  },
+  pause: (_id: string | number) => {
+    // Sonner doesn't have pause functionality
+    console.warn('Pause functionality not available with Sonner')
+  },
+  resume: (_id: string | number) => {
+    // Sonner doesn't have resume functionality
+    console.warn('Resume functionality not available with Sonner')
+  },
 }
 
-const ToastContext = createContext<ToastContextType | undefined>(undefined)
+export type ToastId = string | number
 
-export function ToastProvider({ children }: { children: ReactNode }) {
-  const toast = useToast()
+export type ToastPosition = 
+  | "top-left" 
+  | "top-center" 
+  | "top-right" 
+  | "bottom-left" 
+  | "bottom-center" 
+  | "bottom-right"
 
-  const value = {
-    toast: (options: UseToastOptions) => {
-      return toast({
-        position: "bottom-end" as ToastPosition,
-        duration: 5000,
-        isClosable: true,
-        ...options,
-      })
-    },
-    close: (id: ToastId) => toast.close(id),
-    closeAll: () => toast.closeAll(),
-  }
-
-  return (
-    <ToastContext.Provider value={value}>
-      {children}
-    </ToastContext.Provider>
-  )
-}
-
-export function useToastContext() {
-  const context = useContext(ToastContext)
-  if (!context) {
-    throw new Error("useToastContext must be used within a ToastProvider")
-  }
-  return context
-}
-
-export function Toast({
-  title,
-  description,
-  status = "info",
-  isClosable = true,
-  onClose,
-}: {
+export interface ToastOptions {
+  id?: ToastId
   title?: string
   description?: string
-  status?: "info" | "warning" | "success" | "error" | "loading"
-  isClosable?: boolean
+  type?: 'info' | 'warning' | 'success' | 'error' | 'loading'
+  duration?: number
+  closable?: boolean
+  action?: {
+    label: string
+    onClick: () => void
+  }
   onClose?: () => void
-}) {
-  const bgColor = useColorModeValue('white', 'gray.800')
-  const textColor = useColorModeValue('gray.600', 'gray.400')
-  const hoverBg = useColorModeValue('gray.100', 'gray.700')
+  onStatusChange?: (details: { status: string }) => void
+  position?: ToastPosition
+  className?: string
+}
+
+export interface UseToastOptions {
+  position?: ToastPosition
+  duration?: number
+}
+
+export function Toaster() {
+  const { colorMode } = useColorMode()
 
   return (
-    <Box
-      p={3}
-      bg={bgColor}
-      borderRadius="md"
-      boxShadow="lg"
-      maxW="sm"
-      w="full"
-    >
-      <Flex align="center" justify="space-between">
-        <Flex align="center">
-          {status === "loading" && <Spinner size="sm" mr={2} />}
-          <Box>
-            {title && (
-              <Text fontWeight="bold" fontSize="sm">
-                {title}
-              </Text>
-            )}
-            {description && (
-              <Text fontSize="sm" color={textColor}>
-                {description}
-              </Text>
-            )}
-          </Box>
-        </Flex>
-        {isClosable && (
-          <CloseButton
-            size="sm"
-            onClick={onClose}
-            _hover={{ bg: hoverBg }}
-          />
-        )}
-      </Flex>
-    </Box>
+    <Sonner
+      theme={colorMode}
+      position="bottom-right"
+      duration={5000}
+      closeButton
+      toastOptions={{
+        classNames: {
+          toast: 'chakra-toast',
+          title: 'chakra-toast-title',
+          description: 'chakra-toast-description',
+        },
+      }}
+    />
   )
 }
+
+export function ToastProvider({ children }: { children: React.ReactNode }) {
+  return <>{children}</>
+}
+
+// For backwards compatibility
+export const useToast = () => toaster

@@ -2,9 +2,6 @@ import {
   Box,
   Input,
   InputGroup,
-  InputLeftElement,
-  InputRightElement,
-  useColorModeValue,
   VStack,
   Text,
   Button,
@@ -12,11 +9,13 @@ import {
   Icon,
   Kbd,
 } from '@chakra-ui/react'
-import { SearchIcon, CloseIcon } from '@chakra-ui/icons'
+import { Search, X } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useState, useRef, useEffect, useMemo } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { FaHome, FaInfoCircle, FaCog, FaEnvelope, FaBlog, FaUsers, FaShieldAlt, FaCode, FaDatabase, FaRobot, FaCloud, FaDigitalTachograph } from 'react-icons/fa'
+import { useColorMode } from '../ui/color-mode'
+import { useColorModeValue } from '@/components/ui/color-mode'
 
 
 
@@ -55,14 +54,15 @@ export function SearchBar({ isOpen, onClose }: SearchBarProps) {
   const inputRef = useRef<HTMLInputElement>(null)
   const navigate = useNavigate()
   
-  const bg = useColorModeValue('white', 'gray.800')
-  const borderColor = useColorModeValue('gray.200', 'gray.600')
-  const placeholderColor = useColorModeValue('gray.500', 'gray.400')
-  const shadowColor = useColorModeValue('rgba(0,0,0,0.1)', 'rgba(0,0,0,0.3)')
-  const hoverBg = useColorModeValue('gray.50', 'gray.700')
-  const selectedBg = useColorModeValue('blue.50', 'blue.900')
-  const textColor = useColorModeValue('gray.700', 'gray.200')
-  const categoryColor = useColorModeValue('gray.500', 'gray.400')
+  const { colorMode } = useColorMode()
+  const bg = colorMode === 'light' ? 'white' : 'gray.800'
+  const borderColor = colorMode === 'light' ? 'gray.200' : 'gray.600'
+  const placeholderColor = colorMode === 'light' ? 'gray.500' : 'gray.400'
+  const shadowColor = colorMode === 'light' ? 'rgba(0,0,0,0.1)' : 'rgba(0,0,0,0.3)'
+  const hoverBg = colorMode === 'light' ? 'gray.50' : 'gray.700'
+  const selectedBg = colorMode === 'light' ? 'blue.50' : 'blue.900'
+  const textColor = colorMode === 'light' ? 'gray.700' : 'gray.200'
+  const categoryColor = colorMode === 'light' ? 'gray.500' : 'gray.400'
 
   const filteredResults = useMemo(() => {
     if (!searchValue.trim()) return searchData.slice(0, 6) // Show top 6 when no search
@@ -163,12 +163,28 @@ export function SearchBar({ isOpen, onClose }: SearchBarProps) {
           >
             {/* Search Input */}
             <Box p={4} borderBottom="1px solid" borderColor={borderColor}>
-              <InputGroup size="lg">
-                <InputLeftElement pointerEvents="none">
-                  <SearchIcon color={placeholderColor} boxSize={4} />
-                </InputLeftElement>
+              <InputGroup 
+                startElement={<Search color={placeholderColor} size={16} />}
+                endElement={
+                  searchValue ? (
+                    <Button
+                      size="sm"
+                      variant="ghost"
+                      onClick={clearSearch}
+                      borderRadius="full"
+                      minW="auto"
+                      h="24px"
+                      w="24px"
+                      p={0}
+                    >
+                      <X size={12} />
+                    </Button>
+                  ) : null
+                }
+              >
                 <Input
                   ref={inputRef}
+                  size="lg"
                   placeholder="Search pages, services..."
                   value={searchValue}
                   onChange={(e) => {
@@ -187,24 +203,7 @@ export function SearchBar({ isOpen, onClose }: SearchBarProps) {
                   _placeholder={{ color: placeholderColor }}
                   fontSize="md"
                   fontWeight="medium"
-                  pr={searchValue ? "40px" : "16px"}
                 />
-                {searchValue && (
-                  <InputRightElement>
-                    <Button
-                      size="sm"
-                      variant="ghost"
-                      onClick={clearSearch}
-                      borderRadius="full"
-                      minW="auto"
-                      h="24px"
-                      w="24px"
-                      p={0}
-                    >
-                      <CloseIcon boxSize={3} />
-                    </Button>
-                  </InputRightElement>
-                )}
               </InputGroup>
             </Box>
 
@@ -216,7 +215,7 @@ export function SearchBar({ isOpen, onClose }: SearchBarProps) {
                 transition={{ delay: 0.1 }}
               >
                 <VStack
-                  spacing={0}
+                  gap={0}
                   align="stretch"
                   maxH="300px"
                   overflowY="auto"
@@ -258,7 +257,7 @@ export function SearchBar({ isOpen, onClose }: SearchBarProps) {
                         borderLeftColor={selectedIndex === index ? "blue.400" : "transparent"}
                         w="100%"
                       >
-                        <HStack spacing={3} width="100%" align="flex-start">
+                        <HStack gap={3} width="100%" align="flex-start">
                           <motion.div
                             whileHover={{ scale: 1.1 }}
                             transition={{ duration: 0.2 }}
@@ -276,14 +275,14 @@ export function SearchBar({ isOpen, onClose }: SearchBarProps) {
                               <Icon as={result.icon} boxSize={4} />
                             </Box>
                           </motion.div>
-                          <VStack align="flex-start" spacing={1} flex={1} minW={0}>
-                            <HStack justify="space-between" w="100%" align="center" spacing={2}>
+                          <VStack align="flex-start" gap={1} flex={1} minW={0}>
+                            <HStack justify="space-between" w="100%" align="center" gap={2}>
                               <Text
                                 fontWeight="semibold"
                                 color={textColor}
                                 fontSize="sm"
                                 flex={1}
-                                noOfLines={1}
+                                lineClamp={1}
                                 overflow="hidden"
                                 textOverflow="ellipsis"
                               >
@@ -307,7 +306,7 @@ export function SearchBar({ isOpen, onClose }: SearchBarProps) {
                               fontSize="xs"
                               color={categoryColor}
                               textAlign="left"
-                              noOfLines={2}
+                              lineClamp={2}
                               w="100%"
                               overflow="hidden"
                               textOverflow="ellipsis"
@@ -340,18 +339,18 @@ export function SearchBar({ isOpen, onClose }: SearchBarProps) {
               bg={useColorModeValue('gray.50', 'gray.900')}
             >
               <HStack justify="space-between" fontSize="xs" color={categoryColor}>
-                <HStack spacing={2}>
-                  <HStack spacing={1}>
+                <HStack gap={2}>
+                  <HStack gap={1}>
                     <Kbd>↑</Kbd>
                     <Kbd>↓</Kbd>
                     <Text>navigate</Text>
                   </HStack>
-                  <HStack spacing={1}>
+                  <HStack gap={1}>
                     <Kbd>↵</Kbd>
                     <Text>select</Text>
                   </HStack>
                 </HStack>
-                <HStack spacing={1}>
+                <HStack gap={1}>
                   <Kbd>esc</Kbd>
                   <Text>close</Text>
                 </HStack>

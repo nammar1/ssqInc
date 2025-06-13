@@ -1,20 +1,19 @@
 import {
   Button,
-  FormControl,
-  FormLabel,
-  Input,
-  Select,
-  Textarea,
   Box,
   VStack,
   Text,
-  useColorModeValue,
   IconButton,
   Heading,
+  Input,
+  Textarea,
+  NativeSelect,
 } from '@chakra-ui/react'
-import { CloseIcon } from '@chakra-ui/icons'
+import { X } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useEffect } from 'react'
+import { useColorMode } from '../ui/color-mode'
+import { useColorModeValue } from '@/components/ui/color-mode'
 
 const MotionBox = motion(Box)
 
@@ -24,11 +23,12 @@ interface LetsTalkProps {
 }
 
 export function LetsTalk({ isOpen, onClose }: LetsTalkProps) {
-  const inputBg = useColorModeValue('white', 'gray.800')
-  const bgColor = useColorModeValue('white', 'gray.900')
-  const borderColor = useColorModeValue('gray.200', 'gray.600')
-  const textColor = useColorModeValue('gray.900', 'white')
-  const overlayBg = useColorModeValue('blackAlpha.600', 'blackAlpha.700')
+  const { colorMode } = useColorMode()
+  const inputBg = colorMode === 'light' ? 'white' : 'gray.800'
+  const bgColor = colorMode === 'light' ? 'white' : 'gray.900'
+  const borderColor = colorMode === 'light' ? 'gray.200' : 'gray.600'
+  const textColor = colorMode === 'light' ? 'gray.900' : 'white'
+  const overlayBg = colorMode === 'light' ? 'blackAlpha.600' : 'blackAlpha.700'
 
   // Close on escape key
   useEffect(() => {
@@ -100,12 +100,13 @@ export function LetsTalk({ isOpen, onClose }: LetsTalkProps) {
               </Heading>
               <IconButton
                 aria-label="Close form"
-                icon={<CloseIcon />}
                 variant="ghost"
                 size="sm"
                 onClick={onClose}
                 _hover={{ bg: useColorModeValue('gray.100', 'gray.700') }}
-              />
+              >
+                <X size={18} />
+              </IconButton>
             </Box>
 
             {/* Scrollable Content */}
@@ -126,99 +127,172 @@ export function LetsTalk({ isOpen, onClose }: LetsTalkProps) {
                 },
               }}
             >
-              <VStack spacing={6} align="stretch">
+              <VStack gap={6} align="stretch">
                 <Text fontSize="md" color={useColorModeValue('gray.600', 'gray.300')} mb={4}>
                   Interested in solving your problems with SSQ software? Fill out this form and we'll get back to you soon.
                 </Text>
 
-                <FormControl isRequired>
-                  <FormLabel>First Name</FormLabel>
-                  <Input 
-                    bg={inputBg} 
+                {/* First Name */}
+                <Box mb={2}>
+                  <Text as="label" fontWeight="semibold" mb={1} display="block">
+                    First Name <Text as="span" color="red.500">*</Text>
+                  </Text>
+                  <Input
+                    type="text"
                     placeholder="Enter your first name"
+                    bg={inputBg}
+                    borderRadius="md"
+                    borderWidth="1px"
+                    borderColor={borderColor}
+                    p={2}
+                    w="100%"
                     _focus={{ borderColor: 'blue.500', boxShadow: '0 0 0 1px blue.500' }}
                   />
-                </FormControl>
+                </Box>
 
-                <FormControl isRequired>
-                  <FormLabel>Last Name</FormLabel>
-                  <Input 
-                    bg={inputBg} 
+                {/* Last Name */}
+                <Box mb={2}>
+                  <Text as="label" fontWeight="semibold" mb={1} display="block">
+                    Last Name <Text as="span" color="red.500">*</Text>
+                  </Text>
+                  <Input
+                    type="text"
                     placeholder="Enter your last name"
+                    bg={inputBg}
+                    borderRadius="md"
+                    borderWidth="1px"
+                    borderColor={borderColor}
+                    p={2}
+                    w="100%"
                     _focus={{ borderColor: 'blue.500', boxShadow: '0 0 0 1px blue.500' }}
                   />
-                </FormControl>
+                </Box>
 
-                <FormControl isRequired>
-                  <FormLabel>Business Email Address</FormLabel>
-                  <Input 
-                    type="email" 
-                    bg={inputBg} 
+                {/* Business Email Address */}
+                <Box mb={2}>
+                  <Text as="label" fontWeight="semibold" mb={1} display="block">
+                    Business Email Address <Text as="span" color="red.500">*</Text>
+                  </Text>
+                  <Input
+                    type="email"
                     placeholder="Enter your business email"
+                    bg={inputBg}
+                    borderRadius="md"
+                    borderWidth="1px"
+                    borderColor={borderColor}
+                    p={2}
+                    w="100%"
                     _focus={{ borderColor: 'blue.500', boxShadow: '0 0 0 1px blue.500' }}
                   />
-                </FormControl>
+                </Box>
 
-                <FormControl>
-                  <FormLabel>Phone Number</FormLabel>
-                  <Input 
-                    type="tel" 
-                    bg={inputBg} 
+                {/* Phone Number */}
+                <Box mb={2}>
+                  <Text as="label" fontWeight="semibold" mb={1} display="block">
+                    Phone Number
+                  </Text>
+                  <Input
+                    type="tel"
                     placeholder="Enter your phone number"
+                    bg={inputBg}
+                    borderRadius="md"
+                    borderWidth="1px"
+                    borderColor={borderColor}
+                    p={2}
+                    w="100%"
                     _focus={{ borderColor: 'blue.500', boxShadow: '0 0 0 1px blue.500' }}
                   />
-                </FormControl>
+                </Box>
 
-                <FormControl isRequired>
-                  <FormLabel>Job Title</FormLabel>
-                  <Input 
-                    bg={inputBg} 
+                {/* Job Title */}
+                <Box mb={2}>
+                  <Text as="label" fontWeight="semibold" mb={1} display="block">
+                    Job Title <Text as="span" color="red.500">*</Text>
+                  </Text>
+                  <Input
+                    type="text"
                     placeholder="Enter your job title"
+                    bg={inputBg}
+                    borderRadius="md"
+                    borderWidth="1px"
+                    borderColor={borderColor}
+                    p={2}
+                    w="100%"
                     _focus={{ borderColor: 'blue.500', boxShadow: '0 0 0 1px blue.500' }}
                   />
-                </FormControl>
+                </Box>
 
-                <FormControl isRequired>
-                  <FormLabel>Company / Institution</FormLabel>
-                  <Input 
-                    bg={inputBg} 
+                {/* Company / Institution */}
+                <Box mb={2}>
+                  <Text as="label" fontWeight="semibold" mb={1} display="block">
+                    Company / Institution <Text as="span" color="red.500">*</Text>
+                  </Text>
+                  <Input
+                    type="text"
                     placeholder="Enter your company or institution"
+                    bg={inputBg}
+                    borderRadius="md"
+                    borderWidth="1px"
+                    borderColor={borderColor}
+                    p={2}
+                    w="100%"
                     _focus={{ borderColor: 'blue.500', boxShadow: '0 0 0 1px blue.500' }}
                   />
-                </FormControl>
+                </Box>
 
-                <FormControl isRequired>
-                  <FormLabel>Country</FormLabel>
-                  <Select 
-                    bg={inputBg} 
-                    placeholder="Select your country"
+                {/* Country */}
+                <Box mb={2}>
+                  <Text as="label" fontWeight="semibold" mb={1} display="block">
+                    Country <Text as="span" color="red.500">*</Text>
+                  </Text>
+                  <NativeSelect.Root
+                    bg={inputBg}
+                    borderRadius="md"
+                    borderWidth="1px"
+                    borderColor={borderColor}
+                    p={2}
+                    w="100%"
                     _focus={{ borderColor: 'blue.500', boxShadow: '0 0 0 1px blue.500' }}
                   >
-                    <option value="US">United States</option>
-                    <option value="CA">Canada</option>
-                    <option value="GB">United Kingdom</option>
-                    <option value="IN">India</option>
-                    <option value="DE">Germany</option>
-                    <option value="FR">France</option>
-                    <option value="AU">Australia</option>
-                    <option value="JP">Japan</option>
-                  </Select>
-                </FormControl>
+                    <NativeSelect.Field placeholder="Select your country">
+                      <option value="">Select your country</option>
+                      <option value="US">United States</option>
+                      <option value="CA">Canada</option>
+                      <option value="GB">United Kingdom</option>
+                      <option value="IN">India</option>
+                      <option value="DE">Germany</option>
+                      <option value="FR">France</option>
+                      <option value="AU">Australia</option>
+                      <option value="JP">Japan</option>
+                    </NativeSelect.Field>
+                    <NativeSelect.Indicator />
+                  </NativeSelect.Root>
+                </Box>
 
-                <FormControl>
-                  <FormLabel>Tell us about your project</FormLabel>
-                  <Textarea 
-                    bg={inputBg} 
-                    placeholder="A bit of context will allow us to connect you to the right team faster." 
+                {/* Tell us about your project */}
+                <Box mb={2}>
+                  <Text as="label" fontWeight="semibold" mb={1} display="block">
+                    Tell us about your project
+                  </Text>
+                  <Textarea
+                    placeholder="A bit of context will allow us to connect you to the right team faster."
                     rows={4}
                     resize="vertical"
+                    bg={inputBg}
+                    borderRadius="md"
+                    borderWidth="1px"
+                    borderColor={borderColor}
+                    p={2}
+                    w="100%"
                     _focus={{ borderColor: 'blue.500', boxShadow: '0 0 0 1px blue.500' }}
                   />
-                </FormControl>
+                </Box>
 
                 {/* File Upload Area */}
                 <Box>
-                  <FormLabel>Attachments (Optional)</FormLabel>
+                  <Text as="label" fontWeight="semibold" mb={1} display="block">
+                    Attachments (Optional)
+                  </Text>
                   <Box 
                     border="2px dashed" 
                     borderColor={borderColor} 
@@ -241,7 +315,7 @@ export function LetsTalk({ isOpen, onClose }: LetsTalkProps) {
 
                 {/* Submit Button */}
                 <Button 
-                  colorScheme="blue" 
+                  colorPalette="blue" 
                   size="lg" 
                   w="full" 
                   borderRadius="lg"

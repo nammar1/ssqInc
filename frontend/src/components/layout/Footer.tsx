@@ -4,11 +4,11 @@ import {
   Stack,
   Text,
   Link,
-  useColorModeValue,
   SimpleGrid,
   Heading,
 } from '@chakra-ui/react'
 import { Link as RouterLink } from 'react-router-dom'
+import { useColorModeValue } from '@/components/ui/color-mode'
 
 const FOOTER_LINKS = {
   Company: [
@@ -22,6 +22,20 @@ const FOOTER_LINKS = {
   ],
 }
 
+// Custom component that combines Chakra UI Link with React Router
+const NavLink = ({ to, children, ...props }: { to: string; children: React.ReactNode }) => (
+  <Link
+    asChild
+    _hover={{ textDecoration: 'underline' }}
+    display="block"
+    {...props}
+  >
+    <RouterLink to={to}>
+      {children}
+    </RouterLink>
+  </Link>
+)
+
 export function Footer() {
   return (
     <Box
@@ -30,8 +44,8 @@ export function Footer() {
       mt="auto"
     >
       <Container as={Stack} maxW="1200px" py={10}>
-        <SimpleGrid columns={{ base: 1, md: 3 }} spacing={8}>
-          <Stack spacing={6}>
+        <SimpleGrid columns={{ base: 1, md: 3 }} gap={8}>
+          <Stack gap={6}>
             <Box>
               <Text fontWeight="bold" fontSize="lg">
                 SSQ Inc
@@ -48,14 +62,12 @@ export function Footer() {
                 {title}
               </Heading>
               {links.map((link) => (
-                <Link
+                <NavLink
                   key={link.label}
-                  as={RouterLink}
                   to={link.href}
-                  _hover={{ textDecoration: 'underline' }}
                 >
                   {link.label}
-                </Link>
+                </NavLink>
               ))}
             </Stack>
           ))}
@@ -76,16 +88,15 @@ export function Footer() {
         borderStyle="solid"
         borderColor={useColorModeValue('gray.200', 'gray.700')}
       >
-        <Container
-          as={Stack}
-          maxW="1200px"
-          py={4}
-          direction={{ base: 'column', md: 'row' }}
-          spacing={4}
-          justify={{ base: 'center', md: 'space-between' }}
-          align={{ base: 'center', md: 'center' }}
-        >
-          <Text>© 2024 SSQ Inc. All rights reserved</Text>
+        <Container maxW="1200px" py={4}>
+          <Stack
+            direction={{ base: 'column', md: 'row' }}
+            gap={4}
+            justify={{ base: 'center', md: 'space-between' }}
+            align={{ base: 'center', md: 'center' }}
+          >
+            <Text>© 2024 SSQ Inc. All rights reserved</Text>
+          </Stack>
         </Container>
       </Box>
     </Box>

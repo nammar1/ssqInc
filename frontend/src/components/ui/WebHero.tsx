@@ -1,10 +1,11 @@
-import { Box, useColorModeValue } from '@chakra-ui/react'
+import { Box } from '@chakra-ui/react'
 import { Canvas, useFrame } from '@react-three/fiber'
 import { OrbitControls, PerspectiveCamera } from '@react-three/drei'
 import { motion } from 'framer-motion'
 import { SpiderWeb3D } from './SpiderWeb3D'
 import { useRef } from 'react'
 import * as THREE from 'three'
+import { useColorMode } from './color-mode'
 
 // Camera animation component
 const AnimatedCamera = () => {
@@ -58,11 +59,13 @@ export const WebHero = ({
   backgroundColor,
   webColor
 }: WebHeroProps) => {
-  const defaultBgColor = useColorModeValue('gray.50', 'gray.900')
-  const defaultWebColor = useColorModeValue('#2D3748', '#E2E8F0')
+  const { colorMode } = useColorMode()
+  const defaultBgColor = colorMode === 'light' ? 'gray.50' : 'gray.900'
+  const defaultWebColor = colorMode === 'light' ? '#2D3748' : '#E2E8F0'
   
   const bgColor = backgroundColor || defaultBgColor
   const finalWebColor = webColor || defaultWebColor
+  const textColor = colorMode === 'light' ? 'gray.700' : 'gray.200'
 
   return (
     <motion.div
@@ -73,7 +76,7 @@ export const WebHero = ({
       <Box
         position="relative"
         bg={bgColor}
-        color={useColorModeValue('gray.700', 'gray.200')}
+        color={textColor}
         minH={minHeight}
         overflow="hidden"
       >

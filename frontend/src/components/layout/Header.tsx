@@ -3,29 +3,28 @@ import {
   Flex,
   Button,
   IconButton,
-  useColorModeValue,
   Image,
-  Link as ChakraLink,
   useBreakpointValue,
-  Tooltip,
 } from '@chakra-ui/react'
-import { HamburgerIcon, CloseIcon } from '@chakra-ui/icons'
+import { Menu, X } from 'lucide-react'
 import { Link as RouterLink, useLocation } from 'react-router-dom'
 import { LetsTalk } from './LetsTalk'
 import { useDisclosure } from '@chakra-ui/react'
 import { MainMenu } from '../ui/MainMenu'
 import { FaUserCircle, FaLanguage, FaSearch, FaSun, FaMoon } from 'react-icons/fa'
-import { useColorMode } from '@chakra-ui/react'
+import { useColorMode, useColorModeValue } from '../ui/color-mode'
 import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 import { SearchBar, AccountPopup, LanguageSelector } from '../features'
+import { Tooltip } from '@/components/ui/tooltip'
 
 const MotionIconButton = motion(IconButton as React.ComponentType<any>)
 
 export function Header() {
-  const textColor = useColorModeValue('gray.900', 'white')
-  const pillShadow = useColorModeValue('0 4px 24px rgba(0,0,0,0.10)', '0 4px 24px rgba(0,0,0,0.40)')
-  const iconHoverBg = useColorModeValue('gray.100', 'gray.700')
+  const { colorMode, toggleColorMode } = useColorMode()
+  const textColor = colorMode === 'light' ? 'gray.900' : 'white'
+  const pillShadow = colorMode === 'light' ? '0 4px 24px rgba(0,0,0,0.10)' : '0 4px 24px rgba(0,0,0,0.40)'
+  const iconHoverBg = colorMode === 'light' ? 'gray.100' : 'gray.700'
   
   // Responsive values
   const isMobile = useBreakpointValue({ base: true, lg: false })
@@ -35,12 +34,12 @@ export function Header() {
   const buttonPadding = useBreakpointValue({ base: 4, lg: 5 })
   
   const {
-    isOpen: isLetsTalkOpen,
+    open: isLetsTalkOpen,
     onOpen: onLetsTalkOpen,
     onClose: onLetsTalkClose
   } = useDisclosure()
   const {
-    isOpen: isMenuOpen,
+    open: isMenuOpen,
     onOpen: onMenuOpen,
     onClose: onMenuClose
   } = useDisclosure()
@@ -50,7 +49,6 @@ export function Header() {
   const [isAccountOpen, setIsAccountOpen] = useState(false)
   const [isLanguageOpen, setIsLanguageOpen] = useState(false)
   
-  const { colorMode, toggleColorMode } = useColorMode()
   const location = useLocation()
 
   useEffect(() => {
@@ -112,7 +110,7 @@ export function Header() {
     isActive?: boolean
     className?: string
   }) => (
-    <Tooltip label={label} placement="bottom">
+    <Tooltip content={label}>
       <MotionIconButton
         aria-label={label}
         icon={icon}
@@ -126,8 +124,7 @@ export function Header() {
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
         transition={{ duration: 0.2 }}
-        isActive={isActive}
-        _active={{ bg: useColorModeValue('blue.100', 'blue.800') }}
+        data-active={isActive ? "" : undefined}
         minW="44px" // Better touch target
         minH="44px"
       />
@@ -160,13 +157,14 @@ export function Header() {
           backdropFilter="blur(8px)"
         >
           {/* Left: Logo */}
-          <ChakraLink 
-            as={RouterLink} 
+          <RouterLink 
             to="/" 
-            display="flex" 
-            alignItems="center" 
-            _hover={{ textDecoration: 'none' }}
-            minW={logoHeight} // Prevent shrinking
+            style={{ 
+              display: 'flex', 
+              alignItems: 'center', 
+              textDecoration: 'none',
+              minWidth: logoHeight
+            }}
           >
             <Image 
               src="/SSQlogo-02.png" 
@@ -174,7 +172,7 @@ export function Header() {
               height={logoHeight} 
               objectFit="contain" 
             />
-          </ChakraLink>
+          </RouterLink>
           
           {/* Center: Feature icons (only on desktop when menu is open) */}
           {isMenuOpen && !isMobile && (
@@ -227,13 +225,13 @@ export function Header() {
           {/* Right: Let's Talk + Hamburger/Close */}
           <Flex alignItems="center" gap={2}>
             <Button
-              colorScheme="gray"
+              colorPalette="gray"
               bg={useColorModeValue('gray.100', 'gray.700')}
               color={textColor}
               borderRadius="full"
               px={buttonPadding}
               fontWeight="semibold"
-              size={buttonSize}
+              size={buttonSize as any}
               _hover={{ 
                 bg: useColorModeValue('gray.200', 'gray.600'),
                 transform: 'translateY(-1px)'
@@ -247,9 +245,9 @@ export function Header() {
             </Button>
             <MotionIconButton
               aria-label={isMenuOpen ? 'Close menu' : 'Open menu'}
-              icon={isMenuOpen ? <CloseIcon boxSize={isMobile ? 5 : 6} /> : <HamburgerIcon boxSize={isMobile ? 6 : 7} />}
+              icon={isMenuOpen ? <X size={isMobile ? 20 : 24} /> : <Menu size={isMobile ? 24 : 28} />}
               variant="ghost"
-              size={buttonSize}
+              size={buttonSize as any}
               borderRadius="full"
               color={textColor}
               _hover={{ bg: iconHoverBg }}

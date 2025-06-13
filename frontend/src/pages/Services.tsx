@@ -4,12 +4,10 @@ import {
   Heading,
   Text,
   Stack,
-  useColorModeValue,
   Icon,
   Button,
   VStack,
   Flex,
-  useColorMode,
 } from '@chakra-ui/react'
 import { 
   FaCode, 
@@ -21,6 +19,7 @@ import {
 } from 'react-icons/fa'
 import { motion } from 'framer-motion'
 import { Link as RouterLink } from 'react-router-dom'
+import { useColorMode, useColorModeValue } from '@/components/ui/color-mode'
 import { WebHero } from '@/components/ui/WebHero'
 import { getPageConfig } from '@/utils/pageConfigs'
 
@@ -82,7 +81,7 @@ export default function Services() {
 
       {/* Services Section */}
       <Container maxW="1200px" py={12}>
-        <VStack spacing={8} align="stretch">
+        <VStack gap={8} align="stretch">
           {SERVICES.map((service) => (
             <MotionBox
               key={service.title}
@@ -155,20 +154,21 @@ export default function Services() {
       {/* CTA Section */}
       <Box bg={useColorModeValue('brand.50', 'brand.900')}>
         <Container maxW="1200px" py={20}>
-          <Stack spacing={8} align="center" textAlign="center">
+          <Stack gap={8} align="center" textAlign="center">
             <Heading>Ready to Transform Your Business?</Heading>
             <Text fontSize="lg" maxW="2xl">
               Let's discuss how our services can help you achieve your goals
             </Text>
             <Button
-              as={RouterLink}
-              to="/contact"
-              colorScheme="brand"
+              asChild
+              colorPalette="brand"
               size="lg"
               px={8}
-              rightIcon={<FaArrowRight />}
             >
-              Get Started
+              <RouterLink to="/contact">
+                Get Started
+                <FaArrowRight />
+              </RouterLink>
             </Button>
           </Stack>
         </Container>

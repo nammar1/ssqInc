@@ -4,13 +4,13 @@ import {
   Heading,
   Text,
   Stack,
-  useColorModeValue,
   SimpleGrid,
   Button,
 } from '@chakra-ui/react'
 import { Link as RouterLink } from 'react-router-dom'
 import { WebHero } from '@/components/ui/WebHero'
 import { getPageConfig } from '@/utils/pageConfigs'
+import { useColorModeValue } from '@/components/ui/color-mode'
 
 const BLOG_POSTS = [
   {
@@ -48,7 +48,7 @@ export default function Blog() {
 
       {/* Blog Posts Section */}
       <Container maxW="1200px" py={20}>
-        <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} spacing={8}>
+        <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} gap={8}>
           {BLOG_POSTS.map((post) => (
             <Box
               key={post.title}
@@ -60,7 +60,7 @@ export default function Blog() {
               transition="all 0.3s"
             >
               <Box p={6}>
-                <Stack spacing={4}>
+                <Stack gap={4}>
                   <Heading size="md">{post.title}</Heading>
                   <Text color={useColorModeValue('gray.600', 'gray.400')}>
                     {post.excerpt}
@@ -70,7 +70,7 @@ export default function Blog() {
                       {post.date} • {post.readTime}
                     </Text>
                   </Box>
-                  <Button variant="outline" colorScheme="brand" size="sm">
+                  <Button variant="outline" colorPalette="brand" size="sm">
                     Read More
                   </Button>
                 </Stack>
@@ -83,20 +83,20 @@ export default function Blog() {
       {/* CTA Section */}
       <Box bg={useColorModeValue('brand.50', 'brand.900')}>
         <Container maxW="1200px" py={20}>
-          <Stack spacing={8} align="center" textAlign="center">
+          <Stack gap={8} align="center" textAlign="center">
             <Heading>Stay Updated</Heading>
             <Text fontSize="lg" maxW="2xl">
               Subscribe to our newsletter for the latest insights and updates
             </Text>
-            <Button
-              as={RouterLink}
-              to="/contact"
-              colorScheme="brand"
-              size="lg"
-              px={8}
-            >
-              Subscribe
-            </Button>
+            <RouterLink to="/contact">
+              <Button
+                colorPalette="brand"
+                size="lg"
+                px={8}
+              >
+                Subscribe
+              </Button>
+            </RouterLink>
           </Stack>
         </Container>
       </Box>
