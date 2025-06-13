@@ -113,21 +113,22 @@ export function Header() {
     <Tooltip content={label}>
       <MotionIconButton
         aria-label={label}
-        icon={icon}
         variant="ghost"
-        size={buttonSize}
+        size={buttonSize as any}
         borderRadius="full"
         color={textColor}
+        bg={isActive ? useColorModeValue('blue.100', 'blue.800') : 'transparent'}
         _hover={{ bg: iconHoverBg }}
         onClick={onClick}
         className={className}
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
         transition={{ duration: 0.2 }}
-        data-active={isActive ? "" : undefined}
         minW="44px" // Better touch target
         minH="44px"
-      />
+      >
+        {icon}
+      </MotionIconButton>
     </Tooltip>
   )
 
@@ -245,9 +246,8 @@ export function Header() {
             </Button>
             <MotionIconButton
               aria-label={isMenuOpen ? 'Close menu' : 'Open menu'}
-              icon={isMenuOpen ? <X size={isMobile ? 20 : 24} /> : <Menu size={isMobile ? 24 : 28} />}
               variant="ghost"
-              size={buttonSize as any}
+              size={buttonSize}
               borderRadius="full"
               color={textColor}
               _hover={{ bg: iconHoverBg }}
@@ -257,7 +257,9 @@ export function Header() {
               transition={{ duration: 0.2 }}
               minW="44px" // Better touch target
               minH="44px"
-            />
+            >
+              {isMenuOpen ? <X size={isMobile ? 20 : 24} /> : <Menu size={isMobile ? 24 : 28} />}
+            </MotionIconButton>
           </Flex>
         </Flex>
       </Box>
