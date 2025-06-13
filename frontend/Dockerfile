@@ -1,6 +1,7 @@
 FROM node:alpine3.18 AS build
 WORKDIR /app
-COPY package*.json ./
+COPY package.json ./
+COPY package-lock.json ./
 RUN npm install
 COPY . .
 # Build the application - fail if there are any errors
