@@ -3,6 +3,8 @@ import { useFrame, useThree } from '@react-three/fiber'
 import { Line, Text3D, Center } from '@react-three/drei'
 import * as THREE from 'three'
 
+type AnimationPhase = 'text' | 'web-expansion' | 'camera-movement'
+
 interface SpiderWeb3DProps {
   segments?: number
   layers?: number
@@ -10,18 +12,22 @@ interface SpiderWeb3DProps {
   title?: string
   tagline?: string
   showText?: boolean
+  animationPhase?: AnimationPhase
 }
 
 export const SpiderWeb3D = ({
-  segments = 24,
-  layers = 8,
+  segments = 16,
+  layers = 6,
   color = '#ffffff',
   title = '',
   tagline = '',
-  showText = false
+  showText = false,
+  animationPhase = 'camera-movement'
 }: SpiderWeb3DProps) => {
   const groupRef = useRef<THREE.Group>(null!)
   const textGroupRef = useRef<THREE.Group>(null!)
+  const webGroupRef = useRef<THREE.Group>(null!)
+  const textWebGroupRef = useRef<THREE.Group>(null!)
   const { viewport } = useThree()
   
   // Calculate size based on viewport width
@@ -48,7 +54,7 @@ export const SpiderWeb3D = ({
     const points: THREE.Vector3[][] = []
     const center = new THREE.Vector3(0, 0, 0)
     
-    // Generate main radial lines (spokes)
+    // Generate main radial lines (spokes) - these go from center to edge
     const spokes: THREE.Vector3[] = []
     for (let i = 0; i < segments; i++) {
       const angle = (i / segments) * Math.PI * 2
@@ -58,101 +64,81 @@ export const SpiderWeb3D = ({
         0
       )
       spokes.push(spokePoint)
-      // Add main radial lines
+      // Add radial lines from center to edge
       points.push([center, spokePoint])
     }
     
-    // Generate spiral layers (capture spiral)
+    // Generate concentric circles (capture spiral)
+    const layerPoints: THREE.Vector3[][] = []
+    
     for (let layer = 1; layer <= layers; layer++) {
       const radius = (webSize * layer) / layers
-      const layerPoints: THREE.Vector3[] = []
+      const currentLayerPoints: THREE.Vector3[] = []
       
-      // Calculate points for this layer
+      // Calculate points for this layer - same number as spokes for alignment
       for (let i = 0; i < segments; i++) {
         const angle = (i / segments) * Math.PI * 2
-        // Add subtle z-variation for depth
-        const z = Math.sin(angle * 2 + layer) * 0.3
-        layerPoints.push(
-          new THREE.Vector3(
-            Math.cos(angle) * radius,
-            Math.sin(angle) * radius,
-            z
-          )
+        // Add very subtle z-variation for depth (spider webs aren't perfectly flat)
+        const z = Math.sin(angle * 3 + layer * 0.5) * 0.1
+        const point = new THREE.Vector3(
+          Math.cos(angle) * radius,
+          Math.sin(angle) * radius,
+          z
         )
+        currentLayerPoints.push(point)
       }
       
-      // Connect points in the layer (spiral)
-      for (let i = 0; i < layerPoints.length; i++) {
-        const nextIndex = (i + 1) % layerPoints.length
-        points.push([layerPoints[i], layerPoints[nextIndex]])
-      }
+      layerPoints.push(currentLayerPoints)
       
-      // Connect to nearest spokes for text areas
-      if (!showText) {
-        for (const layerPoint of layerPoints) {
-          // Find the closest spoke
-          let closestSpoke = spokes[0]
-          let minDist = Infinity
-          
-          for (const spoke of spokes) {
-            const dist = layerPoint.distanceTo(spoke)
-            if (dist < minDist) {
-              minDist = dist
-              closestSpoke = spoke
-            }
-          }
-          
-          // Connect to closest spoke
-          points.push([layerPoint, closestSpoke])
-        }
+      // Connect points in the layer to form concentric circles
+      for (let i = 0; i < currentLayerPoints.length; i++) {
+        const nextIndex = (i + 1) % currentLayerPoints.length
+        points.push([currentLayerPoints[i], currentLayerPoints[nextIndex]])
       }
-
-      // Add additional connections between adjacent layers
-      if (layer > 1) {
-        const prevLayerPoints = layerPoints.map((_, i) => {
-          const prevAngle = (i / segments) * Math.PI * 2
-          const prevRadius = (webSize * (layer - 1)) / layers
-          const prevZ = Math.sin(prevAngle * 2 + (layer - 1)) * 0.3
-          return new THREE.Vector3(
-            Math.cos(prevAngle) * prevRadius,
-            Math.sin(prevAngle) * prevRadius,
-            prevZ
-          )
-        })
-
-        // Connect to previous layer points (every third point for a more natural look)
-        for (let i = 0; i < layerPoints.length; i += 3) {
-          points.push([layerPoints[i], prevLayerPoints[i]])
+    }
+    
+    // Add stabilizing strands between layers (not every point, just key connections)
+    // Real spider webs have some connections between rings for stability
+    for (let layer = 1; layer < layerPoints.length; layer++) {
+      const currentLayer = layerPoints[layer]
+      const prevLayer = layerPoints[layer - 1]
+      
+      // Connect every 4th point between layers for a natural look
+      for (let i = 0; i < currentLayer.length; i += 4) {
+        if (prevLayer[i]) {
+          points.push([currentLayer[i], prevLayer[i]])
         }
       }
     }
     
     return points
-  }, [webSize, segments, layers, showText])
+  }, [webSize, segments, layers])
 
-  // Generate web strands around text
+  // Generate web strands that connect from text area to outer web
   const textWebStrands = useMemo(() => {
     if (!showText) return []
     
     const strands: THREE.Vector3[][] = []
-    const textBounds = { width: 8, height: 2, depth: 1 }
+    const textBounds = { width: 6, height: 1.5, depth: 0.5 }
     
-    // Create connecting strands from text to main web
+    // Create fewer, more strategic connecting strands from text area to web
     for (let i = 0; i < 12; i++) {
       const angle = (i / 12) * Math.PI * 2
-      const distance = Math.random() * 3 + 2
+      const distance = 3 + Math.random() * 2
       
-      // Start point near text
+      // Start point near text (around the text perimeter)
+      const startRadius = Math.random() * 2 + 1
+      const startAngle = angle + (Math.random() - 0.5) * 0.5
       const start = new THREE.Vector3(
-        (Math.random() - 0.5) * textBounds.width,
-        (Math.random() - 0.5) * textBounds.height,
+        Math.cos(startAngle) * startRadius,
+        Math.sin(startAngle) * startRadius * 0.5,
         (Math.random() - 0.5) * textBounds.depth
       )
       
-      // End point on main web
+      // End point connecting to web structure
       const end = new THREE.Vector3(
         Math.cos(angle) * distance * 3,
-        Math.sin(angle) * distance * 2,
+        Math.sin(angle) * distance * 2.5,
         (Math.random() - 0.5) * 2
       )
       
@@ -164,36 +150,63 @@ export const SpiderWeb3D = ({
 
   // Animation
   useFrame((state) => {
+    const time = state.clock.getElapsedTime()
+    
     if (groupRef.current) {
-      // Very subtle rotation that complements camera movement
-      const time = state.clock.getElapsedTime()
-      groupRef.current.rotation.z = Math.sin(time * 0.1) * 0.02
-      groupRef.current.rotation.x = Math.sin(time * 0.05) * 0.01
-      groupRef.current.rotation.y = Math.sin(time * 0.15) * 0.01
+      // Different animations based on phase
+      if (animationPhase === 'camera-movement') {
+        // Very subtle rotation that complements camera movement
+        groupRef.current.rotation.z = Math.sin(time * 0.1) * 0.02
+        groupRef.current.rotation.x = Math.sin(time * 0.05) * 0.01
+        groupRef.current.rotation.y = Math.sin(time * 0.15) * 0.01
+      }
     }
     
-    // Animate text if present
+    // Text appears immediately if showText is true
     if (textGroupRef.current && showText) {
-      const time = state.clock.getElapsedTime()
+      textGroupRef.current.visible = true
+      // Subtle floating animation for text
       textGroupRef.current.position.y = Math.sin(time * 0.5) * 0.2
+    } else if (textGroupRef.current) {
+      textGroupRef.current.visible = false
+    }
+    
+    // Text web strands animation - appear during web-expansion phase
+    if (textWebGroupRef.current && showText) {
+      if (animationPhase === 'web-expansion') {
+        const expansionProgress = Math.min((time - 2) / 3, 1) // Start after 2s, complete in 3s
+        if (expansionProgress > 0) {
+          textWebGroupRef.current.scale.setScalar(expansionProgress)
+          textWebGroupRef.current.visible = true
+        }
+      } else if (animationPhase === 'camera-movement') {
+        textWebGroupRef.current.scale.setScalar(1)
+        textWebGroupRef.current.visible = true
+      } else {
+        textWebGroupRef.current.visible = false
+      }
+    }
+    
+    // Main web expansion animation
+    if (webGroupRef.current) {
+      if (animationPhase === 'web-expansion') {
+        const expansionProgress = Math.min((time - 2) / 3, 1) // Start after 2s, complete in 3s
+        if (expansionProgress > 0) {
+          webGroupRef.current.scale.setScalar(expansionProgress)
+          webGroupRef.current.visible = true
+        }
+      } else if (animationPhase === 'camera-movement') {
+        webGroupRef.current.scale.setScalar(1)
+        webGroupRef.current.visible = true
+      } else {
+        webGroupRef.current.visible = false
+      }
     }
   })
 
   return (
     <group ref={groupRef}>
-      {/* Main spider web */}
-      {webPoints.map((points, index) => (
-        <Line
-          key={`web-${index}`}
-          points={points}
-          color={color}
-          lineWidth={1}
-          transparent
-          opacity={0.4}
-        />
-      ))}
-      
-      {/* Text and surrounding web strands */}
+      {/* 3D Text - visible from the start when showText is true */}
       {showText && (
         <group ref={textGroupRef}>
           <Center>
@@ -225,20 +238,38 @@ export const SpiderWeb3D = ({
               )}
             </group>
           </Center>
-          
-          {/* Web strands around text */}
+        </group>
+      )}
+      
+      {/* Web strands connecting from text - expand during web-expansion phase */}
+      {showText && (
+        <group ref={textWebGroupRef} visible={false} scale={0}>
           {textWebStrands.map((points, index) => (
             <Line
               key={`text-web-${index}`}
               points={points}
               color={color}
-              lineWidth={0.5}
+              lineWidth={0.8}
               transparent
-              opacity={0.6}
+              opacity={0.7}
             />
           ))}
         </group>
       )}
+
+      {/* Main spider web - expands during web-expansion phase */}
+      <group ref={webGroupRef} visible={false} scale={0}>
+        {webPoints.map((points, index) => (
+          <Line
+            key={`web-${index}`}
+            points={points}
+            color={color}
+            lineWidth={1}
+            transparent
+            opacity={0.4}
+          />
+        ))}
+      </group>
     </group>
   )
 } 

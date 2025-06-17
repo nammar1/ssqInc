@@ -1,189 +1,86 @@
 import {
   Box,
-  Container,
-  Heading,
-  Text,
-  Stack,
-  Icon,
-  Button,
-  VStack,
-  HStack,
-  SimpleGrid,
-  List,
 } from '@chakra-ui/react'
-import { FaArrowRight, FaCheck, FaBrain, FaRobot, FaEye, FaChartLine, FaDatabase } from 'react-icons/fa'
-import { Link as RouterLink } from 'react-router-dom'
+import { FaBrain, FaRobot, FaEye, FaChartLine, FaDatabase, FaUsers } from 'react-icons/fa'
 import { WebHero } from '@/components/ui/WebHero'
+import { QuoteBox } from '@/components/ui/QuoteBox'
 import { getPageConfig } from '@/utils/pageConfigs'
-import { useColorModeValue } from '@/components/ui/color-mode'
+import { AccordionList } from '@/components/ui/AccordionList'
 
 export default function AISolutions() {
-  const textColor = useColorModeValue('gray.700', 'gray.200')
-  const bgColor = useColorModeValue('white', 'gray.800')
-  const cardBg = useColorModeValue('gray.50', 'gray.700')
   const config = getPageConfig('aisolutions')
 
   const features = [
     {
-      title: 'Machine Learning Models',
-      description: 'Custom ML models for predictive analytics and business intelligence',
+      title: 'ML Strategy & Use-Case Prioritization',
+      description: 'Strategic AI planning and implementation',
       icon: FaBrain,
+      details: [
+        'Opportunity framing and ROI modelling',
+        'Ethical AI and responsible innovation guidance'
+      ]
     },
     {
-      title: 'Process Automation',
-      description: 'Intelligent automation solutions to streamline business processes',
+      title: 'Model Development & MLOps',
+      description: 'End-to-end machine learning solutions',
       icon: FaRobot,
+      details: [
+        'End-to-end pipelines for training, validation, and deployment',
+        'Feature stores, experiment tracking, and continuous retraining'
+      ]
     },
     {
-      title: 'Computer Vision',
-      description: 'Image and video analysis for quality control and pattern recognition',
-      icon: FaEye,
-    },
-    {
-      title: 'Predictive Analytics',
-      description: 'Data-driven insights for forecasting and decision making',
-      icon: FaChartLine,
-    },
-    {
-      title: 'Natural Language Processing',
-      description: 'Text analysis, sentiment analysis, and intelligent document processing',
+      title: 'Natural Language & Generative AI',
+      description: 'Advanced NLP and generative AI solutions',
       icon: FaDatabase,
+      details: [
+        'NLP, conversational interfaces, and RAG architectures',
+        'Custom LLM fine-tuning and prompt engineering'
+      ]
     },
-  ]
-
-  const technologies = [
-    'TensorFlow & PyTorch',
-    'Python & R',
-    'Scikit-learn',
-    'OpenCV',
-    'Hugging Face',
-    'Apache Spark',
-    'MLflow & Kubeflow',
-    'AWS SageMaker',
+    {
+      title: 'Computer Vision & IoT Analytics',
+      description: 'Visual intelligence and IoT solutions',
+      icon: FaEye,
+      details: [
+        'Image/video recognition, object tracking, edge inference',
+        'Sensor fusion and real-time event processing'
+      ]
+    },
+    {
+      title: 'Predictive & Prescriptive Analytics',
+      description: 'Advanced analytics and decision support',
+      icon: FaChartLine,
+      details: [
+        'Time-series forecasting and optimization models',
+        'Scenario simulation and decision support tools'
+      ]
+    },
+    {
+      title: 'AI Adoption & Change Enablement',
+      description: 'Organizational AI transformation',
+      icon: FaUsers,
+      details: [
+        'Center-of-Excellence setup and capability upskilling',
+        'Governance, monitoring, and bias mitigation frameworks'
+      ]
+    },
   ]
 
   return (
     <Box>
-      {/* Enhanced WebHero with 3D Text */}
       <WebHero
         title={config.title}
         tagline={config.tagline}
         showText={config.showText}
-        minHeight={config.minHeight}
+      />
+      
+      <QuoteBox 
+        quote={config.quote || ""}
       />
 
-      {/* Features Section */}
-      <Container maxW="1200px" py={12}>
-        <VStack gap={12} align="stretch">
-          <Box textAlign="center" mb={8}>
-            <Heading size="lg" mb={4}>Our AI & ML Solutions</Heading>
-            <Text fontSize="lg" color={textColor} maxW="3xl" mx="auto">
-              Harness the power of artificial intelligence to automate processes, gain insights, and drive innovation.
-            </Text>
-          </Box>
+      <AccordionList features={features} />
 
-          <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} gap={8}>
-            {features.map((feature, index) => (
-              <Box
-                key={index}
-                bg={cardBg}
-                p={6}
-                rounded="xl"
-                shadow="md"
-                _hover={{ shadow: 'lg', transform: 'translateY(-2px)' }}
-                transition="all 0.3s"
-              >
-                <Icon as={feature.icon} w={10} h={10} color="brand.500" mb={4} />
-                <Heading size="md" mb={2}>{feature.title}</Heading>
-                <Text color={textColor}>{feature.description}</Text>
-              </Box>
-            ))}
-          </SimpleGrid>
-        </VStack>
-      </Container>
-
-      {/* Technologies Section */}
-      <Box bg={useColorModeValue('gray.50', 'gray.900')} py={12}>
-        <Container maxW="1200px">
-          <VStack gap={8} align="stretch">
-            <Box textAlign="center">
-              <Heading size="lg" mb={4}>AI Technologies & Frameworks</Heading>
-              <Text fontSize="lg" color={textColor} maxW="3xl" mx="auto">
-                We use cutting-edge AI and ML technologies to build intelligent solutions
-              </Text>
-            </Box>
-
-            <SimpleGrid columns={{ base: 2, md: 4 }} gap={6}>
-              {technologies.map((tech, index) => (
-                <Box
-                  key={index}
-                  bg={bgColor}
-                  p={4}
-                  rounded="lg"
-                  textAlign="center"
-                  shadow="sm"
-                  _hover={{ shadow: 'md' }}
-                  transition="all 0.2s"
-                >
-                  <Text fontWeight="medium">{tech}</Text>
-                </Box>
-              ))}
-            </SimpleGrid>
-          </VStack>
-        </Container>
-      </Box>
-
-      {/* Process Section */}
-      <Container maxW="1200px" py={12}>
-        <VStack gap={8} align="stretch">
-          <Box textAlign="center">
-            <Heading size="lg" mb={4}>Our AI Implementation Process</Heading>
-            <Text fontSize="lg" color={textColor} maxW="3xl" mx="auto">
-              A comprehensive approach to implementing AI solutions in your business
-            </Text>
-          </Box>
-
-          <List.Root gap={4}>
-            {[
-              'Data Assessment & Strategy Planning',
-              'Model Development & Training',
-              'Validation & Performance Testing',
-              'Integration & Production Deployment',
-              'Monitoring & Continuous Improvement',
-            ].map((step, index) => (
-              <List.Item key={index}>
-                <HStack gap={4}>
-                  <List.Indicator asChild color="brand.500">
-                    <Icon as={FaCheck} />
-                  </List.Indicator>
-                  <Text fontSize="lg">{step}</Text>
-                </HStack>
-              </List.Item>
-            ))}
-          </List.Root>
-        </VStack>
-      </Container>
-
-      {/* CTA Section */}
-      <Box bg={useColorModeValue('brand.50', 'brand.900')}>
-        <Container maxW="1200px" py={20}>
-          <Stack gap={8} align="center" textAlign="center">
-            <Heading>Ready to Embrace AI for Your Business?</Heading>
-            <Text fontSize="lg" maxW="2xl">
-              Let's explore how AI and machine learning can transform your operations and unlock new opportunities
-            </Text>
-            <RouterLink to="/contact">
-              <Button
-                colorPalette="brand"
-                size="lg"
-                px={8}
-              >
-                Get Started <FaArrowRight />
-              </Button>
-            </RouterLink>
-          </Stack>
-        </Container>
-      </Box>
     </Box>
   )
 }

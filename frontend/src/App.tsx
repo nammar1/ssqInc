@@ -14,6 +14,14 @@ import Blog from '@pages/Blog'
 import Investor from '@pages/Investor'
 import Careers from '@pages/Careers'
 import Privacy from '@pages/Privacy'
+import OurProcess from '@/pages/OurProcess'
+import Pricing from './pages/Pricing'
+import Partners from './pages/Partners'
+import Clients from './pages/Clients'
+import Foundation from './pages/Foundation'
+import Sustainability from './pages/Sustainability'
+import Accelerators from './pages/Accelerators' 
+import Aqira from './pages/Aqira'
 
 function App() {
   return (
@@ -32,6 +40,14 @@ function App() {
         <Route path="/investor" element={<Investor />} />
         <Route path="/careers" element={<Careers />} />
         <Route path="/privacy" element={<Privacy />} />
+        <Route path="/our-process" element={<OurProcess />} />
+        <Route path="/pricing" element={<Pricing />} />
+        <Route path="/partners" element={<Partners />} />
+        <Route path="/clients" element={<Clients />} />
+        <Route path="/foundation" element={<Foundation />} />
+        <Route path="/sustainability" element={<Sustainability />} />
+        <Route path="/accelerators" element={<Accelerators />} />
+        <Route path="/aqira" element={<Aqira />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </Layout>

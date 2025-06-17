@@ -4,10 +4,12 @@ import {
   VStack,
   Text,
   Separator,
+  Input,
 } from '@chakra-ui/react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { FaSignInAlt, FaUserPlus } from 'react-icons/fa'
+import { FaSignInAlt } from 'react-icons/fa'
 import { useColorModeValue } from '@/components/ui/color-mode'
+import { useState } from 'react'
 
 const MotionBox = motion(Box)
 
@@ -17,20 +19,15 @@ interface AccountPopupProps {
 }
 
 export function AccountPopup({ isOpen, onClose }: AccountPopupProps) {
+  const [clientId, setClientId] = useState('')
   const bg = useColorModeValue('white', 'gray.800')
   const borderColor = useColorModeValue('gray.200', 'gray.600')
   const textColor = useColorModeValue('gray.700', 'gray.200')
   const shadowColor = useColorModeValue('rgba(0,0,0,0.1)', 'rgba(0,0,0,0.3)')
 
   const handleLogin = () => {
-    // TODO: Implement login functionality
-    console.log('Login clicked')
-    onClose()
-  }
-
-  const handleSignup = () => {
-    // TODO: Implement signup functionality
-    console.log('Signup clicked')
+    // TODO: Implement login functionality with clientId
+    console.log('Login clicked with ID:', clientId)
     onClose()
   }
 
@@ -54,24 +51,38 @@ export function AccountPopup({ isOpen, onClose }: AccountPopupProps) {
             borderRadius="xl"
             boxShadow={`0 8px 25px ${shadowColor}`}
             p={4}
-            minW="200px"
+            minW="280px"
             backdropFilter="blur(8px)"
           >
-            <VStack gap={3} align="stretch">
+            <VStack gap={4} align="stretch">
               <Text
-                fontSize="sm"
+                fontSize="md"
                 fontWeight="semibold"
                 color={textColor}
                 textAlign="center"
-                mb={1}
               >
-                Account
+                Partner / Client Login
               </Text>
               
               <Separator />
               
+              <Box>
+                <Text fontSize="sm" mb={1}>Client/Partner ID</Text>
+                <Input
+                  value={clientId}
+                  onChange={(e) => setClientId(e.target.value)}
+                  placeholder="Enter your ID"
+                  size="md"
+                  borderRadius="lg"
+                  _focus={{
+                    borderColor: 'brand.500',
+                    boxShadow: '0 0 0 1px var(--chakra-colors-brand-500)',
+                  }}
+                />
+              </Box>
+              
               <Button
-                colorPalette="blue"
+                colorPalette="brand"
                 variant="solid"
                 size="md"
                 borderRadius="lg"
@@ -80,25 +91,8 @@ export function AccountPopup({ isOpen, onClose }: AccountPopupProps) {
                 _hover={{ transform: 'translateY(-1px)' }}
                 transition="all 0.2s"
               >
-                <FaSignInAlt />
+                <FaSignInAlt style={{ marginRight: '8px' }} />
                 Login
-              </Button>
-              
-              <Button
-                colorPalette="green"
-                variant="outline"
-                size="md"
-                borderRadius="lg"
-                fontWeight="semibold"
-                onClick={handleSignup}
-                _hover={{ 
-                  transform: 'translateY(-1px)',
-                  bg: useColorModeValue('green.50', 'green.900')
-                }}
-                transition="all 0.2s"
-              >
-                <FaUserPlus />
-                Sign Up
               </Button>
             </VStack>
           </Box>

@@ -15,7 +15,7 @@ import { FaUserCircle, FaLanguage, FaSearch, FaSun, FaMoon } from 'react-icons/f
 import { useColorMode, useColorModeValue } from '../ui/color-mode'
 import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
-import { SearchBar, AccountPopup, LanguageSelector } from '../features'
+import { SearchBar, AccountPopup, LanguageSelector, MessageCarousel } from '../features'
 import { Tooltip } from '@/components/ui/tooltip'
 
 const MotionIconButton = motion(IconButton as React.ComponentType<any>)
@@ -132,6 +132,22 @@ export function Header() {
     </Tooltip>
   )
 
+  // Define messages for the carousel
+  const messages = [
+    {
+      id: '1',
+      content: "Accepting New Clients Today! Apply Now!"
+    },
+    {
+      id: '2',
+      content: "Our Website is being frequently updated, check back for new content."
+    },
+    {
+      id: '3',
+      content: "Follow SSQ on LinkedIn for the latest news and updates."
+    }
+  ]
+
   return (
     <>
       <Box
@@ -156,6 +172,7 @@ export function Header() {
           boxShadow={pillShadow}
           bg="transparent"
           backdropFilter="blur(8px)"
+          position="relative"
         >
           {/* Left: Logo */}
           <RouterLink 
@@ -175,8 +192,8 @@ export function Header() {
             />
           </RouterLink>
           
-          {/* Center: Feature icons (only on desktop when menu is open) */}
-          {isMenuOpen && !isMobile && (
+          {/* Center: Message Carousel (when menu is closed) or Feature icons (when menu is open) */}
+          {isMenuOpen ? (
             <Flex alignItems="center" gap={4} flex={1} justify="center">
               <Box position="relative" className="search-container">
                 <MobileFeatureButton
@@ -221,6 +238,11 @@ export function Header() {
                 onClick={toggleColorMode}
               />
             </Flex>
+          ) : (
+            <MessageCarousel 
+              messages={messages}
+              isVisible={!isMenuOpen}
+            />
           )}
           
           {/* Right: Let's Talk + Hamburger/Close */}
@@ -240,7 +262,7 @@ export function Header() {
               boxShadow="sm"
               onClick={onLetsTalkOpen}
               transition="all 0.2s"
-              minH="44px" // Better touch target on mobile
+              minH="44px"
             >
               Let's Talk
             </Button>
@@ -255,7 +277,7 @@ export function Header() {
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               transition={{ duration: 0.2 }}
-              minW="44px" // Better touch target
+              minW="44px"
               minH="44px"
             >
               {isMenuOpen ? <X size={isMobile ? 20 : 24} /> : <Menu size={isMobile ? 24 : 28} />}
@@ -269,7 +291,6 @@ export function Header() {
       <MainMenu 
         isOpen={isMenuOpen} 
         onClose={onMenuClose}
-        // Pass feature controls to MainMenu for mobile integration
         featureControls={{
           search: { isOpen: isSearchOpen, toggle: handleSearchToggle },
           account: { isOpen: isAccountOpen, toggle: handleAccountToggle },

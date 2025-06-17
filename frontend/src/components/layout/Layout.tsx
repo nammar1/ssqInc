@@ -3,6 +3,7 @@ import { useState } from 'react'
 import { Header } from './Header'
 import { Footer } from './Footer'
 import { LetsTalk } from './LetsTalk'
+import { CTABanner } from './CTABanner'
 
 interface LayoutProps {
   children: React.ReactNode
@@ -18,6 +19,7 @@ export function Layout({ children }: LayoutProps) {
       <Box as="main" flex="1" pt="16">
         {children}
       </Box>
+      <CTABanner />
       <Footer />
     </Box>
   )

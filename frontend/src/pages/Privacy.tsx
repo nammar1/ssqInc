@@ -8,7 +8,8 @@ import {
 import { WebHero } from '@/components/ui/WebHero'
 import { getPageConfig } from '@/utils/pageConfigs'
 import { useColorModeValue } from '@/components/ui/color-mode'
-
+import { QuoteBox } from '@/components/ui/QuoteBox'
+    
 export default function Privacy() {
   const config = getPageConfig('privacy')
 
@@ -19,7 +20,10 @@ export default function Privacy() {
         title={config.title}
         tagline={config.tagline}
         showText={config.showText}
-        minHeight={config.minHeight}
+      />
+
+      <QuoteBox 
+        quote={config.quote || ""}
       />
 
       {/* Privacy Policy Content */}

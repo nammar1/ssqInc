@@ -1,184 +1,86 @@
 import {
   Box,
-  Container,
-  Heading,
-  Text,
-  Stack,
-  Icon,
-  Button,
-  VStack,
-  HStack,
-  SimpleGrid,
 } from '@chakra-ui/react'
-import { FaArrowRight, FaCheck, FaRocket, FaChartLine, FaCogs, FaUsers, FaGlobe } from 'react-icons/fa'
-import { Link as RouterLink } from 'react-router-dom'
+import { FaRocket, FaChartLine, FaCogs, FaUsers, FaShieldAlt, FaLaptopCode } from 'react-icons/fa'
 import { WebHero } from '@/components/ui/WebHero'
+import { QuoteBox } from '@/components/ui/QuoteBox'
 import { getPageConfig } from '@/utils/pageConfigs'
-import { useColorModeValue } from '@/components/ui/color-mode'
+import { AccordionList } from '@/components/ui/AccordionList'
 
 export default function Digital() {
-  const textColor = useColorModeValue('gray.700', 'gray.200')
-  const bgColor = useColorModeValue('white', 'gray.800')
-  const cardBg = useColorModeValue('gray.50', 'gray.700')
   const config = getPageConfig('digital')
 
   const features = [
     {
-      title: 'Digital Strategy',
+      title: 'Digital Strategy & Vision',
       description: 'Comprehensive digital transformation roadmaps tailored to your business goals',
       icon: FaRocket,
+      details: [
+        'Digital maturity assessments and transformation roadmaps',
+        'Vision alignment and competitive benchmarking'
+      ]
     },
     {
-      title: 'Process Optimization',
-      description: 'Streamline operations and improve efficiency through digital solutions',
-      icon: FaCogs,
-    },
-    {
-      title: 'Data Analytics',
-      description: 'Turn your data into actionable insights for better decision making',
-      icon: FaChartLine,
-    },
-    {
-      title: 'Customer Experience',
+      title: 'Customer Experience Transformation',
       description: 'Enhance customer engagement through digital touchpoints and experiences',
       icon: FaUsers,
+      details: [
+        'Journey mapping and omnichannel strategy',
+        'Implementation of digital touchpoints and personalization tools'
+      ]
     },
     {
-      title: 'Digital Platforms',
-      description: 'Build scalable digital platforms that adapt to changing business needs',
-      icon: FaGlobe,
+      title: 'Operational Excellence',
+      description: 'Streamline operations and improve efficiency through digital solutions',
+      icon: FaCogs,
+      details: [
+        'Workflow automation and process redesign',
+        'Process mining and data-driven performance improvement'
+      ]
     },
-  ]
-
-  const technologies = [
-    'Cloud Platforms',
-    'API Integration',
-    'Microservices',
-    'DevOps & CI/CD',
-    'Analytics Platforms',
-    'CRM & ERP Systems',
-    'Mobile Solutions',
-    'IoT Connectivity',
+    {
+      title: 'Transformation Management',
+      description: 'Turn your data into actionable insights for better decision making',
+      icon: FaChartLine,
+      details: [
+        'Program oversight and value tracking',
+        'Stakeholder engagement and digital upskilling'
+      ]
+    },
+    {
+      title: 'Governance & Compliance',
+      description: 'Build scalable digital platforms that adapt to changing business needs',
+      icon: FaShieldAlt,
+      details: [
+        'Governance frameworks and policy modernization',
+        'Risk mitigation and regulatory alignment'
+      ]
+    },
+    {
+      title: 'Technology Modernization',
+      description: 'Build scalable digital platforms that adapt to changing business needs',
+      icon: FaLaptopCode,
+      details: [
+        'Legacy system migration and infrastructure upgrades',
+        'Digital product development and platform-based innovation'
+      ]
+    },
   ]
 
   return (
     <Box>
-      {/* Enhanced WebHero with 3D Text */}
       <WebHero
         title={config.title}
         tagline={config.tagline}
         showText={config.showText}
-        minHeight={config.minHeight}
+      />
+      
+      <QuoteBox 
+        quote={config.quote || ""}
       />
 
-      {/* Features Section */}
-      <Container maxW="1200px" py={12}>
-        <VStack gap={12} align="stretch">
-          <Box textAlign="center" mb={8}>
-            <Heading size="lg" mb={4}>Our Digital Transformation Services</Heading>
-            <Text fontSize="lg" color={textColor} maxW="3xl" mx="auto">
-              Transform your business for the digital age with strategic planning and innovative technology solutions.
-            </Text>
-          </Box>
+      <AccordionList features={features} />
 
-          <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} gap={8}>
-            {features.map((feature, index) => (
-              <Box
-                key={index}
-                bg={cardBg}
-                p={6}
-                rounded="xl"
-                shadow="md"
-                _hover={{ shadow: 'lg', transform: 'translateY(-2px)' }}
-                transition="all 0.3s"
-              >
-                <Icon as={feature.icon} w={10} h={10} color="brand.500" mb={4} />
-                <Heading size="md" mb={2}>{feature.title}</Heading>
-                <Text color={textColor}>{feature.description}</Text>
-              </Box>
-            ))}
-          </SimpleGrid>
-        </VStack>
-      </Container>
-
-      {/* Technologies Section */}
-      <Box bg={useColorModeValue('gray.50', 'gray.900')} py={12}>
-        <Container maxW="1200px">
-          <VStack gap={8} align="stretch">
-            <Box textAlign="center">
-              <Heading size="lg" mb={4}>Digital Technologies & Solutions</Heading>
-              <Text fontSize="lg" color={textColor} maxW="3xl" mx="auto">
-                We leverage modern technologies to drive your digital transformation journey
-              </Text>
-            </Box>
-
-            <SimpleGrid columns={{ base: 2, md: 4 }} gap={6}>
-              {technologies.map((tech, index) => (
-                <Box
-                  key={index}
-                  bg={bgColor}
-                  p={4}
-                  rounded="lg"
-                  textAlign="center"
-                  shadow="sm"
-                  _hover={{ shadow: 'md' }}
-                  transition="all 0.2s"
-                >
-                  <Text fontWeight="medium">{tech}</Text>
-                </Box>
-              ))}
-            </SimpleGrid>
-          </VStack>
-        </Container>
-      </Box>
-
-      {/* Process Section */}
-      <Container maxW="1200px" py={12}>
-        <VStack gap={8} align="stretch">
-          <Box textAlign="center">
-            <Heading size="lg" mb={4}>Our Digital Transformation Process</Heading>
-            <Text fontSize="lg" color={textColor} maxW="3xl" mx="auto">
-              A structured approach to successful digital transformation
-            </Text>
-          </Box>
-
-          <VStack gap={4} align="stretch">
-            {[
-              'Digital Readiness Assessment',
-              'Strategy Development & Roadmap',
-              'Technology Implementation & Integration',
-              'Change Management & Training',
-              'Performance Monitoring & Optimization',
-            ].map((step, index) => (
-              <HStack key={index} gap={4}>
-                <Icon as={FaCheck} color="brand.500" />
-                <Text fontSize="lg">{step}</Text>
-              </HStack>
-            ))}
-          </VStack>
-        </VStack>
-      </Container>
-
-      {/* CTA Section */}
-      <Box bg={useColorModeValue('brand.50', 'brand.900')}>
-        <Container maxW="1200px" py={20}>
-          <Stack gap={8} align="center" textAlign="center">
-            <Heading>Ready to Transform Your Business Digitally?</Heading>
-            <Text fontSize="lg" maxW="2xl">
-              Let's create a digital transformation strategy that positions your business for future success
-            </Text>
-            <RouterLink to="/contact">
-              <Button
-                colorPalette="brand"
-                size="lg"
-                px={8}
-              >
-                Get Started <FaArrowRight />
-              </Button>
-            </RouterLink>
-          </Stack>
-        </Container>
-      </Box>
     </Box>
   )
 }

@@ -3,141 +3,245 @@ import {
   Container,
   Heading,
   Text,
-  SimpleGrid,
   Input,
   Textarea,
   Button,
   VStack,
-  Icon,
-  HStack,
   Stack,
   Field,
 } from '@chakra-ui/react'
-import { FaPhone, FaEnvelope, FaMapMarkerAlt } from 'react-icons/fa'
 import { toaster } from '@/components/ui/toaster'
 import { WebHero } from '@/components/ui/WebHero'
 import { getPageConfig } from '@/utils/pageConfigs'
 import { useColorModeValue } from '@/components/ui/color-mode'
+import { QuoteBox } from '@/components/ui/QuoteBox'
+import { motion } from 'framer-motion'
+import { useState } from 'react'
 
-const CONTACT_INFO = [
-  {
-    icon: FaPhone,
-    title: 'Phone',
-    content: '(123) 456-7890',
-  },
-  {
-    icon: FaEnvelope,
-    title: 'Email',
-    content: 'contact@ssqinc.com',
-  },
-  {
-    icon: FaMapMarkerAlt,
-    title: 'Address',
-    content: '123 Business Street, City, State 12345',
-  },
-]
+const MotionBox = motion(Box)
+const MotionHeading = motion(Heading)
+const MotionText = motion(Text)
+const MotionVStack = motion(VStack)
 
 export default function Contact() {
   const config = getPageConfig('contact')
+  const [isLoading, setIsLoading] = useState(false)
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    subject: '',
+    message: ''
+  })
 
-  const handleSubmit = (e: React.FormEvent) => {
+  // Theme-aware colors
+  const bgColor = useColorModeValue('white', 'gray.900')
+  const textColor = useColorModeValue('gray.700', 'gray.200')
+  const inputBg = useColorModeValue('white', 'gray.800')
+  const inputBorder = useColorModeValue('gray.200', 'gray.600')
+  const inputFocusBorder = useColorModeValue('brand.500', 'brand.400')
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    // Add your form submission logic here
+    setIsLoading(true)
+
+    // TODO: Add your form submission logic here
+    await new Promise(resolve => setTimeout(resolve, 1000))
+
     toaster.success({
       title: 'Message Sent',
       description: 'We will get back to you soon!',
     })
+
+    setFormData({
+      name: '',
+      email: '',
+      subject: '',
+      message: ''
+    })
+    setIsLoading(false)
+  }
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }))
   }
 
   return (
     <Box>
-      {/* Enhanced WebHero with 3D Text */}
       <WebHero
         title={config.title}
         tagline={config.tagline}
         showText={config.showText}
-        minHeight={config.minHeight}
       />
 
-      {/* Contact Form and Info Section */}
-      <Container maxW="1200px" py={20}>
-        <SimpleGrid columns={{ base: 1, md: 2 }} gap={10}>
-          {/* Contact Form */}
-          <Box
-            bg={useColorModeValue('white', 'gray.800')}
-            rounded="xl"
-            shadow="lg"
-            p={8}
-          >
-            <form onSubmit={handleSubmit}>
-              <VStack gap={4}>
+      <QuoteBox 
+        quote={config.quote || ""}
+      />
+
+      <Container maxW="800px" py={20}>
+        <MotionBox
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.6, ease: "easeOut" }}
+          bg={bgColor}
+          p={{ base: 6, md: 12 }}
+          borderRadius="2xl"
+          boxShadow="xl"
+          border="1px solid"
+          borderColor={useColorModeValue('gray.100', 'gray.700')}
+          w="full"
+          position="relative"
+          overflow="hidden"
+        >
+          <Stack gap={8} alignItems="center">
+            <MotionBox
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.2 }}
+            >
+              <MotionHeading
+                fontSize={{ base: "2xl", md: "3xl" }}
+                fontWeight="bold"
+                bgGradient="linear(to-r, brand.400, brand.600, brand.500)"
+                bgClip="text"
+                textAlign="center"
+                mb={2}
+              >
+                Get in Touch
+              </MotionHeading>
+              <MotionText
+                color={textColor}
+                textAlign="center"
+                fontSize="lg"
+                maxW="md"
+                mb={8}
+              >
+                Have a question or want to work together? We'd love to hear from you.
+              </MotionText>
+
+              {/* Animated underline */}
+              <MotionBox
+                h="3px"
+                w="0"
+                bg="brand.500"
+                mx="auto"
+                initial={{ width: 0 }}
+                animate={{ width: "60px" }}
+                transition={{ duration: 0.8, delay: 0.8 }}
+                borderRadius="full"
+              />
+            </MotionBox>
+
+            <form onSubmit={handleSubmit} style={{ width: '100%' }}>
+              <MotionVStack
+                gap={6}
+                initial={{ opacity: 0, y: 40 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.4 }}
+              >
                 <Field.Root required>
                   <Field.Label>Name</Field.Label>
-                  <Input type="text" />
+                  <Input
+                    name="name"
+                    value={formData.name}
+                    onChange={handleChange}
+                    bg={inputBg}
+                    border="2px solid"
+                    borderColor={inputBorder}
+                    _focus={{
+                      borderColor: inputFocusBorder,
+                      boxShadow: 'none'
+                    }}
+                    _hover={{
+                      borderColor: inputFocusBorder
+                    }}
+                    placeholder="Your name"
+                  />
                 </Field.Root>
+
                 <Field.Root required>
                   <Field.Label>Email</Field.Label>
-                  <Input type="email" />
+                  <Input
+                    name="email"
+                    type="email"
+                    value={formData.email}
+                    onChange={handleChange}
+                    bg={inputBg}
+                    border="2px solid"
+                    borderColor={inputBorder}
+                    _focus={{
+                      borderColor: inputFocusBorder,
+                      boxShadow: 'none'
+                    }}
+                    _hover={{
+                      borderColor: inputFocusBorder
+                    }}
+                    placeholder="your.email@example.com"
+                  />
                 </Field.Root>
+
                 <Field.Root required>
                   <Field.Label>Subject</Field.Label>
-                  <Input type="text" />
+                  <Input
+                    name="subject"
+                    value={formData.subject}
+                    onChange={handleChange}
+                    bg={inputBg}
+                    border="2px solid"
+                    borderColor={inputBorder}
+                    _focus={{
+                      borderColor: inputFocusBorder,
+                      boxShadow: 'none'
+                    }}
+                    _hover={{
+                      borderColor: inputFocusBorder
+                    }}
+                    placeholder="What's this about?"
+                  />
                 </Field.Root>
+
                 <Field.Root required>
                   <Field.Label>Message</Field.Label>
-                  <Textarea rows={6} />
+                  <Textarea
+                    name="message"
+                    value={formData.message}
+                    onChange={handleChange}
+                    rows={6}
+                    bg={inputBg}
+                    border="2px solid"
+                    borderColor={inputBorder}
+                    _focus={{
+                      borderColor: inputFocusBorder,
+                      boxShadow: 'none'
+                    }}
+                    _hover={{
+                      borderColor: inputFocusBorder
+                    }}
+                    placeholder="Tell us about your project or question..."
+                  />
                 </Field.Root>
+
                 <Button
                   type="submit"
-                  colorPalette="brand"
+                  colorScheme="brand"
                   size="lg"
                   w="full"
+                  loading={isLoading}
+                  _hover={{
+                    transform: 'translateY(-2px)',
+                    boxShadow: 'lg'
+                  }}
+                  transition="all 0.2s"
                 >
                   Send Message
                 </Button>
-              </VStack>
+              </MotionVStack>
             </form>
-          </Box>
-
-          {/* Contact Information */}
-          <Stack gap={8}>
-            <Box>
-              <Heading size="md" mb={6}>
-                Contact Information
-              </Heading>
-              <VStack gap={6} align="stretch">
-                {CONTACT_INFO.map((info) => (
-                  <HStack key={info.title} gap={4}>
-                    <Icon
-                      as={info.icon}
-                      w={6}
-                      h={6}
-                      color="brand.500"
-                      mb={2}
-                    />
-                    <Box>
-                      <Heading size="md" mb={2}>
-                        {info.title}
-                      </Heading>
-                      <Text color={useColorModeValue('gray.600', 'gray.400')}>{info.content}</Text>
-                    </Box>
-                  </HStack>
-                ))}
-              </VStack>
-            </Box>
-
-            <Box>
-              <Heading size="md" mb={6}>
-                Business Hours
-              </Heading>
-              <VStack gap={2} align="stretch">
-                <Text>Monday - Friday: 9:00 AM - 5:00 PM</Text>
-                <Text>Saturday: 10:00 AM - 2:00 PM</Text>
-                <Text>Sunday: Closed</Text>
-              </VStack>
-            </Box>
           </Stack>
-        </SimpleGrid>
+        </MotionBox>
       </Container>
     </Box>
   )

@@ -1,8 +1,8 @@
 "use client"
 
 import { ChakraProvider } from "@chakra-ui/react"
-import { Toaster } from "./toaster"
-import { ColorModeProvider } from "./color-mode"
+import { Toaster } from "../components/ui/toaster"
+import { ColorModeProvider } from "../components/ui/color-mode"
 import { system } from '@/theme'
 
 interface ProviderProps {

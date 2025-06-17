@@ -10,14 +10,13 @@ import {
   useBreakpointValue,
   IconButton,
   Separator,
+  SimpleGrid,
 } from '@chakra-ui/react'
 import { Link as RouterLink } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Tooltip } from '@/components/ui/tooltip'
 import { useColorModeValue } from '@/components/ui/color-mode'
 import {
-  FaInfoCircle,
-  FaBlog,
   FaChartLine,
   FaBriefcase,
   FaShieldAlt,
@@ -34,6 +33,15 @@ import {
   FaSearch,
   FaSun,
   FaMoon,
+  FaTasks,
+  FaDollarSign,
+  FaUsers,
+  FaTree,
+  FaHandshake,
+  FaBuilding,
+  FaBookOpen,
+  FaHeart,
+  FaLightbulb,
 } from 'react-icons/fa'
 import { useColorMode } from '@/components/ui/color-mode'
 
@@ -130,23 +138,30 @@ export const MainMenu: React.FC<MainMenuProps> = ({ isOpen, onClose, featureCont
   const headingSize = useBreakpointValue({ base: 'md', lg: 'lg' })
 
   const navigationLinks = [
-    { to: '/about', label: 'About Us', icon: FaInfoCircle },
-    { to: '/blog', label: 'Blog', icon: FaBlog },
-    { to: '/investors', label: 'Investor Relations', icon: FaChartLine },
+    { to: '/about', label: 'About Us', icon: FaBuilding },
+    { to: '/our-process', label: 'Our Process', icon: FaTasks },
+    { to: '/pricing', label: 'Pricing', icon: FaDollarSign },
+    { to: '/partners', label: 'Partners', icon: FaHandshake },  
+    { to: '/clients', label: 'Clients', icon: FaUsers },
+    { to: '/blog', label: 'Blog', icon: FaBookOpen },
+    { to: '/investor', label: 'Investor Relations', icon: FaChartLine },
+    { to: '/foundation', label: 'Foundation', icon: FaHeart },
+    { to: '/sustainability', label: 'Sustainability', icon: FaTree },
+    { to: '/accelerators', label: 'Accelerators', icon: FaLightbulb },
     { to: '/careers', label: 'Careers', icon: FaBriefcase },
     { to: '/privacy', label: 'Privacy Policy', icon: FaShieldAlt },
     { to: '/contact', label: 'Contact Us', icon: FaEnvelope },
   ]
 
   const platformLinks = [
-    { to: '/platforms/ballie', label: 'Ballie', icon: FaRocket, description: 'Our flagship platform' },
+    { to: '/aqira', label: 'Aqira', icon: FaRocket, description: 'The Future of Business Management' },
   ]
 
   const serviceLinks = [
     { to: '/services', label: 'Our Services', icon: FaCog, isMain: true },
     { to: '/services/digital-transformation', label: 'Digital Transformation', icon: FaGlobe },
-    { to: '/services/software', label: 'Software Development', icon: FaCode },
-    { to: '/services/data', label: 'Data Solutions', icon: FaDatabase },
+    { to: '/services/software', label: 'Software', icon: FaCode },
+    { to: '/services/data', label: 'Data', icon: FaDatabase },
     { to: '/services/ai-ml', label: 'AI & ML', icon: FaRobot },
     { to: '/services/cloud-cybersecurity', label: 'Cloud & CyberSecurity', icon: FaCloud },
   ]
@@ -463,70 +478,94 @@ export const MainMenu: React.FC<MainMenuProps> = ({ isOpen, onClose, featureCont
               >
                 <motion.div variants={itemVariants}>
                   <Heading 
-                    as="h3" 
-                    size="lg" 
+                    as="h1" 
+                    size="4xl" 
                     mb={4} 
                     fontWeight="bold" 
                     letterSpacing="wide"
                     color={iconColor}
+                    textAlign="center"
+                    w="100%"
                   >
                     Navigation
                   </Heading>
                 </motion.div>
                 
                 <VStack gap={3} align="stretch">
-                  {navigationLinks.map((link) => (
-                    <motion.div 
-                      key={link.to} 
-                      variants={itemVariants}
-                      whileHover={{ 
-                        scale: 1.02,
-                        transition: { duration: 0.2 }
-                      }}
-                      whileTap={{ scale: 0.98 }}
-                    >
-                      <RouterLink
-                        to={link.to}
-                        onClick={onClose}
-                        style={{
-                          display: 'block',
-                          width: '100%',
-                          padding: '16px',
-                          borderRadius: '8px',
-                          backgroundColor: 'transparent',
-                          border: '2px solid transparent',
-                          textDecoration: 'none',
-                          transition: 'all 0.2s',
-                        }}
-                        onMouseEnter={(e) => {
-                          e.currentTarget.style.backgroundColor = hoverBg;
-                          e.currentTarget.style.borderColor = iconColor;
-                          e.currentTarget.style.transform = 'translateY(-2px)';
-                          e.currentTarget.style.boxShadow = 'var(--chakra-shadows-brand-md)';
-                        }}
-                        onMouseLeave={(e) => {
-                          e.currentTarget.style.backgroundColor = 'transparent';
-                          e.currentTarget.style.borderColor = 'transparent';
-                          e.currentTarget.style.transform = 'translateY(0)';
-                          e.currentTarget.style.boxShadow = 'none';
+                  <SimpleGrid columns={2} gap={4}>
+                    {navigationLinks.map((link) => (
+                      <motion.div 
+                        key={link.to} 
+                        initial="initial"
+                        whileHover="hover"
+                        animate="initial"
+                        variants={{
+                          initial: { scale: 1 },
+                          hover: { scale: 1.02 }
                         }}
                       >
-                        <HStack gap={4} align="center" w="100%">
-                          <Icon 
-                            as={link.icon} 
-                            w={6} 
-                            h={6} 
-                            color={iconColor}
-                            className="nav-icon"
-                            transition="transform 0.6s ease-in-out"
-                          />
-                          <Text fontSize="xl" fontWeight="semibold" flex={1}>
-                            {link.label}
-                          </Text>
-                        </HStack>
-                      </RouterLink>
-                    </motion.div>
-                  ))}
+                        <RouterLink
+                          to={link.to}
+                          onClick={onClose}
+                          style={{
+                            display: 'flex',
+                            flexDirection: 'column',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            width: '100%',
+                            aspectRatio: '1',
+                            padding: '16px',
+                            borderRadius: '12px',
+                            backgroundColor: 'transparent',
+                            border: '2px solid transparent',
+                            textDecoration: 'none',
+                            transition: 'all 0.2s',
+                          }}
+                          onMouseEnter={(e) => {
+                            e.currentTarget.style.backgroundColor = hoverBg;
+                            e.currentTarget.style.borderColor = iconColor;
+                            e.currentTarget.style.transform = 'translateY(-2px)';
+                            e.currentTarget.style.boxShadow = 'var(--chakra-shadows-brand-md)';
+                          }}
+                          onMouseLeave={(e) => {
+                            e.currentTarget.style.backgroundColor = 'transparent';
+                            e.currentTarget.style.borderColor = 'transparent';
+                            e.currentTarget.style.transform = 'translateY(0)';
+                            e.currentTarget.style.boxShadow = 'none';
+                          }}
+                        >
+                          <VStack gap={3} align="center">
+                            <motion.div
+                              variants={{
+                                initial: { rotate: 0 },
+                                hover: { rotate: 360 }
+                              }}
+                              transition={{ duration: 0.6, ease: "easeInOut" }}
+                            >
+                              <Icon 
+                                as={link.icon} 
+                                w={8} 
+                                h={8} 
+                                color={iconColor}
+                                className="nav-icon"
+                              />
+                            </motion.div>
+                            <Text 
+                              fontSize="md" 
+                              fontWeight="semibold" 
+                              textAlign="center"
+                              maxW="100%"
+                              overflow="hidden"
+                              textOverflow="ellipsis"
+                              whiteSpace="nowrap"
+                            >
+                              {link.label}
+                            </Text>
+                          </VStack>
+                        </RouterLink>
+                      </motion.div>
+                    ))}
+                  </SimpleGrid>
                 </VStack>
               </MotionVStack>
 
@@ -557,12 +596,14 @@ export const MainMenu: React.FC<MainMenuProps> = ({ isOpen, onClose, featureCont
               >
                 <motion.div variants={itemVariants}>
                   <Heading 
-                    as="h3" 
-                    size="lg" 
+                    as="h1" 
+                    size="4xl" 
                     mb={4} 
                     fontWeight="bold" 
                     letterSpacing="wide"
                     color={iconColor}
+                    textAlign="center"
+                    w="100%"
                   >
                     Platforms
                   </Heading>
@@ -571,13 +612,13 @@ export const MainMenu: React.FC<MainMenuProps> = ({ isOpen, onClose, featureCont
                 {platformLinks.map((link) => (
                   <motion.div 
                     key={link.to} 
-                    variants={itemVariants}
-                    whileHover={{ 
-                      scale: 1.02,
-                      boxShadow: '0 4px 20px #8B5CF6',
-                      transition: { duration: 0.2 }
+                    initial="initial"
+                    whileHover="hover"
+                    animate="initial"
+                    variants={{
+                      initial: { scale: 1 },
+                      hover: { scale: 1.02 }
                     }}
-                    whileTap={{ scale: 0.98 }}
                   >
                     <RouterLink
                       to={link.to}
@@ -607,7 +648,10 @@ export const MainMenu: React.FC<MainMenuProps> = ({ isOpen, onClose, featureCont
                     >
                       <VStack gap={2}>
                         <motion.div
-                          whileHover={{ rotate: 360 }}
+                          variants={{
+                            initial: { rotate: 0 },
+                            hover: { rotate: 360 }
+                          }}
                           transition={{ duration: 0.6, ease: "easeInOut" }}
                         >
                           <Icon 
@@ -672,12 +716,14 @@ export const MainMenu: React.FC<MainMenuProps> = ({ isOpen, onClose, featureCont
               >
                 <motion.div variants={itemVariants}>
                   <Heading 
-                    as="h3" 
-                    size="lg" 
+                    as="h1" 
+                    size="4xl" 
                     mb={4} 
                     fontWeight="bold" 
                     letterSpacing="wide"
                     color={iconColor}
+                    textAlign="center"
+                    w="100%"
                   >
                     Services
                   </Heading>
@@ -687,12 +733,13 @@ export const MainMenu: React.FC<MainMenuProps> = ({ isOpen, onClose, featureCont
                   {serviceLinks.map((link) => (
                     <motion.div 
                       key={link.to} 
-                      variants={itemVariants}
-                      whileHover={{ 
-                        scale: 1.02,
-                        transition: { duration: 0.2 }
+                      initial="initial"
+                      whileHover="hover"
+                      animate="initial"
+                      variants={{
+                        initial: { scale: 1 },
+                        hover: { scale: 1.02 }
                       }}
-                      whileTap={{ scale: 0.98 }}
                     >
                       <RouterLink
                         to={link.to}
@@ -730,13 +777,21 @@ export const MainMenu: React.FC<MainMenuProps> = ({ isOpen, onClose, featureCont
                         }}
                       >
                         <HStack gap={4} align="center" w="100%">
-                          <Icon 
-                            as={link.icon} 
-                            w={6} 
-                            h={6} 
-                            color={link.isMain ? iconColor : iconColor}
-                            className="service-icon"
-                          />
+                          <motion.div
+                            variants={{
+                              initial: { rotate: 0 },
+                              hover: { rotate: 360 }
+                            }}
+                            transition={{ duration: 0.6, ease: "easeInOut" }}
+                          >
+                            <Icon 
+                              as={link.icon} 
+                              w={6} 
+                              h={6} 
+                              color={link.isMain ? iconColor : iconColor}
+                              className="service-icon"
+                            />
+                          </motion.div>
                           <Box flex={1}>
                             <Text 
                               fontSize="lg" 

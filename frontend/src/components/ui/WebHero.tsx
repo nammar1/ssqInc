@@ -3,28 +3,38 @@ import { Canvas, useFrame } from '@react-three/fiber'
 import { OrbitControls, PerspectiveCamera } from '@react-three/drei'
 import { motion } from 'framer-motion'
 import { SpiderWeb3D } from './SpiderWeb3D'
-import { useRef } from 'react'
+import { useRef, useState, useEffect } from 'react'
 import * as THREE from 'three'
 import { useColorMode } from './color-mode'
 
+// Animation phases
+type AnimationPhase = 'text' | 'web-expansion' | 'camera-movement'
+
 // Camera animation component
-const AnimatedCamera = () => {
+const AnimatedCamera = ({ phase }: { phase: AnimationPhase }) => {
   const cameraRef = useRef<THREE.PerspectiveCamera>(null)
   
   useFrame((state) => {
     if (cameraRef.current) {
-      // Create a smooth circular motion
       const time = state.clock.getElapsedTime()
-      const radius = 25
-      const speed = 0.2
       
-      // Circular motion
-      cameraRef.current.position.x = Math.sin(time * speed) * radius
-      cameraRef.current.position.z = Math.cos(time * speed) * radius + 20
-      cameraRef.current.position.y = Math.sin(time * speed * 0.5) * 5
-      
-      // Always look at the center
-      cameraRef.current.lookAt(0, 0, 0)
+      if (phase === 'camera-movement') {
+        // Create a smooth circular motion
+        const radius = 25
+        const speed = 0.2
+        
+        // Circular motion
+        cameraRef.current.position.x = Math.sin(time * speed) * radius
+        cameraRef.current.position.z = Math.cos(time * speed) * radius + 20
+        cameraRef.current.position.y = Math.sin(time * speed * 0.5) * 5
+        
+        // Always look at the center
+        cameraRef.current.lookAt(0, 0, 0)
+      } else {
+        // Keep camera centered during text and web expansion phases
+        cameraRef.current.position.set(0, 0, 30)
+        cameraRef.current.lookAt(0, 0, 0)
+      }
     }
   })
 
@@ -55,11 +65,12 @@ export const WebHero = ({
   title = '',
   tagline = '',
   showText = false,
-  minHeight = '50vh',
   backgroundColor,
   webColor
 }: WebHeroProps) => {
   const { colorMode } = useColorMode()
+  const [animationPhase, setAnimationPhase] = useState<AnimationPhase>('text')
+  
   const defaultBgColor = colorMode === 'light' ? 'gray.50' : 'gray.900'
   const defaultWebColor = colorMode === 'light' ? '#2D3748' : '#E2E8F0'
   
@@ -67,17 +78,39 @@ export const WebHero = ({
   const finalWebColor = webColor || defaultWebColor
   const textColor = colorMode === 'light' ? 'gray.700' : 'gray.200'
 
+  // Animation sequence timing
+  useEffect(() => {
+    if (!showText) {
+      setAnimationPhase('camera-movement')
+      return
+    }
+
+    const timers = [
+      // Show text for 2 seconds, then start web expansion
+      setTimeout(() => {
+        setAnimationPhase('web-expansion')
+      }, 1000),
+      // Start camera movement after web expansion (3 seconds)
+      setTimeout(() => {
+        setAnimationPhase('camera-movement')
+      }, 6000)
+    ]
+
+    return () => timers.forEach(clearTimeout)
+  }, [showText])
+
   return (
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 1 }}
+      style={{ height: '50vh', position: 'relative' }}
     >
       <Box
         position="relative"
         bg={bgColor}
         color={textColor}
-        minH={minHeight}
+        height="50vh"
         overflow="hidden"
       >
         {/* Three.js Canvas */}
@@ -92,14 +125,15 @@ export const WebHero = ({
           <Canvas
             style={{ background: 'transparent' }}
           >
-            <AnimatedCamera />
+            <AnimatedCamera phase={animationPhase} />
             <SpiderWeb3D
-              segments={32}
-              layers={12}
+              segments={20}
+              layers={8}
               color={finalWebColor}
               title={title}
               tagline={tagline}
               showText={showText}
+              animationPhase={animationPhase}
             />
             <OrbitControls
               enableZoom={false}
