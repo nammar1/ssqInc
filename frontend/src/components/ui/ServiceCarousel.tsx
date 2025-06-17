@@ -5,7 +5,6 @@ import {
   Flex,
   Heading,
   Text,
-  Button,
   SimpleGrid,
 } from '@chakra-ui/react'
 import { motion } from 'framer-motion'
